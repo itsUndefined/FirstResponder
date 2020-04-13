@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "firstresponder-1f0df": {
+      "hosting": {
+        "first-responder": [
+          "firstresponder-1f0df"
+        ]
+      }
+    }
+  }
+}
