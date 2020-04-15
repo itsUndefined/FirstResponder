@@ -7,7 +7,7 @@
     tools:context=".PhoneCodeSubmitActivity">
 
     <ImageView
-        android:id="@+id/submitCodeBack"
+        android:id="@+id/returnToLogInFromSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -34,7 +34,7 @@
         app:layout_constraintBottom_toTopOf="@+id/submitCodeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitCodeBack"
+        app:layout_constraintTop_toBottomOf="@+id/returnToLogInFromSettings"
         app:layout_constraintVertical_bias="0.063" />
 
     <Button
@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submitCodeBack"
+        app:layout_constraintTop_toBottomOf="@+id/returnToLogInFromSettings"
         app:layout_constraintVertical_bias="0.55" />
 
     <EditText

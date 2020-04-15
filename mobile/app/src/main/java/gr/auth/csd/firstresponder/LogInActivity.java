@@ -27,14 +27,14 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-        /*settings = findViewById(R.id.settingsBtn);
+        settings = findViewById(R.id.settingsBtn);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, *//*the activity you want to go*//*);
+                Intent intent = new Intent(LogInActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
 
         login = findViewById(R.id.logInActivityButton);
         login.setOnClickListener(new View.OnClickListener() {

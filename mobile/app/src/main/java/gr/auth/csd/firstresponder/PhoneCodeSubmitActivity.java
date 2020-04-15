@@ -18,7 +18,7 @@ public class PhoneCodeSubmitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_code_submit);
 
-        back = findViewById(R.id.submitCodeBack);
+        back = findViewById(R.id.returnToLogInFromSettings);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
