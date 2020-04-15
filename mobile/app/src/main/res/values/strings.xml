@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FirstResponder</string>
+    <string name="mainActivity_title1">Welcome</string>
+    <string name="mainActivity_title2">to FirstResponder!</string>
+    <string name="mainActivity_title3">The first app for volunteer rescuers.</string>
+    <string name="mainActivity_button">Sign up or Log in</string>
 </resources>
