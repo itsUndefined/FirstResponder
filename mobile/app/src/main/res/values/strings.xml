@@ -6,7 +6,7 @@
     <string name="mainActivity_button">Sign up or Log in</string>
     <string name="logInActivity_title">Enter your phone number!</string>
     <string-array name="logInActivity_code">
-        <item>+300</item>
+        <item>+30</item>
     </string-array>
     <string name="logInActivity_pN">Phone Number</string>
     <string name="logInActivity_tos">
