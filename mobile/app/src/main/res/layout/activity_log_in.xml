@@ -29,6 +29,7 @@
         android:layout_marginTop="124dp"
         android:fontFamily="@font/roboto_bold"
         android:text="@string/logInActivity_title"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="29sp"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,6 +79,7 @@
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/roboto_regular"
         android:text="@string/logInActivity_tos"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,15 +92,25 @@
         android:layout_width="220dp"
         android:layout_height="46dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/input_form"
         android:ems="10"
         android:hint="@string/logInActivity_pN"
         android:inputType="phone"
-        android:background="@drawable/input_form"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/spinner2"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:layout_constraintVertical_bias="0.36" />
+
+    <Button
+        android:id="@+id/settingsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logInActivityButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

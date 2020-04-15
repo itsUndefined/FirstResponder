@@ -1,14 +1,16 @@
 package gr.auth.csd.firstresponder;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LogInActivity extends AppCompatActivity {
 
     ImageView back;
+    Button settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,5 +24,14 @@ public class LogInActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        /*settings = findViewById(R.id.settingsBtn);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LogInActivity.this, *//*the activity you want to go*//*);
+                startActivity(intent);
+            }
+        });*/
     }
 }
