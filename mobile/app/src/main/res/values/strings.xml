@@ -4,28 +4,6 @@
     <string name="mainActivity_title2">to FirstResponder!</string>
     <string name="mainActivity_title3">The first app for volunteer rescuers.</string>
     <string name="mainActivity_button">Sign up or Log in</string>
-    <string name="logInActivity_title">Enter your phone number!</string>
-    <string-array name="logInActivity_code">
-        <item>+30</item>
-    </string-array>
-    <string name="logInActivity_pN">Phone Number</string>
-    <string name="logInActivity_tos">
-        By tapping "Verify phone number", you are indicatating that you
-        are accept our Terms of Service and Privacy Policy. An SMS may be sent.
-        \nMessage and data rates may apply.
-    </string>
-    <string name="logInActivity_button">Verify phone number</string>
-    <string name="phoneCodeActivity_title">Enter the verification code!</string>
-    <string name="phoneCodeActivity_button">Submit code</string>
-    <string name="registerActivity_title1">Finish your profile!</string>
-    <string name="registerActivity_fname">First name</string>
-    <string name="registerActivity_lname">Last name</string>
-    <string name="registerActivity_title2">Tell us about your skills!</string>
-    <string name="registerActivity_skill1">I know how to stop heavy bleeding</string>
-    <string name="registerActivity_skill2">I know how to treat shock</string>
-    <string name="registerActivity_skill3">I know how to perform CPR</string>
-    <string name="registerActivity_skill4">I know how to use a defibrillator</string>
-    <string name="registerActivity_button">Create your account</string>
 
 
 
