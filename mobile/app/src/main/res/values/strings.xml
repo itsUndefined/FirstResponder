@@ -15,4 +15,6 @@
         \nMessage and data rates may apply.
     </string>
     <string name="logInActivity_button">Verify phone number</string>
+    <string name="phoneCodeActivity_title">Enter the verification code!</string>
+    <string name="phoneCodeActivity_button">Submit code</string>
 </resources>
