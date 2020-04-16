@@ -1,1 +1,30 @@
-<p>dashboard works!</p>
+<div class="container">
+  <div class="input-group">
+    <input  type="text" class="form-control" placeholder="Address" [(ngModel)]="address">
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="button" (click)="onFindAddress()">Find</button>
+    </div>
+  </div>
+
+  <br>
+
+  <ngb-alert type="warning" (close)="onAlertClose()" *ngIf="alertMessage">{{ alertMessage }}</ngb-alert>
+
+  <div [ngStyle]="{height: alertMessage ? '13px' : '79px' }"></div>
+
+  {{selectedAddress}}
+
+  <div class="mx-auto">
+    <google-map width="100%" [center]="center" [zoom]="6" (mapClick)="onAddMarker($event)">
+      <map-info-window>Hello Google Maps</map-info-window>
+      <map-marker
+        [position]="markerPosition"
+        *ngIf="markerPosition"
+        [options]="{draggable: true}"
+        (mapDrag)="onDragMarker($event)"
+        (mapDragend)="onDragMarkerEnd($event)"
+      ></map-marker>
+    </google-map>
+  </div>
+</div>
+

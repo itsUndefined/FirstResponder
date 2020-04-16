@@ -1,33 +1,36 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AngularFireModule, } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { AngularFireModule, } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { AuthComponent } from './auth/auth.component';
-import {RouterModule, Routes} from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
-const routes: Routes = [
-  {path: '', component: AuthComponent},
-  {path: 'dashboard', component: DashboardComponent}
-];
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    DashboardComponent
+    DashboardComponent,
+    UnauthorizedComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    RouterModule.forRoot(routes)
+    GoogleMapsModule,
+    NgbAlertModule
   ],
   providers: [],
   bootstrap: [AppComponent]
