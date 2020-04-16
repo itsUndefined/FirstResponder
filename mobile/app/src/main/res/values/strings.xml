@@ -17,4 +17,13 @@
     <string name="logInActivity_button">Verify phone number</string>
     <string name="phoneCodeActivity_title">Enter the verification code!</string>
     <string name="phoneCodeActivity_button">Submit code</string>
+    <string name="registerActivity_title1">Finish your profile!</string>
+    <string name="registerActivity_fname">First name</string>
+    <string name="registerActivity_lname">Last name</string>
+    <string name="registerActivity_title2">Tell us about your skills!</string>
+    <string name="registerActivity_skill1">I know how to stop heavy bleeding</string>
+    <string name="registerActivity_skill2">I know how to treat shock</string>
+    <string name="registerActivity_skill3">I know how to perform CPR</string>
+    <string name="registerActivity_skill4">I know how to use a defibrillator</string>
+    <string name="registerActivity_button">Create your account</string>
 </resources>
