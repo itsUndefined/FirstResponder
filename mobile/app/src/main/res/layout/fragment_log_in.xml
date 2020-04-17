@@ -42,7 +42,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/phoneCodeInput"
             android:layout_width="75dp"
             android:layout_height="46dp"
             android:layout_marginStart="8dp"
@@ -54,7 +54,7 @@
             android:spinnerMode="dropdown"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toTopOf="@+id/textView6"
-            app:layout_constraintEnd_toStartOf="@+id/editText6"
+            app:layout_constraintEnd_toStartOf="@+id/phoneInput"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5"
@@ -91,10 +91,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+            app:layout_constraintTop_toBottomOf="@+id/phoneCodeInput" />
 
         <EditText
-            android:id="@+id/editText6"
+            android:id="@+id/phoneInput"
             android:layout_width="220dp"
             android:layout_height="46dp"
             android:layout_marginStart="4dp"
@@ -109,7 +109,7 @@
             app:layout_constraintBottom_toTopOf="@+id/textView6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/spinner2"
+            app:layout_constraintStart_toEndOf="@+id/phoneCodeInput"
             app:layout_constraintTop_toBottomOf="@+id/textView5"
             app:layout_constraintVertical_bias="0.0" />
 

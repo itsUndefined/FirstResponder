@@ -19,4 +19,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.main_activity_fragment_container, new StartFragment());
         fragmentTransaction.commit();
     }
+
+    /*public parsePhoneNumber(String phoneNumber) {
+
+    }*/
 }
