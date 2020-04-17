@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class CodeSubmitFragment extends Fragment {
 
     private FirebaseAuth mAuth;
+    private String mVerificationId;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private MainActivity mainActivity = new MainActivity();
     private String phoneNumber;
@@ -49,7 +51,7 @@ public class CodeSubmitFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                verifyPhoneNumberWithCode(phoneNumber, code.toString());
+                verifyPhoneNumberWithCode(code.getText().toString());
             }
         });
 
@@ -72,9 +74,13 @@ public class CodeSubmitFragment extends Fragment {
                 Log.d(TAG, "onVerificationFailed", e);
                 mVerificationInProgress = false;
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    Toast.makeText(getActivity(), "Invalid request", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Invalid phone number", Toast.LENGTH_SHORT).show();
                 } else if (e instanceof FirebaseTooManyRequestsException) {
                     Toast.makeText(getActivity(), "The SMS quota for the project has been exceeded", Toast.LENGTH_SHORT).show();
+                } else if (e instanceof FirebaseNetworkException) {
+                    Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Unknown error", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -83,6 +89,7 @@ public class CodeSubmitFragment extends Fragment {
                 // The SMS verification code has been sent to the provided phone number, we
                 // now need to ask the user to enter the code and then construct a credential
                 // by combining the code with a verification ID.
+                mVerificationId = verificationId;
                 Log.d(TAG, "onCodeSent:" + verificationId);
             }
 
@@ -97,15 +104,13 @@ public class CodeSubmitFragment extends Fragment {
             onActivityCreated(savedInstanceState);
         }
 
-        startPhoneNumberVerification(phoneNumber);
-
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (mVerificationInProgress) {
+        if(!mVerificationInProgress) {
             startPhoneNumberVerification(phoneNumber);
         }
     }
@@ -149,16 +154,22 @@ public class CodeSubmitFragment extends Fragment {
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.getException());
                     if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-
+                        Toast.makeText(getActivity(), "Invalid verification code", Toast.LENGTH_SHORT).show();
+                    } else if (task.getException() instanceof FirebaseNetworkException) {
+                        Toast.makeText(getActivity(), "Network error", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Unknown error", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
     }
 
-    private void verifyPhoneNumberWithCode(String verificationId, String code) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-        signInWithPhoneAuthCredential(credential);
+    private void verifyPhoneNumberWithCode(String code) {
+        if(mVerificationId != null) {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, code);
+            signInWithPhoneAuthCredential(credential);
+        }
     }
 
     private void loadingScreen() {
