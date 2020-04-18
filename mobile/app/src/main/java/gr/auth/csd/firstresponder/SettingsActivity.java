@@ -31,7 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
         returnToLogInActivityArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, LogInActivity.class);
+                Intent intent = new Intent(SettingsActivity.this, AlertsActivity.class);
                 startActivity(intent);
             }
         });
