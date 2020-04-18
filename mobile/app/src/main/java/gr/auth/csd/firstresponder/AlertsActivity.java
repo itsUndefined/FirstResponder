@@ -1,5 +1,7 @@
 package gr.auth.csd.firstresponder;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -7,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -35,12 +39,15 @@ public class AlertsActivity extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == PermissionRequest.LOCATION_ONLY) {
             if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 //PERM GRANTED
             } else {
+                showAccessDeniedWarningMessage();
                 //PERM NOT GRANTED SHOW SOMETHING FOR THE USER HE IS AN IDIOT
             }
         }
@@ -48,14 +55,46 @@ public class AlertsActivity extends AppCompatActivity {
             if(grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 //PERM GRANTED
             } else {
+                showAccessDeniedWarningMessage();
                 //PERM NOT GRANTED SHOW SOMETHING FOR THE USER HE IS AN IDIOT
             }
         }
     }
 
+    private void showAccessDeniedWarningMessage(){
+        AlertDialog.Builder fineLocationAlertBuilder = new AlertDialog.Builder(AlertsActivity.this);
+        fineLocationAlertBuilder.setTitle("Warning!");
+        fineLocationAlertBuilder.setMessage("Location permission is required for the use of this application." +
+                " In case you deny permission, the app will exit.\nAre you sure you want to deny permission?");
+        fineLocationAlertBuilder.setCancelable(false);
+        fineLocationAlertBuilder.setPositiveButton(
+                "Yes, I'm sure.",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.exit(0);
+                        AlertsActivity.this.finish();
+                    }
+                });
+        fineLocationAlertBuilder.setNegativeButton(
+                "No, I want to grant access to my GPS location.",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alertDialog = fineLocationAlertBuilder.create();
+        alertDialog.show();
+
+
+    }
+
+
     public void onRequestPermission(View view) {
         if (PermissionsHandler.checkLocationPermissions(this) == PackageManager.PERMISSION_DENIED) {
-            PermissionsHandler.requestLocationPermissions(this);
+            PermissionsHandler.requestLocationPermissions(this, false);
         } else {
             //Location services available
         }
