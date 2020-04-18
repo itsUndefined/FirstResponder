@@ -1,5 +1,6 @@
 package gr.auth.csd.firstresponder;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class LogInFragment extends Fragment {
 
+    private Callback callback;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            callback = (Callback) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException();
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
@@ -27,18 +40,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String validPhoneNumber = countryCode.getSelectedItem().toString() + phoneNumber.getText().toString();
-
-                // MainActivity mainActivity = (MainActivity) getActivity();
-
-                CodeSubmitFragment codeSubmitFragment = new CodeSubmitFragment();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-
-                Bundle bundle = new Bundle();
-                bundle.putString("phoneNumber", validPhoneNumber);
-                codeSubmitFragment.setArguments(bundle);
-
-                fragmentTransaction.replace(R.id.main_activity_fragment_container, codeSubmitFragment);
-                fragmentTransaction.commit();
+                callback.phoneVerification(validPhoneNumber);
             }
         });
 
