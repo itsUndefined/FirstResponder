@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
+
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
