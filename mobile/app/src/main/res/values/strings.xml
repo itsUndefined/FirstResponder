@@ -4,6 +4,22 @@
     <string name="mainActivity_title2">to FirstResponder!</string>
     <string name="mainActivity_title3">The first app for volunteer rescuers.</string>
     <string name="mainActivity_button">Sign up or Log in</string>
+
+
+
+
+    <string name="settingsActivity_name">Name</string>
+    <string name="settingsActivity_surname">Surname</string>
+    <string name="settingsActivity_phoneNumber">Phone Number</string>
+    <string name="settingsActivity_knownSkills">Known Skills</string>
+
+    <string name="settingsActivity_heavyBleeding_checkbox">I know how to stop heavy bleedings.</string>
+    <string name="settingsActivity_cpr_checkbox">I know how to perform CPR</string>
+    <string name="settingsActivity_treatShock_checkbox">I know how to treat shock</string>
+    <string name="settingsActivity_aed_checkbox">I know how to use a defibrillator</string>
+
+    <string name="settingsActivity_SaveChanges_Button">Save Changes</string>
+
     <string name="logInActivity_title">Enter your phone number!</string>
     <string-array name="logInActivity_code">
         <item>+30</item>

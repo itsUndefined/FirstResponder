@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Responder {
 
-    enum skill {
+    public enum skill {
         STOP_HEAVY_BLEEDING, TREATING_SHOCK, USE_AED, CPR
     }
 
@@ -33,6 +33,11 @@ public class Responder {
     public String getSurname() { return surname; }
     public String getPhoneNumber() { return phoneNumber; }
     public HashMap getKnownSkills() { return knownSkills; }
+
+    // Setters
+    public void setName(String name) { this.name = name; }
+    public void setSurname(String surname) { this.surname = surname; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
     public void acceptedEmergency() { acceptedEmergencies++; }
     public void missedEmergency() { missedEmergiencies++; }
