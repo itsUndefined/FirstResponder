@@ -25,44 +25,43 @@ public final class PermissionsHandler {
         return PackageManager.PERMISSION_GRANTED;
     }
 
-    public static void requestLocationPermissions(Activity activity, boolean accessGranted) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if((ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
-            || ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_DENIED)
-            && !accessGranted) {
-                showAccessDeniedWarningMessage(activity);
-                return;
-            }
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION}, PermissionRequest.LOCATION_WITH_BACKGROUND);
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if(ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
-            && !accessGranted) {
-                showAccessDeniedWarningMessage(activity);
-                return;
-            }
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PermissionRequest.LOCATION_ONLY);
-            return;
+    public static void requestLocationPermissions(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q &&
+            (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED ||
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_DENIED)
+        ) {
+            explainLocationPermissionRequirements(activity);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+            ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED
+        ) {
+            explainLocationPermissionRequirements(activity);
         }
     }
 
-    private static void showAccessDeniedWarningMessage(final Activity activity) {
+    private static void _requestPermission(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION}, PermissionRequest.LOCATION_WITH_BACKGROUND);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PermissionRequest.LOCATION_ONLY);
+        }
+    }
+
+    private static void explainLocationPermissionRequirements(final Activity activity) {
         AlertDialog.Builder fineLocationAlertBuilder = new AlertDialog.Builder(activity);
         fineLocationAlertBuilder.setTitle("Warning!");
         fineLocationAlertBuilder.setMessage(
-                "Location permission is required for the use of this application." +
+                "Background location permission is required for the use of this application." +
                 " In case you deny permission, the app will exit.");
         fineLocationAlertBuilder.setCancelable(false);
         fineLocationAlertBuilder.setPositiveButton(
-                "I understand",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        requestLocationPermissions(activity, true);
-                    }
-                });
-
+            "I understand",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    _requestPermission(activity);
+                }
+            }
+        );
         AlertDialog alertDialog = fineLocationAlertBuilder.create();
         alertDialog.show();
     }

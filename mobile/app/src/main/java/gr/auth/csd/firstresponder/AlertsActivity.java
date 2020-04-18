@@ -48,7 +48,6 @@ public class AlertsActivity extends AppCompatActivity {
                 //PERM GRANTED
             } else {
                 showAccessDeniedWarningMessage();
-                //PERM NOT GRANTED SHOW SOMETHING FOR THE USER HE IS AN IDIOT
             }
         }
         if(requestCode == PermissionRequest.LOCATION_WITH_BACKGROUND) {
@@ -56,7 +55,6 @@ public class AlertsActivity extends AppCompatActivity {
                 //PERM GRANTED
             } else {
                 showAccessDeniedWarningMessage();
-                //PERM NOT GRANTED SHOW SOMETHING FOR THE USER HE IS AN IDIOT
             }
         }
     }
@@ -64,37 +62,27 @@ public class AlertsActivity extends AppCompatActivity {
     private void showAccessDeniedWarningMessage(){
         AlertDialog.Builder fineLocationAlertBuilder = new AlertDialog.Builder(AlertsActivity.this);
         fineLocationAlertBuilder.setTitle("Warning!");
-        fineLocationAlertBuilder.setMessage("Location permission is required for the use of this application." +
-                " In case you deny permission, the app will exit.\nAre you sure you want to deny permission?");
+        fineLocationAlertBuilder.setMessage("Background location permission is required for the use of this application." +
+                " Application will now exit");
         fineLocationAlertBuilder.setCancelable(false);
         fineLocationAlertBuilder.setPositiveButton(
-                "Yes, I'm sure.",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        System.exit(0);
-                        AlertsActivity.this.finish();
-                    }
-                });
-        fineLocationAlertBuilder.setNegativeButton(
-                "No, I want to grant access to my GPS location.",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+            "I understand!",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AlertsActivity.this.finishAffinity();
+                }
+            }
+        );
 
         AlertDialog alertDialog = fineLocationAlertBuilder.create();
         alertDialog.show();
-
-
     }
 
 
     public void onRequestPermission(View view) {
         if (PermissionsHandler.checkLocationPermissions(this) == PackageManager.PERMISSION_DENIED) {
-            PermissionsHandler.requestLocationPermissions(this, false);
+            PermissionsHandler.requestLocationPermissions(this);
         } else {
             //Location services available
         }
