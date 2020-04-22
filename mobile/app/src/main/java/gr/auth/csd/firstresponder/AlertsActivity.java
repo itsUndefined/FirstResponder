@@ -1,19 +1,28 @@
 package gr.auth.csd.firstresponder;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.constraintlayout.widget.Constraints;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.HashMap;
 
 import gr.auth.csd.firstresponder.helpers.PermissionRequest;
 import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
@@ -37,6 +46,8 @@ public class AlertsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        firebaseInstanceId();
+
     }
 
 
@@ -86,5 +97,35 @@ public class AlertsActivity extends AppCompatActivity {
         } else {
             //Location services available
         }
+    }
+
+    private void firebaseInstanceId() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(Constraints.TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        HashMap<String, Object> user = new HashMap<>();
+                        user.put("token", task.getResult().getToken());
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("users").document(FirebaseAuth.getInstance().getUid())
+                                .update(user)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(Constraints.TAG, "DocumentSnapshot successfully written!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(Constraints.TAG, "Error writing document", e);
+                                    }
+                                });
+                    }
+                });
     }
 }
