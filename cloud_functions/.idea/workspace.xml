@@ -19,19 +19,18 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="04bb9dfb-f091-4a9e-874b-524e0da2c34a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.firebaserc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/functions/.eslintrc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/functions/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/functions/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/functions/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/functions/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../mobile/app/src/main/java/gr/auth/csd/firstresponder/services/MyFirebaseMessagingService.java" afterDir="false" />
+    <list default="true" id="04bb9dfb-f091-4a9e-874b-524e0da2c34a" name="Default Changelist" comment="cloud function initialize">
+      <change afterPath="$PROJECT_DIR$/../mobile/app/src/main/java/gr/auth/csd/firstresponder/MissionActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../mobile/app/src/main/res/layout/activity_mission.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/functions/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mobile/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mobile/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../mobile/app/src/main/java/gr/auth/csd/firstresponder/AlertsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mobile/app/src/main/java/gr/auth/csd/firstresponder/AlertsActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mobile/app/src/main/java/gr/auth/csd/firstresponder/services/MyFirebaseMessagingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mobile/app/src/main/java/gr/auth/csd/firstresponder/services/MyFirebaseMessagingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mobile/app/src/main/res/layout/activity_alerts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mobile/app/src/main/res/layout/activity_alerts.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../mobile/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../mobile/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +55,7 @@
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -68,8 +68,17 @@
       <option name="presentableId" value="Default" />
       <updated>1587487682578</updated>
       <workItem from="1587487685382" duration="4787000" />
-      <workItem from="1587551193159" duration="1956000" />
+      <workItem from="1587551193159" duration="2290000" />
+      <workItem from="1587630495335" duration="19948000" />
     </task>
+    <task id="LOCAL-00001" summary="cloud function initialize">
+      <created>1587553547531</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1587553547532</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -86,5 +95,19 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="cloud function initialize" />
+    <option name="LAST_COMMIT_MESSAGE" value="cloud function initialize" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1587553554268">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1587553554268" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1587642913764">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1587642913764" />
   </component>
 </project>
