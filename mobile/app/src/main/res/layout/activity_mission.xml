@@ -4,37 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AlertsActivity">
+    tools:context=".MissionActivity">
 
-    <Button
-        android:id="@+id/logout"
+    <TextView
+        android:id="@+id/missionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="logout"
+        android:layout_marginTop="92dp"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/missionAccept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:onClick="onRequestPermission"
-        android:text="Press for perms"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="92dp"
+        android:text="Accept"
+        app:layout_constraintEnd_toStartOf="@+id/missionDecline"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logout" />
+        app:layout_constraintTop_toBottomOf="@+id/missionText" />
 
     <Button
-        android:id="@+id/allertButton"
+        android:id="@+id/missionDecline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:text="Allert"
+        android:layout_marginTop="92dp"
+        android:text="Decline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/missionAccept"
+        app:layout_constraintTop_toBottomOf="@+id/missionText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

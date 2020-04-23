@@ -6,8 +6,6 @@
     <string name="mainActivity_button">Sign up or Log in</string>
 
 
-
-
     <string name="settingsActivity_name">Name</string>
     <string name="settingsActivity_surname">Surname</string>
     <string name="settingsActivity_phoneNumber">Phone Number</string>

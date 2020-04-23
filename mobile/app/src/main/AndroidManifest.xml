@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".AlertsActivity"></activity>
+        <activity android:name=".MissionActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".AlertsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,4 +31,5 @@
             </intent-filter>
         </service>
     </application>
+
 </manifest>
