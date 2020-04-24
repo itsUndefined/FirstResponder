@@ -66,12 +66,13 @@ public class MissionActivity extends AppCompatActivity {
                         });
             }
         });
+
+        missionTimeOut();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        missionTimeOut();
         missionTaken();
     }
 
