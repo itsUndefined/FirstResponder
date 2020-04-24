@@ -24,31 +24,28 @@ exports.alertUsers = functions.region('europe-west1').firestore.document('alerts
                 db.collection('pending').doc(userId).get()
                     // eslint-disable-next-line promise/always-return
                     .then(pendingUser => {
-                        db.collection('active').doc(userId).get()
-                            .then(activeUser => {
-                                // eslint-disable-next-line promise/always-return
-                                if (!pendingUser.exists && !activeUser.exists) {
-                                    let userLocation = [doc.data()['location'].latitude, doc.data()['location'].longitude];
-                                    let distance = calculate.GeoFire.distance(mainLocation, userLocation);
-                                    if (distance <= change.data()['maxDistance']) {
-                                        admin.messaging().sendToDevice(doc.data()['token'], payload)
-                                            // eslint-disable-next-line promise/always-return
-                                            .then(() => {
-                                                let pendingData = {
-                                                    alertId: change.id
-                                                };
-                                                db.collection('pending').doc(userId).set(pendingData)
-                                                    .then()
-                                                    .catch();
-                                            })
-                                            .catch(err => {
-                                                return console.log('Error sending message:', err);
-                                            });
-                                        counter++;
-                                    }
-                                }
-                            })
-                            .catch();
+                        // eslint-disable-next-line promise/always-return
+                        if (!pendingUser.exists) {
+                            let userLocation = [doc.data()['location'].latitude, doc.data()['location'].longitude];
+                            let distance = calculate.GeoFire.distance(mainLocation, userLocation);
+                            if (distance <= change.data()['maxDistance']) {
+                                admin.messaging().sendToDevice(doc.data()['token'], payload)
+                                    // eslint-disable-next-line promise/always-return
+                                    .then(() => {
+                                        let pendingData = {
+                                            alertId: change.id,
+                                            isActive: false
+                                        };
+                                        db.collection('pending').doc(userId).set(pendingData)
+                                            .then()
+                                            .catch();
+                                    })
+                                    .catch(err => {
+                                        return console.log('Error sending message:', err);
+                                    });
+                                counter++;
+                            }
+                        }
                     })
                     .catch();
                 return counter > change.data()['maxUsers'];
@@ -59,11 +56,11 @@ exports.alertUsers = functions.region('europe-west1').firestore.document('alerts
         });
 });
 
-exports.activatingAlert = functions.region('europe-west1').firestore.document('active/{activeId}').onCreate((change, context) => {
-    db.collection('pending').where('alertId', '==', change.data()['alertId']).delete()
-        .then()
-        .catch();
-    db.collection('alerts').doc(change.data()['alertId']).delete()
+exports.acceptAlert = functions.region('europe-west1').firestore.document('pending/{pendingId}').onUpdate((change, context) => {
+    db.collection('pending')
+        .where('alertId', '==', change.after.data()['alertId'])
+        .where('isActive', '==', false)
+        .delete()
         .then()
         .catch();
 });
