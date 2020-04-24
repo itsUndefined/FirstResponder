@@ -141,7 +141,7 @@ public class AlertsActivity extends AppCompatActivity {
 
     private void alertForMission() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final DocumentReference documentReference = db.collection("onAction").document(FirebaseAuth.getInstance().getUid());
+        final DocumentReference documentReference = db.collection("pending").document(FirebaseAuth.getInstance().getUid());
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {

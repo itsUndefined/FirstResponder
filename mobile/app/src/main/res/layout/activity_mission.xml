@@ -22,17 +22,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
         android:text="Accept"
-        app:layout_constraintEnd_toStartOf="@+id/missionDecline"
+        app:layout_constraintEnd_toStartOf="@+id/missionReject"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/missionText" />
 
     <Button
-        android:id="@+id/missionDecline"
+        android:id="@+id/missionReject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
-        android:text="Decline"
+        android:text="Reject"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/missionAccept"
