@@ -58,3 +58,12 @@ exports.alertUsers = functions.region('europe-west1').firestore.document('alerts
             console.log('Error getting documents', err);
         });
 });
+
+exports.activatingAlert = functions.region('europe-west1').firestore.document('active/{activeId}').onCreate((change, context) => {
+    db.collection('pending').where('alertId', '==', change.data()['alertId']).delete()
+        .then()
+        .catch();
+    db.collection('alerts').doc(change.data()['alertId']).delete()
+        .then()
+        .catch();
+});
