@@ -67,3 +67,16 @@ exports.activatingAlert = functions.region('europe-west1').firestore.document('a
         .then()
         .catch();
 });
+
+exports.rejectAlert = functions.region('europe-west1').firestore.document('pending/{pendingId}').onDelete((change, context) => {
+    db.collection('pending').where('alertId', '==', change.data()['alertId']).get()
+        .then(snapshot => {
+            // eslint-disable-next-line promise/always-return
+            if (snapshot.empty) {
+                db.collection('alerts').doc(change.data()['alertId']).delete()
+                    .then()
+                    .catch();
+            }
+        })
+        .catch();
+});
