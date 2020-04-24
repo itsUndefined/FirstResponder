@@ -16,24 +16,41 @@ exports.alertUsers = functions.region('europe-west1').firestore.document('alerts
     };
     let counter = 0;
     let mainLocation = [change.data()['location'].latitude, change.data()['location'].longitude];
-    let usersRef = db.collection('users');
-    let respondersList = usersRef.get()
+    db.collection('users').get()
         // eslint-disable-next-line promise/always-return
         .then(snapshot => {
-            let list = [];
-            snapshot.forEach((doc) => {
-                let userLocation = [doc.data()['location'].latitude, doc.data()['location'].longitude];
-                let distance = calculate.GeoFire.distance(mainLocation, userLocation);
-                if (distance <= change.data()['maxDistance']) {
-                    admin.messaging().sendToDevice(doc.data()['token'], payload)
-                        .then((res) => {
-                            return console.log('Successfully sent message:', res);
-                        })
-                        .catch((err) => {
-                            return console.log('Error sending message:', err);
-                        });
-                    counter++;
-                }
+            snapshot.forEach(doc => {
+                let userId = doc.id;
+                db.collection('pending').doc(userId).get()
+                    // eslint-disable-next-line promise/always-return
+                    .then(pendingUser => {
+                        db.collection('active').doc(userId).get()
+                            .then(activeUser => {
+                                // eslint-disable-next-line promise/always-return
+                                if (!pendingUser.exists && !activeUser.exists) {
+                                    let userLocation = [doc.data()['location'].latitude, doc.data()['location'].longitude];
+                                    let distance = calculate.GeoFire.distance(mainLocation, userLocation);
+                                    if (distance <= change.data()['maxDistance']) {
+                                        admin.messaging().sendToDevice(doc.data()['token'], payload)
+                                            // eslint-disable-next-line promise/always-return
+                                            .then(() => {
+                                                let pendingData = {
+                                                    alertId: change.id
+                                                };
+                                                db.collection('pending').doc(userId).set(pendingData)
+                                                    .then()
+                                                    .catch();
+                                            })
+                                            .catch(err => {
+                                                return console.log('Error sending message:', err);
+                                            });
+                                        counter++;
+                                    }
+                                }
+                            })
+                            .catch();
+                    })
+                    .catch();
                 return counter > change.data()['maxUsers'];
             });
         })
