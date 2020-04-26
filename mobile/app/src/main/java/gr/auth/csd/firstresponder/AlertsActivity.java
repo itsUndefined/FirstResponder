@@ -43,7 +43,7 @@ public class AlertsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alerts);
         mAuth = FirebaseAuth.getInstance();
         Button logout = findViewById(R.id.logout);
-        allert = findViewById(R.id.allertButton);
+        allert = findViewById(R.id.alertButton);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override

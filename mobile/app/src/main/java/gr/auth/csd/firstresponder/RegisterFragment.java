@@ -58,21 +58,18 @@ public class RegisterFragment extends Fragment {
                     }
                 } else {
                     HashMap<String, Object> user = new HashMap<>();
-                    ArrayList<Integer> skills = new ArrayList<>();
+                    ArrayList<Boolean> skills = new ArrayList<>();
                     user.put("firstName", fName.getText().toString());
                     user.put("lastName", lName.getText().toString());
-                    if (hb.isChecked()) {
-                        skills.add(0);
-                    }
-                    if (ts.isChecked()) {
-                        skills.add(1);
-                    }
-                    if (cpr.isChecked()) {
-                        skills.add(2);
-                    }
-                    if (d.isChecked()) {
-                        skills.add(3);
-                    }
+                    // User can stop heavy bleeding.
+                    if (hb.isChecked()) { skills.add(true); } else {skills.add(false); }
+                    // User can treat shock.
+                    if (ts.isChecked()) { skills.add(true); } else {skills.add(false) ; }
+                    // User knows how to perform CPR.
+                    if (cpr.isChecked()) { skills.add(true); } else {skills.add(false); }
+                    // User knows how to use a defibrillator.
+                    if (d.isChecked()) { skills.add(true); } else {skills.add(false); }
+
                     user.put("skills", skills);
                     db.collection("users").document(currentUser.getUid())
                             .set(user)
