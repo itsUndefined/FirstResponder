@@ -1,5 +1,7 @@
 package gr.auth.csd.firstresponder;
 
+import android.Manifest;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +19,9 @@ import androidx.constraintlayout.widget.Constraints;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -126,7 +131,18 @@ public class DashboardFragment extends Fragment {
         if (PermissionsHandler.checkLocationPermissions(getActivity()) == PackageManager.PERMISSION_DENIED) {
             PermissionsHandler.requestLocationPermissions(getActivity());
         } else {
-            //Location services available
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+            LocationRequest locationRequest = new LocationRequest();
+            locationRequest.setInterval(60000);
+            locationRequest.setFastestInterval(5000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            Intent locationIntent = new Intent(this, LocationReceiver.class);
+            locationIntent.setAction(LocationReceiver.LOCATION_UPDATE);
+
+            PendingIntent locationPendingIntent =  PendingIntent.getBroadcast(this, 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationPendingIntent);
         }
     }
 
