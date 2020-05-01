@@ -11,8 +11,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import gr.auth.csd.firstresponder.AlertsActivity;
-
 public final class PermissionsHandler {
     public static int checkLocationPermissions(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

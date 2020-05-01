@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                                         DocumentSnapshot documentSnapshot = task.getResult();
                                         if (documentSnapshot.exists()) {
                                             Log.d(TAG, "Document exists!");
-                                            Intent intent = new Intent(MainActivity.this, AlertsActivity.class);
+                                            Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                             startActivity(intent);
                                         } else {
                                             Log.d(TAG, "Document does not exist!");
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                                 DocumentSnapshot documentSnapshot = task.getResult();
                                 if (documentSnapshot.exists()) {
                                     Log.d(TAG, "Document exists!");
-                                    Intent intent = new Intent(MainActivity.this, AlertsActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                     startActivity(intent);
                                 } else {
                                     Log.d(TAG, "Document does not exist!");

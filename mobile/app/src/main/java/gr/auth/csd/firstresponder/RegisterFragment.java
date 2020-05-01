@@ -22,8 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+
+import gr.auth.csd.firstresponder.data.Responder;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -57,27 +58,25 @@ public class RegisterFragment extends Fragment {
                         Toast.makeText(getActivity(), "Invalid last name", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    HashMap<String, Object> user = new HashMap<>();
-                    ArrayList<Boolean> skills = new ArrayList<>();
-                    user.put("firstName", fName.getText().toString());
-                    user.put("lastName", lName.getText().toString());
+                    HashMap<String, Boolean> skills = new HashMap<>();
                     // User can stop heavy bleeding.
-                    if (hb.isChecked()) { skills.add(true); } else {skills.add(false); }
+                    if (hb.isChecked()) { skills.put("STOP_HEAVY_BLEEDING", true); } else {skills.put("STOP_HEAVY_BLEEDING", false); }
                     // User can treat shock.
-                    if (ts.isChecked()) { skills.add(true); } else {skills.add(false) ; }
+                    if (ts.isChecked()) { skills.put("TREATING_SHOCK", true); } else {skills.put("TREATING_SHOCK", false) ; }
                     // User knows how to perform CPR.
-                    if (cpr.isChecked()) { skills.add(true); } else {skills.add(false); }
+                    if (cpr.isChecked()) { skills.put("CPR", true); } else {skills.put("CPR", false); }
                     // User knows how to use a defibrillator.
-                    if (d.isChecked()) { skills.add(true); } else {skills.add(false); }
+                    if (d.isChecked()) { skills.put("AED", true); } else {skills.put("AED", false); }
 
-                    user.put("skills", skills);
+                    Responder responder = new Responder(fName.getText().toString(), lName.getText().toString(), skills);
+
                     db.collection("users").document(currentUser.getUid())
-                            .set(user)
+                            .set(responder)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
-                                    Intent intent = new Intent(getActivity(), AlertsActivity.class);
+                                    Intent intent = new Intent(getActivity(), DashboardActivity.class);
                                     startActivity(intent);
                                 }
                             })

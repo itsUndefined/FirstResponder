@@ -1,62 +1,73 @@
 package gr.auth.csd.firstresponder.data;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.HashMap;
 
 public class Responder {
 
-    public enum skill {
-        STOP_HEAVY_BLEEDING, TREATING_SHOCK, CPR, AED
+    private String firstName;
+    private String lastName;
+    private String token;
+    private HashMap<String, Boolean> skills = new HashMap<>(); // STOP_HEAVY_BLEEDING, TREATING_SHOCK, CPR, AED
+    private HashMap<String, Object> lastKnownLocation = new HashMap<>();
+
+    public Responder() {}
+
+    public Responder(String firstName, String lastName, HashMap<String, Boolean> skills) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.token = "";
+        this.skills = skills;
+        this.lastKnownLocation.put("location", new GeoPoint(0.0, 0.0));
+        this.lastKnownLocation.put("time", "0:0");
     }
 
-    private String name, surname, phoneNumber; //Note that phoneNumber acts as id.
-    private int acceptedEmergencies, missedEmergiencies;
-    private HashMap<skill, Boolean> knownSkills;
-
-    public Responder(String name, String surname){
-        {
-            this.name = name;
-            this.surname = surname;
-            this.phoneNumber = "";
-            acceptedEmergencies = 0;
-            missedEmergiencies = 0;
-
-            // No required skills when creating an account.
-            knownSkills = new HashMap<>();
-            for (skill x : skill.values()){
-                knownSkills.put(x , false);
-            }
-        }
+    public Responder(String firstName, String lastName, String token, HashMap<String, Boolean> skills, HashMap<String , Object> lastKnownLocation) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.token = token;
+        this.skills = skills;
+        this.lastKnownLocation = lastKnownLocation;
     }
 
-    public Responder(String name, String surname, String phoneNumber){
-        this(name, surname);
-        this.phoneNumber = phoneNumber;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public Responder(String name, String surname, int acceptedEmergencies, int missedEmergiencies){
-        this(name, surname);
-        this.acceptedEmergencies = acceptedEmergencies;
-        this.missedEmergiencies = missedEmergiencies;
+    public String getLastName() {
+        return lastName;
     }
 
-    // Getters
-    public int getAcceptedEmergencies() { return acceptedEmergencies; }
-    public int getMissedEmergiencies() { return missedEmergiencies; }
-    public String getName() { return name; }
-    public String getSurname() { return surname; }
-    public String getPhoneNumber() { return phoneNumber; }
-    public Boolean canStopHeavyBleeding() { return  knownSkills.get(skill.STOP_HEAVY_BLEEDING); }
-    public Boolean canTreatShock() { return knownSkills.get(skill.TREATING_SHOCK); }
-    public Boolean canPerformCPR() {return  knownSkills.get(skill.CPR); }
-    public Boolean canUseAED() { return knownSkills.get(skill.AED); }
+    public String getToken() {
+        return token;
+    }
 
-    // Setters
-    public void setName(String name) { this.name = name; }
-    public void setSurname(String surname) { this.surname = surname; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public void setKnownSkill(skill key, boolean value) { this.knownSkills.put(key, value); }
+    public HashMap<String, Boolean> getSkills() {
+        return skills;
+    }
 
-    public void acceptedEmergency() { acceptedEmergencies++; }
-    public void missedEmergency() { missedEmergiencies++; }
-    public void changeKnownSkillStatus(skill key){ knownSkills.put(key, !(knownSkills.get(key))) ;}
+    public HashMap<String, Object> getLastKnownLocation() {
+        return lastKnownLocation;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setSkills(HashMap<String, Boolean> skills) {
+        this.skills = skills;
+    }
+
+    public void setLastKnownLocation(HashMap<String, Object> lastKnownLocation) {
+        this.lastKnownLocation = lastKnownLocation;
+    }
 }

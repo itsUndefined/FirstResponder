@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Constraints;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -27,39 +30,58 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import java.util.HashMap;
-
 import gr.auth.csd.firstresponder.helpers.PermissionRequest;
 import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
 
-public class AlertsActivity extends AppCompatActivity {
+public class DashboardFragment extends Fragment {
 
     private FirebaseAuth mAuth;
-    Button allert;
+    private Button allert;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alerts);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
         mAuth = FirebaseAuth.getInstance();
-        Button logout = findViewById(R.id.logout);
-        allert = findViewById(R.id.alertButton);
+        Button logout = view.findViewById(R.id.logout);
+        allert = view.findViewById(R.id.alertButton);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
-                Intent intent = new Intent(AlertsActivity.this, MainActivity.class);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
             }
         });
         firebaseInstanceId();
+
+        Button settings = view.findViewById(R.id.settingsButton);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        return view;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         alertForMission();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
+            fragmentTransaction.commit();
+        }
     }
 
     @Override
@@ -81,29 +103,28 @@ public class AlertsActivity extends AppCompatActivity {
     }
 
     private void showAccessDeniedWarningMessage(){
-        AlertDialog.Builder fineLocationAlertBuilder = new AlertDialog.Builder(AlertsActivity.this);
+        AlertDialog.Builder fineLocationAlertBuilder = new AlertDialog.Builder(getActivity());
         fineLocationAlertBuilder.setTitle("Warning!");
         fineLocationAlertBuilder.setMessage("Background location permission is required for the use of this application." +
                 " Application will now exit");
         fineLocationAlertBuilder.setCancelable(false);
         fineLocationAlertBuilder.setPositiveButton(
-            "I understand!",
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    AlertsActivity.this.finishAffinity();
+                "I understand!",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().finishAffinity();
+                    }
                 }
-            }
         );
 
         AlertDialog alertDialog = fineLocationAlertBuilder.create();
         alertDialog.show();
     }
 
-
     public void onRequestPermission(View view) {
-        if (PermissionsHandler.checkLocationPermissions(this) == PackageManager.PERMISSION_DENIED) {
-            PermissionsHandler.requestLocationPermissions(this);
+        if (PermissionsHandler.checkLocationPermissions(getActivity()) == PackageManager.PERMISSION_DENIED) {
+            PermissionsHandler.requestLocationPermissions(getActivity());
         } else {
             //Location services available
         }
@@ -118,11 +139,9 @@ public class AlertsActivity extends AppCompatActivity {
                             Log.w(Constraints.TAG, "getInstanceId failed", task.getException());
                             return;
                         }
-                        HashMap<String, Object> user = new HashMap<>();
-                        user.put("token", task.getResult().getToken());
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         db.collection("users").document(FirebaseAuth.getInstance().getUid())
-                                .update(user)
+                                .update("token", task.getResult().getToken())
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -151,8 +170,9 @@ public class AlertsActivity extends AppCompatActivity {
                 }
                 if (documentSnapshot != null && documentSnapshot.exists()) {
                     allert.setVisibility(View.VISIBLE);
-                    Intent intent = new Intent(AlertsActivity.this, MissionActivity.class);
-                    startActivity(intent);
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new AlertFragment());
+                    fragmentTransaction.commit();
                 } else {
                     allert.setVisibility(View.GONE);
                 }

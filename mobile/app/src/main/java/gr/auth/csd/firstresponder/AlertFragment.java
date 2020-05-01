@@ -2,17 +2,19 @@ package gr.auth.csd.firstresponder;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Constraints;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,14 +24,13 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-public class MissionActivity extends AppCompatActivity {
+public class AlertFragment extends Fragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mission);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_alert, container, false);
 
-        Button accept = findViewById(R.id.missionAccept);
+        Button accept = view.findViewById(R.id.missionAccept);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,17 +39,18 @@ public class MissionActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                                 notificationManager.cancel(0);
-                                Intent intent = new Intent(MissionActivity.this, AlertsActivity.class);
-                                startActivity(intent);
-                                Toast.makeText(getApplication(), "Mission accept!", Toast.LENGTH_SHORT).show();
+                                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new MissionFragment());
+                                fragmentTransaction.commit();
+                                Toast.makeText(getActivity(), "Mission accept!", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
         });
 
-        Button reject = findViewById(R.id.missionReject);
+        Button reject = view.findViewById(R.id.missionReject);
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,23 +59,30 @@ public class MissionActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                                 notificationManager.cancel(0);
-                                Intent intent = new Intent(MissionActivity.this, AlertsActivity.class);
-                                startActivity(intent);
-                                Toast.makeText(getApplication(), "Mission reject!", Toast.LENGTH_SHORT).show();
+                                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
+                                fragmentTransaction.commit();
+                                Toast.makeText(getActivity(), "Mission reject!", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
         });
 
         missionTimeOut();
+
+        return view;
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        missionTaken();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new AlertFragment());
+            fragmentTransaction.commit();
+        }
     }
 
     private void missionTimeOut() {
@@ -87,11 +96,12 @@ public class MissionActivity extends AppCompatActivity {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                                NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
                                 notificationManager.cancel(0);
-                                Intent intent = new Intent(MissionActivity.this, AlertsActivity.class);
-                                startActivity(intent);
-                                Toast.makeText(getApplication(), "Alert time out!", Toast.LENGTH_SHORT).show();
+                                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
+                                fragmentTransaction.commit();
+                                Toast.makeText(getActivity(), "Alert time out!", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
@@ -109,9 +119,10 @@ public class MissionActivity extends AppCompatActivity {
                     return;
                 }
                 if (!(documentSnapshot != null && documentSnapshot.exists())) {
-                    Intent intent = new Intent(MissionActivity.this, AlertsActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(getApplication(), "Mission taken!", Toast.LENGTH_SHORT).show();
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
+                    fragmentTransaction.commit();
+                    Toast.makeText(getActivity(), "Mission taken!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
