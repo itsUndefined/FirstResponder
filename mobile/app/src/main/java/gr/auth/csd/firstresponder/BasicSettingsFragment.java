@@ -2,15 +2,13 @@ package gr.auth.csd.firstresponder;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -20,6 +18,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 import gr.auth.csd.firstresponder.data.Responder;
 
@@ -36,6 +36,7 @@ public class BasicSettingsFragment extends Fragment {
     private CheckBox treatShockCheckbox;
     private CheckBox cprCheckbox;
     private CheckBox aedCheckbox;
+    private Button saveChangesButton;
 
 
     @Override
@@ -48,6 +49,7 @@ public class BasicSettingsFragment extends Fragment {
         treatShockCheckbox = view.findViewById(R.id.treatShockCheckbox);
         cprCheckbox = view.findViewById(R.id.cprCheckbox);
         aedCheckbox = view.findViewById(R.id.aesCheckbox);
+        saveChangesButton = view.findViewById(R.id.settingSaveChangesButton);
 
         user = new Responder();
 
@@ -61,6 +63,7 @@ public class BasicSettingsFragment extends Fragment {
         });
 
         readFieldsFromDatabase();
+        initializeButton();
 
         return view;
     }
@@ -80,93 +83,46 @@ public class BasicSettingsFragment extends Fragment {
     }
 
     private void initializeViews(){
-
         name.setText(user.getFirstName());
         surname.setText(user.getLastName());
         heavyBleedingCheckbox.setChecked(user.getSkills().get("STOP_HEAVY_BLEEDING"));
         treatShockCheckbox.setChecked(user.getSkills().get("TREATING_SHOCK"));
         cprCheckbox.setChecked(user.getSkills().get("CPR"));
         aedCheckbox.setChecked(user.getSkills().get("AED"));
+    }
 
-        name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                database.collection("users").document(currentUser.getUid())
-                        .update("firstName", name.getText().toString());
-                Toast.makeText(getActivity(), "Name changed!", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-
-        surname.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                database.collection("users").document(currentUser.getUid())
-                        .update("lastName", surname.getText().toString());
-                Toast.makeText(getActivity(), "Surname changed!", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-
-        heavyBleedingCheckbox.setOnClickListener(new View.OnClickListener() {
+    private void initializeButton() {
+        saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                user.setFirstName(name.getText().toString());
+                user.setLastName(surname.getText().toString());
+                HashMap<String, Boolean> skills = new HashMap<>();
                 if (heavyBleedingCheckbox.isChecked()) {
-                    database.collection("users").document(currentUser.getUid())
-                            .update("skills.STOP_HEAVY_BLEEDING", true);
+                    skills.put("STOP_HEAVY_BLEEDING", true);
                 } else {
-                    database.collection("users").document(currentUser.getUid())
-                            .update("skills.STOP_HEAVY_BLEEDING", false);
+                    skills.put("STOP_HEAVY_BLEEDING", false);
                 }
-                Toast.makeText(getActivity(), "Skill changed!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        treatShockCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 if (treatShockCheckbox.isChecked()) {
-                    database.collection("users").document(currentUser.getUid())
-                            .update("skills.TREATING_SHOCK", true);
+                    skills.put("TREATING_SHOCK", true);
                 } else {
-                    database.collection("users").document(currentUser.getUid())
-                            .update("skills.TREATING_SHOCK", false);
+                    skills.put("TREATING_SHOCK", false);
                 }
-                Toast.makeText(getActivity(), "Skill changed!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        cprCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 if (cprCheckbox.isChecked()) {
-                    database.collection("users").document(currentUser.getUid())
-                            .update("skills.CPR", true);
+                    skills.put("CPR", true);
                 } else {
-                    database.collection("users").document(currentUser.getUid())
-                            .update("skills.CPR", false);
+                    skills.put("CPR", false);
                 }
-                Toast.makeText(getActivity(), "Skill changed!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        aedCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 if (aedCheckbox.isChecked()) {
-                    database.collection("users").document(currentUser.getUid())
-                            .update("skills.AED", true);
+                    skills.put("AED", true);
                 } else {
-                    database.collection("users").document(currentUser.getUid())
-                            .update("skills.AED", false);
+                    skills.put("AED", false);
                 }
-                Toast.makeText(getActivity(), "Skill changed!", Toast.LENGTH_SHORT).show();
+                user.setSkills(skills);
+                database.collection("users").document(currentUser.getUid())
+                        .set(user);
+                Intent intent = new Intent(getActivity(), DashboardActivity.class);
+                startActivity(intent);
             }
         });
     }
