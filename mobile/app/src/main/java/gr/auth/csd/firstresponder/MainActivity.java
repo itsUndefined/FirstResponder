@@ -22,6 +22,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.concurrent.TimeUnit;
 
@@ -44,7 +45,14 @@ public class MainActivity extends AppCompatActivity implements Callback {
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setHost("10.0.2.2:8080")
+                .setSslEnabled(false)
+                .setPersistenceEnabled(false)
+                .build();
+
         db = FirebaseFirestore.getInstance();
+        db.setFirestoreSettings(settings);
 
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);

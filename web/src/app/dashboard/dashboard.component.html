@@ -1,52 +1,15 @@
 <div class="container">
-  <div class="input-group mt-3">
-    <input  type="text" class="form-control" placeholder="Address" [(ngModel)]="address">
+  <div class="input-group mt-3 mb-2">
+    <input  type="text" class="form-control" placeholder="Διεύθυνση συμβάντος" [(ngModel)]="address">
     <div class="input-group-append">
       <button class="btn btn-primary" type="button" (click)="onFindAddress()">Find</button>
     </div>
   </div>
-  <br>
-  <form class="card card-body">
-    <div class="form-group">
-      <div class="row">
-        <div class="col-lg">
-          <label for="address">Address</label>
-          <input type="text" id="address" class="form-control" placeholder="Address" readonly>
-        </div>
-        <div class="col-lg">
-          <label for="coordinates">Coordinates</label>
-          <input type="text" id="coordinates" class="form-control" placeholder="Coordinates" readonly>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-lg">
-          <label for="maxDistance">Max Distance (km)</label>
-          <input type="text" id="maxDistance" class="form-control" placeholder="5">
-        </div>
-        <div class="col-lg">
-          <label for="maxUsers">Max Users</label>
-          <input type="text" id="maxUsers" class="form-control" placeholder="1">
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-lg">
-          <button class="btn btn-primary">Send Alert</button>
-        </div>
-      </div>
-    </div>
-  </form>
-
-  <br>
 
   <ngb-alert type="warning" (close)="onAlertClose()" *ngIf="alertMessage">{{ alertMessage }}</ngb-alert>
 
-  <div [ngStyle]="{height: alertMessage ? '13px' : '79px' }"></div>
-
-  {{selectedAddress}}
-
   <div class="mx-auto">
-    <google-map width="100%" [center]="center" [zoom]="6" (mapClick)="onAddMarker($event)">
-      <map-info-window>Hello Google Maps</map-info-window>
+    <google-map *ngIf="!selectedAddress" width="100%" [center]="center" [zoom]="mapZoomLevel" (mapClick)="onAddMarker($event)">
       <map-marker
         [position]="markerPosition"
         *ngIf="markerPosition"
@@ -55,6 +18,69 @@
         (mapDragend)="onDragMarkerEnd($event)"
       ></map-marker>
     </google-map>
+  </div>
+
+  <div class="card" *ngIf="selectedAddress">
+    <div class="card-body">
+      <h5 class="card-title">Αποστολή πρώτων ανταποκριτών έκτακτης ανάγκης</h5>
+      <form [formGroup]="alertForm" (submit)="onAlertSubmit()">
+        <div class="form-group">
+          <label for="address">Διεύθυνση</label>
+          <input type="text" id="address" class="form-control" placeholder="Η διεύθυνση θα συμπληρωθεί αυτόματα" [ngModel]="selectedAddress" [ngModelOptions]="{standalone: true}" readonly>
+          <div class="mt-2">
+            <button class="btn btn-primary" (click)="displayInlineMap = !displayInlineMap"> {{ !displayInlineMap ? 'Προβολή χάρτη' : 'Απόκρυψη χάρτη'}}</button>
+          </div>
+          <div class="mx-auto mt-2">
+            <google-map *ngIf="displayInlineMap" width="100%" [center]="center" [zoom]="mapZoomLevel" (mapClick)="onAddMarker($event)">
+              <map-marker
+                [position]="markerPosition"
+                *ngIf="markerPosition"
+                [options]="{draggable: true}"
+                (mapDrag)="onDragMarker($event)"
+                (mapDragend)="onDragMarkerEnd($event)"
+              ></map-marker>
+            </google-map>
+          </div>
+        </div>
+
+        <div class="form-group" formArrayName="requiredSkills">
+          <label>Απαιτούμενες ικανότητες</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="bleeding" formControlName="0">
+            <label class="form-check-label" for="bleeding">
+              Γνωρίζει να σταματάει βαριά αιμορραγία
+            </label>
+
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="shock" formControlName="1">
+            <label class="form-check-label" for="shock">
+              Γνωρίζει να αντιμετωπίζει σοκ
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="cpr" formControlName="2">
+            <label class="form-check-label" for="cpr">
+              Γνωρίζει CPR
+            </label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="defib" formControlName="3">
+            <label class="form-check-label" for="defib">
+              Γνωρίζει να χρησιμοποιεί απινιδωτή
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="notes">Σημειώσεις</label>
+          <textarea id="notes" class="form-control" rows="3" formControlName="notes"></textarea>
+        </div>
+        <button class="btn btn-danger">Αποστολή βοήθειας</button>
+      </form>
+    </div>
   </div>
 </div>
 

@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.HashMap;
 
@@ -38,7 +39,14 @@ public class RegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setHost("10.0.2.2:8080")
+                .setSslEnabled(false)
+                .setPersistenceEnabled(false)
+                .build();
+
         db = FirebaseFirestore.getInstance();
+        db.setFirestoreSettings(settings);
 
         final EditText fName = view.findViewById(R.id.firstNameR);
         final EditText lName = view.findViewById(R.id.lastNameR);

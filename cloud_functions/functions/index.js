@@ -7,53 +7,40 @@ const db = admin.firestore();
 
 const calculate = require('geofire');
 
-exports.alertUsers = functions.region('europe-west1').firestore.document('alerts/{alertsId}').onCreate((change, context) => {
+exports.alertUsers = functions.region('europe-west1').firestore.document('alerts/{alertsId}').onCreate(async (change, context) => {
     let payload = {
+        // notification: {
+        //     "body": "Body of Your Notification",
+        //     "title": "Title of Your Notification"
+        // }
         data: {
-            title: 'Alert',
-            message: 'Cloud function works'
+            "mydata": "mydata",
         }
     };
-    let counter = 0;
-    let mainLocation = [change.data()['location'].latitude, change.data()['location'].longitude];
-    db.collection('users').get()
-        // eslint-disable-next-line promise/always-return
-        .then(snapshot => {
-            snapshot.forEach(doc => {
-                let userId = doc.id;
-                db.collection('pending').doc(userId).get()
-                    // eslint-disable-next-line promise/always-return
-                    .then(pendingUser => {
-                        // eslint-disable-next-line promise/always-return
-                        if (!pendingUser.exists) {
-                            let userLocation = [doc.data()['location'].latitude, doc.data()['location'].longitude];
-                            let distance = calculate.GeoFire.distance(mainLocation, userLocation);
-                            if (distance <= change.data()['maxDistance']) {
-                                admin.messaging().sendToDevice(doc.data()['token'], payload)
-                                    // eslint-disable-next-line promise/always-return
-                                    .then(() => {
-                                        let pendingData = {
-                                            alertId: change.id,
-                                            isActive: false
-                                        };
-                                        db.collection('pending').doc(userId).set(pendingData)
-                                            .then()
-                                            .catch();
-                                    })
-                                    .catch(err => {
-                                        return console.log('Error sending message:', err);
-                                    });
-                                counter++;
-                            }
-                        }
-                    })
-                    .catch();
-                return counter > change.data()['maxUsers'];
-            });
-        })
-        .catch(err => {
-            console.log('Error getting documents', err);
-        });
+
+    const maxDistance = 5;
+    let mainLocation = [change.data().coordinates.lat, change.data().coordinates.lng];
+    const snapshot = await db.collection('users').get()
+
+    snapshot.forEach(async doc => {
+        let userId = doc.id;
+        let pendingUser = await db.collection('pending').doc(userId).get();
+        if (!pendingUser.exists) {
+            let userLocation = [doc.data()['lastKnownLocation'].location.latitude, doc.data()['lastKnownLocation'].location.longitude];
+            let distance = calculate.GeoFire.distance(mainLocation, userLocation);
+            console.log(userLocation);
+            console.log('distance: ' + distance);
+            if (distance <= maxDistance) {
+                console.log(doc.data()['token']);
+                await admin.messaging().sendToDevice(doc.data()['token'], payload);
+                let pendingData = {
+                    alertId: change.id,
+                    isActive: false
+                };
+                await db.collection('pending').doc(userId).set(pendingData);
+            }
+        }
+    });
 });
 
 exports.acceptAlert = functions.region('europe-west1').firestore.document('pending/{pendingId}').onUpdate((change, context) => {

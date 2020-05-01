@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Calendar;
@@ -33,7 +34,14 @@ public class LocationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, @NonNull Intent intent) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setHost("10.0.2.2:8080")
+                .setSslEnabled(false)
+                .setPersistenceEnabled(false)
+                .build();
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.setFirestoreSettings(settings);
 
 
 
@@ -49,7 +57,7 @@ public class LocationReceiver extends BroadcastReceiver {
                     data.put("time", Calendar.getInstance().getTime());
                     db.collection("users")
                         .document(currentUser.getUid())
-                        .update("location_history", FieldValue.arrayUnion(data))
+                        .update("lastKnownLocation", data)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

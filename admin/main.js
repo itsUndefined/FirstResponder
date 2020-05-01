@@ -20,6 +20,9 @@ client.initializeApp({
 });
 
 
+const receiver = 'eqfz-nk7Qqa3_5aGHb5EFZ:APA91bEyO3gBxxkvG4hjwoR8gYZ31gs9ZrKLx3bi5yL19lx3M6jSrGz3TuI3tUElhUaEvCdcsDJfRXONiIokPiTR638Ak3qkcrX34Ca7FRMfqxNCH5GvQRQYi9ycXkGIHiUOqmHAqJfb';
+
+
 (async function() {
 
     // const user = await admin.app().auth().createUser({
@@ -36,9 +39,16 @@ client.initializeApp({
     //     displayName: 'John Doe'
     // });
 
+    await admin.messaging().sendToDevice(receiver, {
+        data: {
+            alert: "alert_id"
+        }
+    }, {
+        priority: "high",
+        timeToLive: 0
+    });
 
-
-    client.auth().sendPasswordResetEmail('themis.chatzie@gmail.com');
+    // client.auth().sendPasswordResetEmail('themis.chatzie@gmail.com');
 
     // console.log(await admin.auth().getUserByEmail('themis.chatzie@gmail.com'));
 
@@ -48,5 +58,5 @@ client.initializeApp({
     //     role: 'dispatcher'
     // });
     
-    console.log(user);
+    // console.log(user);
 })()
