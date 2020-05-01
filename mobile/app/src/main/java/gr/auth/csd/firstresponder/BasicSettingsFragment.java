@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -94,6 +95,7 @@ public class BasicSettingsFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 database.collection("users").document(currentUser.getUid())
                         .update("firstName", name.getText().toString());
+                Toast.makeText(getActivity(), "Name changed!", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void afterTextChanged(Editable s) { }
@@ -106,6 +108,7 @@ public class BasicSettingsFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 database.collection("users").document(currentUser.getUid())
                         .update("lastName", surname.getText().toString());
+                Toast.makeText(getActivity(), "Surname changed!", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void afterTextChanged(Editable s) { }
@@ -121,6 +124,7 @@ public class BasicSettingsFragment extends Fragment {
                     database.collection("users").document(currentUser.getUid())
                             .update("skills.STOP_HEAVY_BLEEDING", false);
                 }
+                Toast.makeText(getActivity(), "Skill changed!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -134,6 +138,7 @@ public class BasicSettingsFragment extends Fragment {
                     database.collection("users").document(currentUser.getUid())
                             .update("skills.TREATING_SHOCK", false);
                 }
+                Toast.makeText(getActivity(), "Skill changed!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -147,6 +152,7 @@ public class BasicSettingsFragment extends Fragment {
                     database.collection("users").document(currentUser.getUid())
                             .update("skills.CPR", false);
                 }
+                Toast.makeText(getActivity(), "Skill changed!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -160,6 +166,7 @@ public class BasicSettingsFragment extends Fragment {
                     database.collection("users").document(currentUser.getUid())
                             .update("skills.AED", false);
                 }
+                Toast.makeText(getActivity(), "Skill changed!", Toast.LENGTH_SHORT).show();
             }
         });
     }
