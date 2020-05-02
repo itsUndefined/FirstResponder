@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 import gr.auth.csd.firstresponder.data.Responder;
+import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -38,7 +39,7 @@ public class RegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestoreInstance.Create();
 
         final EditText fName = view.findViewById(R.id.firstNameR);
         final EditText lName = view.findViewById(R.id.lastNameR);

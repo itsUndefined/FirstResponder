@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { AngularFireModule, } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule, SETTINGS as FIRESTORE_SETTINGS } from '@angular/fire/firestore';
+
 import { GoogleMapsModule } from '@angular/google-maps';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,10 +31,19 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     GoogleMapsModule,
     NgbAlertModule
   ],
-  providers: [],
+  providers: [
+    {
+    provide: FIRESTORE_SETTINGS,
+    useValue: environment.production ? undefined : {
+      host: 'localhost:8080',
+      ssl: false
+    }
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -22,20 +22,10 @@ public class LogInFragment extends Fragment {
     private EditText phoneNumber;
     private View view;
 
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            callback = (Callback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException();
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
+        callback = (Callback) getActivity();
         view = inflater.inflate(R.layout.fragment_log_in, container, false);
         Button login = view.findViewById(R.id.logInButton);
 
@@ -54,7 +44,7 @@ public class LogInFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_activity_fragment_container, new StartFragment());
                 fragmentTransaction.commit();
             }
@@ -66,7 +56,7 @@ public class LogInFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
             fragmentTransaction.commit();
         }

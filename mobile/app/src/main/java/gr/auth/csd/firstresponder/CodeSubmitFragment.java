@@ -19,18 +19,9 @@ public class CodeSubmitFragment extends Fragment {
     private Callback callback;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            callback = (Callback) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException();
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
+        callback = (Callback) getActivity();
         View view = inflater.inflate(R.layout.fragment_code_submit, container, false);
         final EditText code = view.findViewById(R.id.codeInput);
         Button login = view.findViewById(R.id.submitCodeButton);
@@ -47,7 +38,7 @@ public class CodeSubmitFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 callback.reSendCode();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
                 fragmentTransaction.commit();
             }
@@ -60,7 +51,7 @@ public class CodeSubmitFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.main_activity_fragment_container, new CodeSubmitFragment());
             fragmentTransaction.commit();
         }
