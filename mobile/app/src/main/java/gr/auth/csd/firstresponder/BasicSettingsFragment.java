@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 import gr.auth.csd.firstresponder.data.Responder;
+import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 public class BasicSettingsFragment extends Fragment {
 
@@ -42,6 +43,8 @@ public class BasicSettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_basic_settings, container, false);
+
+        database = FirebaseFirestoreInstance.Create();
 
         name = view.findViewById(R.id.namePlainText);
         surname = view.findViewById(R.id.surnamePlainText);
@@ -69,7 +72,6 @@ public class BasicSettingsFragment extends Fragment {
     }
 
     private void readFieldsFromDatabase(){
-        database = FirebaseFirestore.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         DocumentReference docRef = database.collection("users").document(currentUser.getUid());

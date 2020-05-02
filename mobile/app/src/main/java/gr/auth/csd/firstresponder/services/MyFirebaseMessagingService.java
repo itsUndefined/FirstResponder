@@ -1,33 +1,31 @@
 package gr.auth.csd.firstresponder.services;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.work.Constraints;
+import androidx.constraintlayout.widget.Constraints;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import gr.auth.csd.firstresponder.MissionFragment;
-import gr.auth.csd.firstresponder.R;
+import gr.auth.csd.firstresponder.helpers.UserHelpers;
+
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
+        Log.i("alert_gps", "onMessageReceived: no data yet");
         if (remoteMessage.getData().containsKey("alert")) {
-            Log.i("interval", "onMessageReceived: ");
+            Log.i("alert_gps", "onMessageReceived: " + remoteMessage.getData().get("alert"));
             Data data = new Data.Builder().putString("alert", remoteMessage.getData().get("alert")).build();
             OneTimeWorkRequest worker = new OneTimeWorkRequest.Builder(AlertWorker.class).setInputData(data).build();
             WorkManager.getInstance(this).enqueue(worker);
@@ -53,5 +51,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         notificationManager.notify(0, builder.build());
 
          */
+    }
+
+    @Override
+    public void onNewToken(@NonNull String token) {
+        UserHelpers.UpdateFirebaseInstanceId(token);
     }
 }

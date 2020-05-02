@@ -22,9 +22,11 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -45,14 +47,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setHost("10.0.2.2:8080")
-                .setSslEnabled(false)
-                .setPersistenceEnabled(false)
-                .build();
-
-        db = FirebaseFirestore.getInstance();
-        db.setFirestoreSettings(settings);
+        db = FirebaseFirestoreInstance.Create();
 
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
@@ -124,9 +119,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null) {
-            mVerificationInProgress = savedInstanceState.getBoolean("key_verify_in_progress");
-        }
+        mVerificationInProgress = savedInstanceState.getBoolean("key_verify_in_progress");
     }
 
     public void verifyPhoneNumberWithCode(String code) {
@@ -178,26 +171,26 @@ public class MainActivity extends AppCompatActivity implements Callback {
                     currentUser = mAuth.getCurrentUser();
 
                     db.collection("users").document(currentUser.getUid()).get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot documentSnapshot = task.getResult();
-                                        if (documentSnapshot.exists()) {
-                                            Log.d(TAG, "Document exists!");
-                                            Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                                            startActivity(intent);
-                                        } else {
-                                            Log.d(TAG, "Document does not exist!");
-                                            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                                            fragmentTransaction.replace(R.id.main_activity_fragment_container, new RegisterFragment());
-                                            fragmentTransaction.commit();
-                                        }
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                    if (Objects.requireNonNull(documentSnapshot).exists()) {
+                                        Log.d(TAG, "Document exists!");
+                                        Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                        startActivity(intent);
                                     } else {
-                                        Log.d(TAG, "Failed with: ", task.getException());
+                                        Log.d(TAG, "Document does not exist!");
+                                        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                                        fragmentTransaction.replace(R.id.main_activity_fragment_container, new RegisterFragment());
+                                        fragmentTransaction.commit();
                                     }
+                                } else {
+                                    Log.d(TAG, "Failed with: ", task.getException());
                                 }
-                            });
+                            }
+                        });
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.getException());
                     if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
@@ -220,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements Callback {
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot documentSnapshot = task.getResult();
-                                if (documentSnapshot.exists()) {
+                                if (Objects.requireNonNull(documentSnapshot).exists()) {
                                     Log.d(TAG, "Document exists!");
                                     Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                     startActivity(intent);

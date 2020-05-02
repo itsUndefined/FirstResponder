@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MapsService } from '../maps.service';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-dashboard',
@@ -78,8 +79,8 @@ export class DashboardComponent implements OnInit {
   }
 
   onAlertSubmit() {
-    const coordinates: google.maps.LatLng = this.alertForm.get('coordinates').value;
-    this.alertForm.get('coordinates').setValue(coordinates.toJSON());
+    const coordinates: google.maps.LatLngLiteral = this.alertForm.get('coordinates').value.toJSON();
+    this.alertForm.get('coordinates').setValue(new firebase.firestore.GeoPoint(coordinates.lat, coordinates.lng));
     this.firestore.collection('alerts').add(
       this.alertForm.value
     );

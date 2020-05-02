@@ -5,40 +5,42 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-const calculate = require('geofire');
+const geofire = require('geofire');
 
-exports.alertUsers = functions.region('europe-west1').firestore.document('alerts/{alertsId}').onCreate(async (change, context) => {
-    let payload = {
-        // notification: {
-        //     "body": "Body of Your Notification",
-        //     "title": "Title of Your Notification"
-        // }
-        data: {
-            "mydata": "mydata",
-        }
-    };
+exports.alertUsers = functions.region('europe-west1').firestore.document('alerts/{alertId}').onCreate(async (change, context) => {
 
     const maxDistance = 5;
-    let mainLocation = [change.data().coordinates.lat, change.data().coordinates.lng];
-    const snapshot = await db.collection('users').get()
+    let mainLocation = [change.data().coordinates.latitude, change.data().coordinates.longitude];
+    const idleUsers = await db.collection('users').where('busy', '==', false).get();
 
-    snapshot.forEach(async doc => {
-        let userId = doc.id;
-        let pendingUser = await db.collection('pending').doc(userId).get();
-        if (!pendingUser.exists) {
-            let userLocation = [doc.data()['lastKnownLocation'].location.latitude, doc.data()['lastKnownLocation'].location.longitude];
-            let distance = calculate.GeoFire.distance(mainLocation, userLocation);
-            console.log(userLocation);
-            console.log('distance: ' + distance);
-            if (distance <= maxDistance) {
-                console.log(doc.data()['token']);
-                await admin.messaging().sendToDevice(doc.data()['token'], payload);
-                let pendingData = {
-                    alertId: change.id,
-                    isActive: false
-                };
-                await db.collection('pending').doc(userId).set(pendingData);
-            }
+
+    const users = await db.collection('users').get();
+    users.forEach(user => {
+        console.log(user.data());
+    });
+
+    idleUsers.forEach(async user => {
+        let userLocation = [user.data().lastKnownLocation.location.latitude, user.data().lastKnownLocation.location.longitude];
+        let distance = geofire.GeoFire.distance(mainLocation, userLocation);
+        if (distance <= maxDistance) {
+            console.log(user.data().token);
+            await admin.messaging().sendToDevice(
+                user.data().token, 
+                {
+                    data: {
+                        alert: context.params.alertId,
+                    }
+                }, 
+                {
+                    priority: 'high',
+                    timeToLive: 0
+                }
+            );
+            // let pendingData = {
+            //     alertId: change.id,
+            //     isActive: false
+            // };
+            // await db.collection('pending').user(userId).set(pendingData);
         }
     });
 });
@@ -54,12 +56,10 @@ exports.acceptAlert = functions.region('europe-west1').firestore.document('pendi
 
 exports.rejectAlert = functions.region('europe-west1').firestore.document('pending/{pendingId}').onDelete((change, context) => {
     db.collection('pending').where('alertId', '==', change.data()['alertId']).get()
-        .then(snapshot => {
+        .then(async snapshot => {
             // eslint-disable-next-line promise/always-return
             if (snapshot.empty) {
-                db.collection('alerts').doc(change.data()['alertId']).delete()
-                    .then()
-                    .catch();
+                await db.collection('alerts').doc(change.data()['alertId']).delete();
             }
         })
         .catch();

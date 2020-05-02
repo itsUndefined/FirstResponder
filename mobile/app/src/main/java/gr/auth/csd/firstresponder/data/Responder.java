@@ -11,6 +11,8 @@ public class Responder {
     private String token;
     private HashMap<String, Boolean> skills = new HashMap<>(); // STOP_HEAVY_BLEEDING, TREATING_SHOCK, CPR, AED
     private HashMap<String, Object> lastKnownLocation = new HashMap<>();
+    private boolean busy;
+
 
     public Responder() {}
 
@@ -21,14 +23,16 @@ public class Responder {
         this.skills = skills;
         this.lastKnownLocation.put("location", new GeoPoint(0.0, 0.0));
         this.lastKnownLocation.put("time", "0:0");
+        this.busy = false;
     }
 
-    public Responder(String firstName, String lastName, String token, HashMap<String, Boolean> skills, HashMap<String , Object> lastKnownLocation) {
+    public Responder(String firstName, String lastName, String token, HashMap<String, Boolean> skills, HashMap<String , Object> lastKnownLocation, boolean busy) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.token = token;
         this.skills = skills;
         this.lastKnownLocation = lastKnownLocation;
+        this.busy = busy;
     }
 
     public String getFirstName() {
@@ -51,6 +55,10 @@ public class Responder {
         return lastKnownLocation;
     }
 
+    public boolean getBusy() {
+        return busy;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -69,5 +77,9 @@ public class Responder {
 
     public void setLastKnownLocation(HashMap<String, Object> lastKnownLocation) {
         this.lastKnownLocation = lastKnownLocation;
+    }
+
+    public void setBusy(boolean busy) {
+        this.busy = busy;
     }
 }
