@@ -4,5 +4,8 @@
     <color name="colorPrimaryDark">#253A4B</color>
     <color name="colorAccent">#F23B5F</color>
 
+    <color name="colorAcceptMissionButton">#00CC00</color>
+    <color name="colorRejectMissionButton">#FF0000</color>
+
     <color name="formPrimary">#E8EBEC</color>
 </resources>

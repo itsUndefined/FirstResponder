@@ -3,6 +3,12 @@ package gr.auth.csd.firstresponder;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Constraints;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Constraints;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,47 +39,47 @@ public class AlertFragment extends Fragment {
         db = FirebaseFirestoreInstance.Create();
         context = getContext();
 
-        Button accept = view.findViewById(R.id.missionAccept);
-        accept.setOnClickListener(new View.OnClickListener() {
+        Button acceptMissionButton = view.findViewById(R.id.button_accept_mission);
+        acceptMissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 db.collection("pending").document(FirebaseAuth.getInstance().getUid())
-                    .update("isActive", true)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                            notificationManager.cancel(0);
-                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new MissionFragment());
-                            fragmentTransaction.commit();
-                            Toast.makeText(getActivity(), "Mission accept!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        .update("isActive", true)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.cancel(0);
+                                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new MissionFragment());
+                                fragmentTransaction.commit();
+                                Toast.makeText(getActivity(), "Mission accepted!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
-        Button reject = view.findViewById(R.id.missionReject);
-        reject.setOnClickListener(new View.OnClickListener() {
+        Button rejectMissionButton = view.findViewById(R.id.button_reject_mission);
+        rejectMissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 db.collection("pending").document(FirebaseAuth.getInstance().getUid())
-                    .delete()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                            notificationManager.cancel(0);
-                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
-                            fragmentTransaction.commit();
-                            Toast.makeText(getActivity(), "Mission reject!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.cancel(0);
+                                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
+                                fragmentTransaction.commit();
+                                Toast.makeText(getActivity(), "Mission rejected.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
-        missionTimeOut();
+        //missionTimeOut();
 
         return view;
     }
@@ -99,19 +100,19 @@ public class AlertFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-            db.collection("pending").document(FirebaseAuth.getInstance().getUid())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        notificationManager.cancel(0);
-                        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
-                        fragmentTransaction.commit();
-                        Toast.makeText(getActivity(), "Alert time out!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                db.collection("pending").document(FirebaseAuth.getInstance().getUid())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.cancel(0);
+                                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
+                                fragmentTransaction.commit();
+                                Toast.makeText(getActivity(), "Alert time out!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         }, delayInMilliseconds);
     }
@@ -135,3 +136,4 @@ public class AlertFragment extends Fragment {
         });
     }
 }
+

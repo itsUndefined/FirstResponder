@@ -76,6 +76,15 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        alert.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new AlertFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
         return view;
     }
 
