@@ -33,6 +33,7 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:text="@string/settingsActivity_name"
@@ -49,6 +50,7 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
                 android:fontFamily="@font/roboto_regular"
                 android:gravity="center"
                 android:text="@string/settingsActivity_surname"
@@ -124,8 +126,9 @@
 
             <EditText
                 android:id="@+id/namePlainText"
-                android:layout_width="260dp"
+                android:layout_width="220dp"
                 android:layout_height="46dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/input_form"
@@ -139,8 +142,9 @@
 
             <EditText
                 android:id="@+id/surnamePlainText"
-                android:layout_width="260dp"
+                android:layout_width="220dp"
                 android:layout_height="46dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/input_form"
