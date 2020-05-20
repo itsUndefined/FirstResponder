@@ -1,6 +1,5 @@
 package gr.auth.csd.firstresponder;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,7 +22,6 @@ public class LogInFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-
         callback = (Callback) getActivity();
         view = inflater.inflate(R.layout.fragment_log_in, container, false);
         Button login = view.findViewById(R.id.logInButton);
@@ -49,21 +46,17 @@ public class LogInFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
-            fragmentTransaction.commit();
+            countryCode.setSelection(savedInstanceState.getInt("countryCode"));
+            phoneNumber.setText(savedInstanceState.getString("phoneNumber"));
         }
+        return view;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putInt("countryCode", countryCode.getSelectedItemPosition());
+        outState.putString("phoneNumber", phoneNumber.getText().toString());
     }
 }

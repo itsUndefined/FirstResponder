@@ -34,6 +34,13 @@ public class RegisterFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
 
+    private EditText fName;
+    private EditText lName;
+    private CheckBox hb;
+    private CheckBox ts;
+    private CheckBox cpr;
+    private CheckBox d;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
@@ -41,12 +48,12 @@ public class RegisterFragment extends Fragment {
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestoreInstance.Create();
 
-        final EditText fName = view.findViewById(R.id.firstNameR);
-        final EditText lName = view.findViewById(R.id.lastNameR);
-        final CheckBox hb = view.findViewById(R.id.hbR);
-        final CheckBox ts = view.findViewById(R.id.tsR);
-        final CheckBox cpr = view.findViewById(R.id.cprR);
-        final CheckBox d = view.findViewById(R.id.dR);
+        fName = view.findViewById(R.id.firstNameR);
+        lName = view.findViewById(R.id.lastNameR);
+        hb = view.findViewById(R.id.hbR);
+        ts = view.findViewById(R.id.tsR);
+        cpr = view.findViewById(R.id.cprR);
+        d = view.findViewById(R.id.dR);
         Button submit = view.findViewById(R.id.registerB);
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -91,21 +98,26 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_fragment_container, new RegisterFragment());
-            fragmentTransaction.commit();
+            fName.setText(savedInstanceState.getString("fname"));
+            lName.setText(savedInstanceState.getString("lname"));
+            hb.setChecked(savedInstanceState.getBoolean("hb"));
+            ts.setChecked(savedInstanceState.getBoolean("ts"));
+            cpr.setChecked(savedInstanceState.getBoolean("cpr"));
+            d.setChecked(savedInstanceState.getBoolean("d"));
         }
+
+        return view;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString("fname", fName.getText().toString());
+        outState.putString("lname", lName.getText().toString());
+        outState.putBoolean("hb", hb.isChecked());
+        outState.putBoolean("ts", ts.isChecked());
+        outState.putBoolean("cpr", cpr.isChecked());
+        outState.putBoolean("d", d.isChecked());
     }
 }

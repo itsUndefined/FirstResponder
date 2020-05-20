@@ -107,7 +107,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 Toast.makeText(MainActivity.this, "Code time out", Toast.LENGTH_SHORT).show();
             }
         };
-        updateUI(currentUser);
+        if (savedInstanceState == null) {
+            updateUI(currentUser);
+        }
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -46,6 +47,7 @@ public class BasicSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_basic_settings, container, false);
 
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
         database = FirebaseFirestoreInstance.Create();
 
         name = view.findViewById(R.id.namePlainText);
@@ -67,25 +69,33 @@ public class BasicSettingsFragment extends Fragment {
             }
         });
 
-        readFieldsFromDatabase();
+        if (savedInstanceState == null) {
+            readFieldsFromDatabase();
+        } else {
+            name.setText(savedInstanceState.getString("name"));
+            surname.setText(savedInstanceState.getString("surname"));
+            heavyBleedingCheckbox.setChecked(savedInstanceState.getBoolean("heavyBleedingCheckbox"));
+            treatShockCheckbox.setChecked(savedInstanceState.getBoolean("treatShockCheckbox"));
+            cprCheckbox.setChecked(savedInstanceState.getBoolean("cprCheckbox"));
+            aedCheckbox.setChecked(savedInstanceState.getBoolean("aedCheckbox"));
+        }
         initializeButton();
 
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.settings_activity_fragment_container, new BasicSettingsFragment());
-            fragmentTransaction.commit();
-        }
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("name", name.getText().toString());
+        outState.putString("surname", surname.getText().toString());
+        outState.putBoolean("heavyBleedingCheckbox", heavyBleedingCheckbox.isChecked());
+        outState.putBoolean("treatShockCheckbox", treatShockCheckbox.isChecked());
+        outState.putBoolean("cprCheckbox", cprCheckbox.isChecked());
+        outState.putBoolean("aedCheckbox", aedCheckbox.isChecked());
     }
 
     private void readFieldsFromDatabase(){
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
         DocumentReference docRef = database.collection("users").document(currentUser.getUid());
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
