@@ -1,6 +1,5 @@
 package gr.auth.csd.firstresponder;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,20 +9,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 public class CodeSubmitFragment extends Fragment {
 
     private Callback callback;
+    private EditText code;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
 
         callback = (Callback) getActivity();
         View view = inflater.inflate(R.layout.fragment_code_submit, container, false);
-        final EditText code = view.findViewById(R.id.codeInput);
+
+        code = view.findViewById(R.id.codeInput);
         Button login = view.findViewById(R.id.submitCodeButton);
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -44,21 +44,16 @@ public class CodeSubmitFragment extends Fragment {
             }
         });
 
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_activity_fragment_container, new CodeSubmitFragment());
-            fragmentTransaction.commit();
+            code.setText(savedInstanceState.getString("code"));
         }
+
+        return view;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString("code", code.getText().toString());
     }
 }
