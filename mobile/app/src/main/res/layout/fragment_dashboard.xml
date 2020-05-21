@@ -20,41 +20,81 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Alert"
-                app:layout_constraintBottom_toTopOf="@+id/settingsButton"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/settingsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Settings"
-                app:layout_constraintBottom_toTopOf="@+id/press_for_perms"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/alertButton" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/press_for_perms" />
 
             <Button
                 android:id="@+id/press_for_perms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Press for perms"
-                app:layout_constraintBottom_toTopOf="@+id/logout"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alertButton"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/settingsButton" />
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/logout"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarW"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
+                android:theme="@style/ToolbarOverflowIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/main_menu"
+                app:title="First Responder"
+                app:titleTextColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/helloUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="logout"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="16dp"
+                android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/press_for_perms" />
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="21dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:progress="100"
+                android:progressDrawable="@drawable/circle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/helloUser" />
+
+            <TextView
+                android:id="@+id/serverStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="16dp"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.03"
+                app:layout_constraintStart_toEndOf="@+id/progressBar"
+                app:layout_constraintTop_toBottomOf="@+id/helloUser" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Γεια σου"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarW" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </android.widget.ScrollView>
 </FrameLayout>

@@ -252,7 +252,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/accept_mission_button"
-                    android:fontFamily="@font/roboto_regular"
 
                     android:text="Accept" />
 
@@ -263,7 +262,6 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/reject_misson_button"
-                    android:fontFamily="@font/roboto_regular"
                     android:text="Reject" />
             </LinearLayout>
 

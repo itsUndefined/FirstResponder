@@ -6,15 +6,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -24,49 +33,68 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Objects;
 
+import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 import gr.auth.csd.firstresponder.helpers.PermissionRequest;
 import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
 import gr.auth.csd.firstresponder.helpers.UserHelpers;
 
 public class DashboardFragment extends Fragment {
 
+    private View view;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
     private Context context;
     private Activity activity;
+    private TextView helloMessage;
+    private TextView serverStatus;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         context = getContext();
         activity = getActivity();
         mAuth = FirebaseAuth.getInstance();
-        Button logout = view.findViewById(R.id.logout);
+        currentUser = mAuth.getCurrentUser();
+        db = FirebaseFirestoreInstance.Create();
+
         Button alert = view.findViewById(R.id.alertButton);
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Intent intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        firebaseInstanceId();
+        Toolbar toolbar = view.findViewById(R.id.toolbarW);
+        helloMessage = view.findViewById(R.id.helloUser);
+        serverStatus = view.findViewById(R.id.serverStatus);
+        progressBar = view.findViewById(R.id.progressBar);
 
-        Button settings = view.findViewById(R.id.settingsButton);
-        settings.setOnClickListener(new View.OnClickListener() {
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, SettingsActivity.class);
-                startActivity(intent);
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.aboutUsM) {
+                    FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new AboutUsFragment());
+                    fragmentTransaction.commit();
+                } else if (item.getItemId() == R.id.settingsM) {
+                    Intent intent = new Intent(context, SettingsActivity.class);
+                    startActivity(intent);
+                } else if (item.getItemId() == R.id.logoutM) {
+                    mAuth.signOut();
+                    Intent intent = new Intent(context, MainActivity.class);
+                    startActivity(intent);
+                }
+                return false;
             }
         });
+
+        firebaseInstanceId();
 
         Button pressForPerms = view.findViewById(R.id.press_for_perms);
         pressForPerms.setOnClickListener(new View.OnClickListener() {
@@ -84,25 +112,26 @@ public class DashboardFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
+        if (savedInstanceState == null) {
+            getUserName();
+        } else {
+            helloMessage.setText(savedInstanceState.getString("name"));
+        }
+        getServerStatus();
         return view;
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("name", helloMessage.getText().toString());
+    }
+
+    /*@Override
     public void onStart() {
         super.onStart();
         alertForMission();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
-            fragmentTransaction.commit();
-        }
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -120,6 +149,33 @@ public class DashboardFragment extends Fragment {
                 showAccessDeniedWarningMessage();
             }
         }
+    }
+
+    private void getUserName() {
+        db.collection("users").document(currentUser.getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            String text;
+                            if (documentSnapshot.exists()) {
+                                text = documentSnapshot.get("firstName") +
+                                        " " +
+                                        documentSnapshot.get("lastName");
+                            } else {
+                                text = "error!";
+                            }
+                            helloMessage.setText(text);
+                        }
+                    }
+                });
+    }
+
+    private void getServerStatus() {
+        // TODO: code to retrieve server status
+        serverStatus.setText("Disconnected from server");
+        progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
     }
 
     private void showAccessDeniedWarningMessage(){
