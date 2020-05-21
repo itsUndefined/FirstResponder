@@ -2,6 +2,8 @@ package gr.auth.csd.firstresponder;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+import android.content.pm.PackageManager;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,7 +42,7 @@ public class AlertFragment extends Fragment {
         db = FirebaseFirestoreInstance.Create();
         context = getContext();
 
-        Button acceptMissionButton = view.findViewById(R.id.button_accept_mission);
+        final Button acceptMissionButton = view.findViewById(R.id.button_accept_mission);
         acceptMissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +57,15 @@ public class AlertFragment extends Fragment {
                                 fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new MissionFragment());
                                 fragmentTransaction.commit();
                                 Toast.makeText(getActivity(), "Mission accepted!", Toast.LENGTH_SHORT).show();
+
+                                //Opening Google Maps application, navigation by foot (mode = w -> walking).
+                                Uri gmmIntentUri = Uri.parse("google.navigation:q=46.414382,10.013988&mode=w");
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                    startActivity(mapIntent);
+                                    acceptMissionButton.setEnabled(false);
+                                }
                             }
                         });
             }
