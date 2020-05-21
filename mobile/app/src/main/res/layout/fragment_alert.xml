@@ -17,24 +17,36 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/mission_details_linear_layout"
+                android:id="@+id/estimated_time_linear_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/mission_details_TextView"
+                    android:id="@+id/estimated_time_text_Text_View"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="64dp"
-                    android:text="Lorem ipsum dolor sit amet, id inani vituperatoribus quo. Assum equidem eligendi eam te, in qui singulis recteque. Altera dissentias est at. No minimum tacimates vix, eam erant aliquam ullamcorper id, sit ea prima dicam platonem. Sumo rebum democritum ut duo. Liber doming definiebas cum et. In assueverit necessitatibus pri.  Quem doctus est ne. His amet definiebas temporibus ex, magna eripuit blandit eam eu. No verear delicatissimi quo, diceret maiorum democritum sed eu. Est option graecis rationibus id, nisl inani delenit te has. Cum in eros posse, nemore antiopam accusamus no duo, ius an eros tritani probatus. Expetenda mnesarchum eum ad.  Bonorum mentitum iracundia id vim, quidam epicurei vim ei. Summo doming oblique eu qui, sumo exerci option mei ex. Illum urbanitas persequeris ad pro, ad nulla facilisis qualisque qui. Eos ex offendit scaevola pertinax, per an delenit vituperatoribus.  Eu tritani percipit menandri vix. Quo at agam legere appellantur. Te impetus officiis luptatum pro, pri et eruditi tincidunt. Equidem copiosae et sed, apeirian deserunt has id, viris causae tritani no per. Ei mea ridens vidisse eleifend, ea qui accumsan officiis.  Solet affert vocent duo in, at iuvaret consulatu comprehensam sed. Euismod euripidis assueverit eam in, et mei porro assum. Ex ludus accusata mei, at graeco tibique electram has. Eius primis ut duo, ea postea appareat invidunt pri. Est at legimus voluptaria, prima ignota an sit." />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Προσδοκώμενος χρόνος"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform" />
+
+                <EditText
+                    android:id="@+id/estimated_time_content_Time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="time" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -42,19 +54,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mission_details_linear_layout">
+                app:layout_constraintTop_toBottomOf="@+id/estimated_time_linear_layout">
 
                 <TextView
                     android:id="@+id/textView10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Heavy Bleeding"
+                    android:text="Αιμορραγία"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -72,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:text="YES" />
+                        android:text="ΝΑΙ" />
 
                     <RadioButton
                         android:id="@+id/heavy_bleeding_no"
@@ -80,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:text="NO" />
+                        android:text="ΟΧΙ" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -102,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Shock"
+                    android:text="Σοκ"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -121,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:text="YES" />
+                        android:text="ΝΑΙ" />
 
                     <RadioButton
                         android:id="@+id/treat_shock_no"
@@ -129,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:text="NO" />
+                        android:text="ΟΧΙ" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -151,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="CPR"
+                    android:text="Κυκλική Αναπνοή - CPR"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -169,7 +181,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:text="YES" />
+                        android:text="ΝΑΙ" />
 
                     <RadioButton
                         android:id="@+id/cpr_no"
@@ -177,7 +189,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:text="NO" />
+                        android:text="ΟΧΙ" />
 
                 </RadioGroup>
             </LinearLayout>
@@ -199,7 +211,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Defibrilator"
+                    android:text="Απινιδωτής"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -217,7 +229,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:text="YES" />
+                        android:text="ΝΑΙ" />
 
                     <RadioButton
                         android:id="@+id/aes_no"
@@ -225,7 +237,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:clickable="false"
-                        android:text="NO" />
+                        android:text="ΟΧΙ" />
 
                 </RadioGroup>
 
@@ -234,16 +246,14 @@
             <LinearLayout
                 android:id="@+id/buttons_linear_layout"
                 android:layout_width="fill_parent"
-                android:layout_height="80dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="40dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/aes_linear_layout">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <Button
                     android:id="@+id/button_accept_mission"
@@ -252,9 +262,8 @@
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/accept_mission_button"
-                    android:fontFamily="@font/roboto_regular"
 
-                    android:text="Accept" />
+                    android:text="Αποδοχή" />
 
                 <Button
                     android:id="@+id/button_reject_mission"
@@ -263,8 +272,28 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/reject_misson_button"
-                    android:fontFamily="@font/roboto_regular"
-                    android:text="Reject" />
+                    android:text="Απόρριψη" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/alert_details_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aes_linear_layout">
+
+                <Button
+                    android:id="@+id/alert_details_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/alert_details_button"
+                    android:text="Λεπτομέρειες" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,9 @@
 package gr.auth.csd.firstresponder;
 
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,7 +58,7 @@ public class AlertFragment extends Fragment {
                                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new MissionFragment());
                                 fragmentTransaction.commit();
-                                Toast.makeText(getActivity(), "Mission accepted!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Ανελάβατε την αποστολή!", Toast.LENGTH_SHORT).show();
 
                                 //Opening Google Maps application, navigation by foot (mode = w -> walking).
                                 Uri gmmIntentUri = Uri.parse("google.navigation:q=46.414382,10.013988&mode=w");
@@ -85,11 +87,29 @@ public class AlertFragment extends Fragment {
                                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
                                 fragmentTransaction.commit();
-                                Toast.makeText(getActivity(), "Mission rejected.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Η αποστολή απορρίφθηκε.", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
         });
+
+        Button alertDetailsButton = view.findViewById(R.id.alert_details_button);
+        alertDetailsButton.setOnClickListener((new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Λεπτομέρειες Αποστολής");
+                builder.setMessage(R.string.alertDetails_text);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        }));
 
         //missionTimeOut();
 
@@ -142,7 +162,7 @@ public class AlertFragment extends Fragment {
                     FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
                     fragmentTransaction.commit();
-                    Toast.makeText(getActivity(), "Mission taken!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Η αποστολή είναι κατειλημμένη!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
