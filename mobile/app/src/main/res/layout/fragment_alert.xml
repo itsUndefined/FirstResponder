@@ -33,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Προσδοκώμενος χρόνος"
+                    android:text="@string/alert_time"
                     android:textAlignment="center"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -66,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Αιμορραγία"
+                    android:text="@string/alert1"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -114,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Σοκ"
+                    android:text="@string/alert2"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -163,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Κυκλική Αναπνοή - CPR"
+                    android:text="@string/alert3"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -211,7 +211,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Απινιδωτής"
+                    android:text="@string/alert4"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -263,7 +263,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/accept_mission_button"
 
-                    android:text="Αποδοχή" />
+                    android:text="@string/alert_accept" />
 
                 <Button
                     android:id="@+id/button_reject_mission"
@@ -272,7 +272,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/reject_misson_button"
-                    android:text="Απόρριψη" />
+                    android:text="@string/alert_reject" />
             </LinearLayout>
 
             <LinearLayout
@@ -293,7 +293,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/alert_details_button"
-                    android:text="Λεπτομέρειες" />
+                    android:text="@string/alert_more" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

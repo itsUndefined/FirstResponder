@@ -1,6 +1,7 @@
 package gr.auth.csd.firstresponder;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;

@@ -1,47 +1,40 @@
 <resources>
-    <string name="app_name">FirstResponder</string>
-    <string name="mainActivity_title1">Welcome</string>
-    <string name="mainActivity_title2">to FirstResponder!</string>
-    <string name="mainActivity_title3">The first app for volunteer rescuers.</string>
-    <string name="mainActivity_button">Sign up or Log in</string>
-
-
-    <string name="settingsActivity_name">Name</string>
-    <string name="settingsActivity_surname">Surname</string>
-    <string name="settingsActivity_phoneNumber">Phone Number</string>
-    <string name="settingsActivity_knownSkills">Known Skills</string>
-
-    <string name="settingsActivity_heavyBleeding_checkbox">I know how to stop heavy bleedings.</string>
-    <string name="settingsActivity_cpr_checkbox">I know how to perform CPR</string>
-    <string name="settingsActivity_treatShock_checkbox">I know how to treat shock</string>
-    <string name="settingsActivity_aed_checkbox">I know how to use a defibrillator</string>
-
-    <string name="settingsActivity_SaveChanges_Button">Save Changes</string>
-
-    <string name="logInActivity_title">Enter your phone number!</string>
-    <string-array name="logInActivity_code">
+    <string name="app_name">First Responder</string>
+    <string name="start_title1">Καλωσήρθατε</string>
+    <string name="start_title2">στο First Responder!</string>
+    <string name="start_title3">Μία εφαρμογή για εθελοντές διασώστες.</string>
+    <string name="start_button">Σύνδεση ή Εγγραφή</string>
+    <string name="settings_name">Όνομα</string>
+    <string name="settings_surname">Επώνυμο</string>
+    <string name="settings_phoneNumber">Αριθμός Τηλεφώνου</string>
+    <string name="settings_knownSkills">Γνωστές Δεξιότητες</string>
+    <string name="settings_heavyBleeding_checkbox">Ξέρω να σταματήσω τη βαριά αιμορραγία</string>
+    <string name="settings_cpr_checkbox">Ξέρω να εκτελέσω κυκλική αναπνοή - CPR</string>
+    <string name="settings_treatShock_checkbox">Ξέρω να αντιμετωπίσω το σοκ</string>
+    <string name="settings_aed_checkbox">Ξέρω να χρησιμοποιώ έναν απινιδωτή</string>
+    <string name="settings_SaveChanges_Button">Αποθήκευση αλλαγών</string>
+    <string name="logIn_title">Πληκτρολόγησε τον αριθμό του τηλεφώνου σου!</string>
+    <string-array name="logIn_code">
         <item>+30</item>
     </string-array>
-    <string name="logInActivity_pN">Phone Number</string>
-    <string name="logInActivity_tos">
-        By tapping "Verify phone number", you are indicatating that you
-        are accept our Terms of Service and Privacy Policy. An SMS may be sent.
-        \nMessage and data rates may apply.
+    <string name="logIn_pN">Αριθμός Τηλεφώνου</string>
+    <string name="logIn_tos">
+        Πατώντας «Επαλήθευση αριθμού τηλεφώνου», δηλώνετε ότι αποδέχεστε τους Όρους Παροχής
+        Υπηρεσιών και την Πολιτική Απορρήτου. Ένα SMS μπορεί να σταλεί.
+        \nΕνδέχεται να ισχύουν χρεώσεις μηνυμάτων και δεδομένων.
     </string>
-    <string name="logInActivity_button">Verify phone number</string>
-    <string name="phoneCodeActivity_title">Enter the verification code!</string>
-    <string name="phoneCodeActivity_button">Submit code</string>
-    <string name="registerActivity_title1">Finish your profile!</string>
-    <string name="registerActivity_fname">First name</string>
-    <string name="registerActivity_lname">Last name</string>
-    <string name="registerActivity_title2">Tell us about your skills!</string>
-    <string name="registerActivity_skill1">I know how to stop heavy bleeding</string>
-    <string name="registerActivity_skill2">I know how to treat shock</string>
-    <string name="registerActivity_skill3">I know how to perform CPR</string>
-    <string name="registerActivity_skill4">I know how to use a defibrillator</string>
-    <string name="registerActivity_button">Create your account</string>
-
-
+    <string name="logIn_button">Επαλήθευση αριθμού τηλεφώνου</string>
+    <string name="phoneCode_title">Εισάγετε τον κωδικό επαλήθευσης!</string>
+    <string name="phoneCode_button">Υποβολή κωδικού</string>
+    <string name="register_title1">Ολοκληρώστε το προφίλ σας!</string>
+    <string name="register_fname">Όνομα</string>
+    <string name="register_lname">Επώνυμο</string>
+    <string name="register_title2">Πείτε μας για τις δεξιότητές σας!</string>
+    <string name="register_skill1">Ξέρω να σταματήσω τη βαριά αιμορραγία</string>
+    <string name="register_skill2">Ξέρω να αντιμετωπίσω το σοκ</string>
+    <string name="register_skill3">Ξέρω να εκτελέσω κυκλική αναπνοή - CPR</string>
+    <string name="register_skill4">Ξέρω να χρησιμοποιώ έναν απινιδωτή</string>
+    <string name="register_button">Δημιουργήστε τον λογαριασμό σας</string>
     <string name="alertDetails_text">Lorem ipsum dolor sit amet, id inani vituperatoribus quo.
         Assum equidem eligendi eam te, in qui singulis recteque. Altera dissentias est at.
         No minimum tacimates vix, eam erant aliquam ullamcorper id, sit ea prima dicam platonem.
@@ -66,7 +59,21 @@
         Eius primis ut duo, ea postea appareat invidunt pri.
         Est at legimus voluptaria, prima ignota an sit.
     </string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dashboard">Γεια σου</string>
+    <string name="aboutUs">
+        Η εφαρμογή αυτή φτιάχτηκε στο πλαίσιο του μαθήματος «Ανάπτυξη Εφαρμογών Κινητών Συσκευών»
+        του τμήματος Πληροφορικής του ΑΠΘ. Οι φοιτητές που κατασκεύασαν την παρούσα εφαρμογή είναι
+        οι Δημήτριος Παντελεήμων Γιακάτος, Κωνσταντίνος Σταυράτης και Θεμιστοκλής Χατζηεμμανουήλ.
+    </string>
+    <string name="menu1">Σχετικά με εμάς</string>
+    <string name="menu2">Ρυθμίσεις</string>
+    <string name="menu3">Αποσύνδεση</string>
+    <string name="alert_time">Προσδοκώμενος χρόνος</string>
+    <string name="alert1">Βαριά αιμορραγία</string>
+    <string name="alert2">Σοκ</string>
+    <string name="alert3">Κυκλική αναπνοή - CPR</string>
+    <string name="alert4">Απινιδωτής</string>
+    <string name="alert_more">Λεπτομέρειες</string>
+    <string name="alert_accept">Αποδοχή</string>
+    <string name="alert_reject">Απόρριψη</string>
 </resources>

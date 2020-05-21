@@ -30,9 +30,6 @@ import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.maps.DistanceMatrixApi;
-import com.google.maps.GeoApiContext;
-import com.google.maps.model.DistanceMatrix;
 
 import java.util.Objects;
 
@@ -103,7 +100,7 @@ public class AlertWorker extends ListenableWorker {
                                 if(task.isSuccessful()) {
                                     DocumentSnapshot document = Objects.requireNonNull(task.getResult());
                                     GeoPoint alertLocation = Objects.requireNonNull(document.getGeoPoint("coordinates"));
-                                    try {
+                                    /*try {
                                         Bundle bundle = getApplicationContext().getPackageManager().getApplicationInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA).metaData;
                                         String key = bundle.getString("com.google.android.geo.API_KEY");
                                         GeoApiContext context = new GeoApiContext.Builder().apiKey(key).build();
@@ -122,7 +119,7 @@ public class AlertWorker extends ListenableWorker {
                                         future.set(Result.success());
                                     } catch (PackageManager.NameNotFoundException e) {
                                         e.printStackTrace();
-                                    }
+                                    }*/
                                 }
                             }
                         });
