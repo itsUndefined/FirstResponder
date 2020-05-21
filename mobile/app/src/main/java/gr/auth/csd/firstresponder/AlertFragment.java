@@ -1,6 +1,6 @@
 package gr.auth.csd.firstresponder;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,25 +30,29 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Objects;
+
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 public class AlertFragment extends Fragment {
 
     private FirebaseFirestore db;
     private Context context;
+    private Activity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alert, container, false);
+        final View view = inflater.inflate(R.layout.fragment_alert, container, false);
 
         db = FirebaseFirestoreInstance.Create();
         context = getContext();
+        activity = getActivity();
 
         final Button acceptMissionButton = view.findViewById(R.id.button_accept_mission);
         acceptMissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("pending").document(FirebaseAuth.getInstance().getUid())
+                /*db.collection("pending").document(FirebaseAuth.getInstance().getUid())
                         .update("isActive", true)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -58,18 +62,16 @@ public class AlertFragment extends Fragment {
                                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new MissionFragment());
                                 fragmentTransaction.commit();
-                                Toast.makeText(getActivity(), "Ανελάβατε την αποστολή!", Toast.LENGTH_SHORT).show();
-
-                                //Opening Google Maps application, navigation by foot (mode = w -> walking).
-                                Uri gmmIntentUri = Uri.parse("google.navigation:q=46.414382,10.013988&mode=w");
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                                    startActivity(mapIntent);
-                                    acceptMissionButton.setEnabled(false);
-                                }
+                                Toast.makeText(getActivity(), "Mission accepted!", Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        });*/
+                //Opening Google Maps application, navigation by foot (mode = c -> car).
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=40.64873,22.9615117&mode=c");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(activity.getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
             }
         });
 

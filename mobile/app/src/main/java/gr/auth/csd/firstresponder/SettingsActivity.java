@@ -15,6 +15,8 @@ public class SettingsActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.add(R.id.settings_activity_fragment_container, new BasicSettingsFragment());
             fragmentTransaction.commit();
+        } else {
+            onRestoreInstanceState(savedInstanceState);
         }
     }
 }

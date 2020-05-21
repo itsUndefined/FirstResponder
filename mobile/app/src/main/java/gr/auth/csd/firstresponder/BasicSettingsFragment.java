@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,7 +61,7 @@ public class BasicSettingsFragment extends Fragment {
 
         user = new Responder();
 
-        ImageView returnToLogInActivityArrow = view.findViewById(R.id.basicSettingsBack);
+        ImageButton returnToLogInActivityArrow = view.findViewById(R.id.basicSettingsBack);
         returnToLogInActivityArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
