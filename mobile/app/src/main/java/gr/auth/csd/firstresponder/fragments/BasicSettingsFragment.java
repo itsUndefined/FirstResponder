@@ -8,13 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,7 +55,7 @@ public class BasicSettingsFragment extends Fragment {
         heavyBleedingCheckbox = view.findViewById(R.id.heavyBleedingCheckBox);
         treatShockCheckbox = view.findViewById(R.id.treatShockCheckbox);
         cprCheckbox = view.findViewById(R.id.cprCheckbox);
-        aedCheckbox = view.findViewById(R.id.aesCheckbox);
+        aedCheckbox = view.findViewById(R.id.aedCheckbox);
         saveChangesButton = view.findViewById(R.id.settingSaveChangesButton);
 
         user = new Responder();

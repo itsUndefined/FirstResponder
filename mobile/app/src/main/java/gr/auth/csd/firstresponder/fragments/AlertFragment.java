@@ -20,6 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,8 +33,14 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.util.Objects;
+
 import gr.auth.csd.firstresponder.R;
+import gr.auth.csd.firstresponder.data.Alert;
+import gr.auth.csd.firstresponder.data.AlertData;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
+
+import static gr.auth.csd.firstresponder.DashboardActivity.DISPLAY_ALERT;
 
 public class AlertFragment extends Fragment {
 
@@ -46,6 +55,40 @@ public class AlertFragment extends Fragment {
         db = FirebaseFirestoreInstance.Create();
         context = getContext();
         activity = getActivity();
+
+        final AlertData alertData = (AlertData) requireArguments().get(DISPLAY_ALERT);
+
+        RadioGroup heavyBleedingRadio = view.findViewById(R.id.heavy_bleeding_radio_group);
+        RadioGroup treatShockRadio = view.findViewById(R.id.treat_shock_radio_group);
+        RadioGroup cprRadio = view.findViewById(R.id.cpr_radio_group);
+        RadioGroup aedRadio = view.findViewById(R.id.aed_radio_group);
+
+       //EditText estimatedTimeText = view.findViewById(R.id.estimated_time_text);
+       // estimatedTimeText.setText(Integer.toString(alertData.secondsOfDrivingRequired));
+
+        if (Boolean.TRUE.equals(alertData.alert.requiredSkills.get("STOP_HEAVY_BLEEDING"))) {
+            heavyBleedingRadio.check(R.id.heavy_bleeding_yes);
+        } else {
+            heavyBleedingRadio.check(R.id.heavy_bleeding_no);
+        }
+        if (Boolean.TRUE.equals(alertData.alert.requiredSkills.get("TREATING_SHOCK"))) {
+            treatShockRadio.check(R.id.treat_shock_yes);
+        } else {
+            treatShockRadio.check(R.id.treat_shock_no);
+        }
+        if (Boolean.TRUE.equals(alertData.alert.requiredSkills.get("CPR"))) {
+            cprRadio.check(R.id.cpr_yes);
+        } else {
+            cprRadio.check(R.id.cpr_no);
+        }
+        if (Boolean.TRUE.equals(alertData.alert.requiredSkills.get("AED"))) {
+            aedRadio.check(R.id.aed_yes);
+        } else {
+            aedRadio.check(R.id.aed_no);
+        }
+
+
+
 
         final Button acceptMissionButton = view.findViewById(R.id.button_accept_mission);
         acceptMissionButton.setOnClickListener(new View.OnClickListener() {
@@ -78,19 +121,22 @@ public class AlertFragment extends Fragment {
         rejectMissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.collection("pending").document(FirebaseAuth.getInstance().getUid())
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                                notificationManager.cancel(0);
-                                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
-                                fragmentTransaction.commit();
-                                Toast.makeText(getActivity(), "Η αποστολή απορρίφθηκε.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                /*db.collection("pending").document(FirebaseAuth.getInstance().getUid())
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                            notificationManager.cancel(0);
+                            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
+                            fragmentTransaction.commit();
+                            Toast.makeText(getActivity(), "Η αποστολή απορρίφθηκε.", Toast.LENGTH_SHORT).show();
+                        }
+                    });*/
+                NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.cancelAll();
+                activity.finishAffinity();
             }
         });
 
@@ -100,7 +146,7 @@ public class AlertFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Λεπτομέρειες Αποστολής");
-                builder.setMessage(R.string.alertDetails_text);
+                builder.setMessage(alertData.alert.notes);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.os.Handler;
 import android.util.Log;
 
@@ -26,14 +28,11 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
@@ -43,10 +42,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +52,7 @@ import java.util.Objects;
 import gr.auth.csd.firstresponder.DashboardActivity;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.data.Alert;
+import gr.auth.csd.firstresponder.data.AlertData;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 import static gr.auth.csd.firstresponder.DashboardActivity.DISPLAY_ALERT;
@@ -84,7 +82,7 @@ public class AlertWorker extends ListenableWorker {
 
 
         final String alertId = getInputData().getString("alert");
-        setForegroundAsync(createForegroundInfo());
+        //setForegroundAsync(createForegroundInfo());
 
         Log.i("alert_gps", "Started foreground");
 
@@ -156,7 +154,7 @@ public class AlertWorker extends ListenableWorker {
                                             sb.append(output);
                                         }
 
-                                        int secondsOfDrivingRequired = new JSONObject(sb.toString())
+                                        final int secondsOfDrivingRequired = new JSONObject(sb.toString())
                                             .getJSONArray("rows")
                                             .getJSONObject(0)
                                             .getJSONArray("elements")
@@ -180,7 +178,7 @@ public class AlertWorker extends ListenableWorker {
                                             shouldAlertUser = false;
                                         }
                                         FirebaseFunctions functionsInstance = FirebaseFunctions.getInstance("europe-west3");
-                                        functionsInstance.useFunctionsEmulator("http://10.0.2.2:5001");
+                                       // functionsInstance.useFunctionsEmulator("http://10.0.2.2:5001");
 
                                         functionsInstance.getHttpsCallable("updateUserStatus").call(data).addOnCompleteListener(new OnCompleteListener<HttpsCallableResult>() {
                                             @Override
@@ -194,29 +192,38 @@ public class AlertWorker extends ListenableWorker {
                                                     Context context = getApplicationContext();
 
                                                     Intent alertIntent = new Intent(context, DashboardActivity.class);
-                                                    alertIntent.putExtra(DISPLAY_ALERT, incomingAlert);
-                                                    PendingIntent pendingAlertIntent = PendingIntent.getActivity(context, 0, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                                                    //PendingIntent pendingAlertIntent2 = PendingIntent.getActivity(context, 0, alertIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                                                    AlertData alertData = new AlertData();
+                                                    alertData.alert = incomingAlert;
+                                                    alertData.secondsOfDrivingRequired = secondsOfDrivingRequired;
+                                                    alertIntent.putExtra(DISPLAY_ALERT, alertData);
+                                                    alertIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                                                    PendingIntent pendingAlertIntent = PendingIntent.getActivity(context, 0, alertIntent, 0);
 
-                                                    String channelId;
-                                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                        channelId = createNotificationChannel("my_important_channel", "My Background Service");
-                                                    } else {
-                                                        channelId = "";
-                                                    }
-                                                    Notification notification = new NotificationCompat.Builder(context, channelId)
+                                                    Notification.Builder notification = new Notification.Builder(context)
                                                         .setContentTitle("SOMEONE NEEDS HELP RIGHT NOW")
-                                                        .setStyle(new NotificationCompat.BigTextStyle().bigText("HELP HIM NOW"))
-                                                        .setSmallIcon(R.drawable.ic_launcher_background)
-                                                        //.setContentIntent(pendingAlertIntent)
-                                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                                        .setCategory(NotificationCompat.CATEGORY_CALL)
-                                                        .setFullScreenIntent(pendingAlertIntent, true)
-                                                        .setAutoCancel(true)
-                                                        .build();
+                                                        .setSmallIcon(R.drawable.accept_mission_button)
+                                                        .setPriority(Notification.PRIORITY_MAX)
+                                                        .setCategory(Notification.CATEGORY_CALL)
+                                                        .setOngoing(true)
+                                                        .setContentIntent(pendingAlertIntent)
+                                                        .setFullScreenIntent(pendingAlertIntent, true);
+
+                                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                        notification.setChannelId(createNotificationChannel("my_important_channel", "My Background Service"));
+                                                    }
+
+
+
+                                                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+                                                        Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+                                                        AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
+                                                        notification.setSound(defaultRingtoneUri, audioAttributes);
+                                                    }
+
+
 
                                                     NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                                                    manager.notify(1, notification);
+                                                    manager.notify(1, notification.build());
                                                 }
 
                                                 future.set(Result.success());
@@ -236,25 +243,6 @@ public class AlertWorker extends ListenableWorker {
         };
 
         new FusedLocationProviderClient(getApplicationContext()).requestLocationUpdates(locationRequest, locationListener, null);
-
-
-        /*
-
-        final AtomicInteger count = new AtomicInteger(0);
-
-        new Timer().scheduleAtFixedRate(new TimerTask(){
-            @Override
-            public void run() {
-                count.incrementAndGet();
-                Log.i("interval", "This function is called every 10 seconds. Yes I am still alive!");
-                if(count.get() == 4) {
-                    Log.i("interval", "Ι run for 30 seconds while dozing. I bypassed the fucker called android");
-                    future.set(Result.success());
-                }
-            }
-        },0,10000);
-
-         */
 
         return future;
     }
@@ -285,6 +273,15 @@ public class AlertWorker extends ListenableWorker {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private String createNotificationChannel(String channelId, String channelName) {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+
+
+        Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+        AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
+        channel.setSound(defaultRingtoneUri, audioAttributes);
+
+        channel.enableVibration(true);
+
+
         NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         assert manager != null;
         manager.createNotificationChannel(channel);

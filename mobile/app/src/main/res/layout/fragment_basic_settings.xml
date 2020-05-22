@@ -110,7 +110,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/treatShockCheckbox" />
 
             <CheckBox
-                android:id="@+id/aesCheckbox"
+                android:id="@+id/aedCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -167,7 +167,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/aesCheckbox"
+                app:layout_constraintTop_toBottomOf="@+id/aedCheckbox"
                 app:layout_constraintVertical_bias="1.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
