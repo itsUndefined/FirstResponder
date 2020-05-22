@@ -1,31 +1,30 @@
-package gr.auth.csd.firstresponder;
+package gr.auth.csd.firstresponder.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 
-public class AboutUsFragment extends Fragment {
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-    private View view;
+import gr.auth.csd.firstresponder.R;
+import gr.auth.csd.firstresponder.fragments.LogInFragment;
+
+public class StartFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_about_us, container, false);
 
-        ImageButton back = view.findViewById(R.id.aboutUsBack);
-        back.setOnClickListener(new View.OnClickListener() {
+        View view = inflater.inflate(R.layout.fragment_start, container, false);
+        Button login = view.findViewById(R.id.startButton);
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new DashboardFragment());
+                fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
                 fragmentTransaction.commit();
             }
         });

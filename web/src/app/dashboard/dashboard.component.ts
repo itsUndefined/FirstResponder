@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MapsService } from '../maps.service';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFirestore } from '@angular/fire/firestore';
-import * as firebase from 'firebase';
+import { Router } from '@angular/router';
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,8 +13,7 @@ import * as firebase from 'firebase';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private mapsService: MapsService, private firestore: AngularFirestore) { }
-
+  constructor(private mapsService: MapsService, private firestore: AngularFirestore, private router: Router) { }
 
   address: string;
   alertMessage: string;
@@ -31,9 +32,15 @@ export class DashboardComponent implements OnInit {
   selectedAddress: string;
   alertForm = new FormGroup({
     coordinates: new FormControl(null, [Validators.required]),
-    requiredSkills: new FormArray([new FormControl(false), new FormControl(false), new FormControl(false), new FormControl(false)]),
+    requiredSkills: new FormGroup({
+      AED: new FormControl(null),
+      CPR: new FormControl(null),
+      STOP_HEAVY_BLEEDING: new FormControl(null),
+      TREATING_SHOCK: new FormControl(null)
+    }),
     notes: new FormControl(null)
   });
+  isSubmissionDisabled = false;
 
 
   ngOnInit(): void {
@@ -78,12 +85,16 @@ export class DashboardComponent implements OnInit {
     this.mapsService.addressLookup(event.latLng).subscribe(resolvedAddress => this.selectedAddress = resolvedAddress);
   }
 
-  onAlertSubmit() {
-    const coordinates: google.maps.LatLngLiteral = this.alertForm.get('coordinates').value.toJSON();
-    this.alertForm.get('coordinates').setValue(new firebase.firestore.GeoPoint(coordinates.lat, coordinates.lng));
-    this.firestore.collection('alerts').add(
-      this.alertForm.value
-    );
+  async onAlertSubmit() {
+    if (this.alertForm.valid) {
+      this.isSubmissionDisabled = true;
+      const coordinates: google.maps.LatLngLiteral = this.alertForm.get('coordinates').value.toJSON();
+      this.alertForm.get('coordinates').setValue(new firebase.firestore.GeoPoint(coordinates.lat, coordinates.lng));
+      const alert = await this.firestore.collection('alerts').add(
+        this.alertForm.value
+      );
+      this.router.navigate(['alert', alert.id]);
+    }
   }
 
 }

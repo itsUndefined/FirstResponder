@@ -43,10 +43,10 @@
           </div>
         </div>
 
-        <div class="form-group" formArrayName="requiredSkills">
+        <div class="form-group" formGroupName="requiredSkills">
           <label>Απαιτούμενες ικανότητες</label>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="bleeding" formControlName="0">
+            <input class="form-check-input" type="checkbox" id="bleeding" formControlName="STOP_HEAVY_BLEEDING">
             <label class="form-check-label" for="bleeding">
               Γνωρίζει να σταματάει βαριά αιμορραγία
             </label>
@@ -54,21 +54,21 @@
           </div>
 
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="shock" formControlName="1">
+            <input class="form-check-input" type="checkbox" id="shock" formControlName="TREATING_SHOCK">
             <label class="form-check-label" for="shock">
               Γνωρίζει να αντιμετωπίζει σοκ
             </label>
           </div>
 
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="cpr" formControlName="2">
+            <input class="form-check-input" type="checkbox" id="cpr" formControlName="CPR">
             <label class="form-check-label" for="cpr">
               Γνωρίζει CPR
             </label>
           </div>
 
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="defib" formControlName="3">
+            <input class="form-check-input" type="checkbox" id="defib" formControlName="AED">
             <label class="form-check-label" for="defib">
               Γνωρίζει να χρησιμοποιεί απινιδωτή
             </label>
@@ -78,7 +78,7 @@
           <label for="notes">Σημειώσεις</label>
           <textarea id="notes" class="form-control" rows="3" formControlName="notes"></textarea>
         </div>
-        <button class="btn btn-danger">Αποστολή βοήθειας</button>
+        <button class="btn btn-danger" [disabled]="isSubmissionDisabled">Αποστολή βοήθειας</button>
       </form>
     </div>
   </div>

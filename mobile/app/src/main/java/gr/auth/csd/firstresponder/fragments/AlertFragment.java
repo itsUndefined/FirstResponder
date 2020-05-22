@@ -1,4 +1,4 @@
-package gr.auth.csd.firstresponder;
+package gr.auth.csd.firstresponder.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-import android.content.pm.PackageManager;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,8 +30,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.util.Objects;
-
+import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 public class AlertFragment extends Fragment {

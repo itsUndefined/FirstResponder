@@ -1,4 +1,4 @@
-package gr.auth.csd.firstresponder;
+package gr.auth.csd.firstresponder.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+import gr.auth.csd.firstresponder.DashboardActivity;
+import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.data.Responder;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 

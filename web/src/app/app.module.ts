@@ -16,13 +16,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { AlertStatusComponent } from './alert-status/alert-status.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
     DashboardComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    AlertStatusComponent
   ],
   imports: [
     BrowserModule,

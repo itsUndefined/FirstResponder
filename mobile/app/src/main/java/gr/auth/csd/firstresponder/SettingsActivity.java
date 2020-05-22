@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import gr.auth.csd.firstresponder.fragments.BasicSettingsFragment;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override

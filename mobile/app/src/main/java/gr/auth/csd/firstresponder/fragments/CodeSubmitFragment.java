@@ -1,4 +1,4 @@
-package gr.auth.csd.firstresponder;
+package gr.auth.csd.firstresponder.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,56 +8,57 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class LogInFragment extends Fragment {
+import gr.auth.csd.firstresponder.Callback;
+import gr.auth.csd.firstresponder.R;
+import gr.auth.csd.firstresponder.fragments.LogInFragment;
+
+public class CodeSubmitFragment extends Fragment {
 
     private Callback callback;
-    private Spinner countryCode;
-    private EditText phoneNumber;
-    private View view;
+    private EditText code;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        callback = (Callback) getActivity();
-        view = inflater.inflate(R.layout.fragment_log_in, container, false);
-        Button login = view.findViewById(R.id.logInButton);
 
-        countryCode = view.findViewById(R.id.phoneCodeInput);
-        phoneNumber = view.findViewById(R.id.phoneInput);
+        callback = (Callback) getActivity();
+        View view = inflater.inflate(R.layout.fragment_code_submit, container, false);
+
+        code = view.findViewById(R.id.codeInput);
+        Button login = view.findViewById(R.id.submitCodeButton);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String validPhoneNumber = countryCode.getSelectedItem().toString() + phoneNumber.getText().toString();
-                callback.phoneVerification(validPhoneNumber);
+                callback.phoneCodeVerification(code.getText().toString());
             }
         });
 
-        ImageButton back = view.findViewById(R.id.logInBack);
+        ImageButton back = view.findViewById(R.id.backR);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                callback.reSendCode();
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_fragment_container, new StartFragment());
+                fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
                 fragmentTransaction.commit();
             }
         });
+
         if (savedInstanceState != null) {
-            countryCode.setSelection(savedInstanceState.getInt("countryCode"));
-            phoneNumber.setText(savedInstanceState.getString("phoneNumber"));
+            code.setText(savedInstanceState.getString("code"));
         }
+
         return view;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("countryCode", countryCode.getSelectedItemPosition());
-        outState.putString("phoneNumber", phoneNumber.getText().toString());
+        outState.putString("code", code.getText().toString());
     }
 }

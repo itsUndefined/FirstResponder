@@ -4,17 +4,14 @@ package gr.auth.csd.firstresponder.services;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Constraints;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
 
 import gr.auth.csd.firstresponder.helpers.UserHelpers;
 

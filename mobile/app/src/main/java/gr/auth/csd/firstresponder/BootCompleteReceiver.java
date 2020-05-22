@@ -27,8 +27,6 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 
                 if (PermissionsHandler.checkLocationPermissions(context) == PackageManager.PERMISSION_GRANTED) {
 
-                    Toast.makeText(context, "DEBUUUUUUUUUG", Toast.LENGTH_LONG).show();
-
                     FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
 
                     LocationRequest locationRequest = new LocationRequest();
@@ -46,7 +44,6 @@ public class BootCompleteReceiver extends BroadcastReceiver {
                     fusedLocationClient.requestLocationUpdates(locationRequest, locationPendingIntent).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Log.e("FIRSTRESPONDERONSTARTUP", "STARTUP SUCCESSFUL?");
                             asyncTask.finish();
                         }
                     });
