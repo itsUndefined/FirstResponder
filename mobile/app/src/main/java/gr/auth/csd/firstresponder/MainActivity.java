@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
                 super.onCodeAutoRetrievalTimeOut(verificationId);
                 Log.d(TAG, "onCodeAutoRetrievalTimeOut:" + verificationId);
                 codeTimeOut = true;
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                /*FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();*/
                 Toast.makeText(MainActivity.this, "Code time out", Toast.LENGTH_SHORT).show();
             }
         };
