@@ -49,13 +49,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import gr.auth.csd.firstresponder.AlertActivity;
 import gr.auth.csd.firstresponder.DashboardActivity;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.data.Alert;
 import gr.auth.csd.firstresponder.data.AlertData;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
+import gr.auth.csd.firstresponder.helpers.FirebaseFunctionsInstance;
 
-import static gr.auth.csd.firstresponder.DashboardActivity.DISPLAY_ALERT;
+import static gr.auth.csd.firstresponder.AlertActivity.DISPLAY_ALERT;
 
 public class AlertWorker extends ListenableWorker {
     /**
@@ -82,7 +84,7 @@ public class AlertWorker extends ListenableWorker {
 
 
         final String alertId = getInputData().getString("alert");
-        //setForegroundAsync(createForegroundInfo());
+        setForegroundAsync(createForegroundInfo());
 
         Log.i("alert_gps", "Started foreground");
 
@@ -177,8 +179,7 @@ public class AlertWorker extends ListenableWorker {
                                             data.put("status", "too_far");
                                             shouldAlertUser = false;
                                         }
-                                        FirebaseFunctions functionsInstance = FirebaseFunctions.getInstance("europe-west3");
-                                       // functionsInstance.useFunctionsEmulator("http://10.0.2.2:5001");
+                                        FirebaseFunctions functionsInstance = FirebaseFunctionsInstance.Create();
 
                                         functionsInstance.getHttpsCallable("updateUserStatus").call(data).addOnCompleteListener(new OnCompleteListener<HttpsCallableResult>() {
                                             @Override
@@ -191,13 +192,15 @@ public class AlertWorker extends ListenableWorker {
                                                 if (shouldAlertUser) {
                                                     Context context = getApplicationContext();
 
-                                                    Intent alertIntent = new Intent(context, DashboardActivity.class);
+                                                    Intent alertIntent = new Intent(context, AlertActivity.class);
                                                     AlertData alertData = new AlertData();
                                                     alertData.alert = incomingAlert;
                                                     alertData.secondsOfDrivingRequired = secondsOfDrivingRequired;
-                                                    alertIntent.putExtra(DISPLAY_ALERT, alertData);
-                                                    alertIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                                                    PendingIntent pendingAlertIntent = PendingIntent.getActivity(context, 0, alertIntent, 0);
+                                                    alertIntent
+                                                        .putExtra(DISPLAY_ALERT, alertData)
+                                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+
+                                                    PendingIntent pendingAlertIntent = PendingIntent.getActivity(context, 0, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                                     Notification.Builder notification = new Notification.Builder(context)
                                                         .setContentTitle("SOMEONE NEEDS HELP RIGHT NOW")
@@ -209,18 +212,14 @@ public class AlertWorker extends ListenableWorker {
                                                         .setFullScreenIntent(pendingAlertIntent, true);
 
                                                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                                        notification.setChannelId(createNotificationChannel("my_important_channel", "My Background Service"));
+                                                        notification.setChannelId(createNotificationChannel("alert_channel", "Alerts", true));
                                                     }
-
-
 
                                                     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
                                                         Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
                                                         AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
                                                         notification.setSound(defaultRingtoneUri, audioAttributes);
                                                     }
-
-
 
                                                     NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                                                     manager.notify(1, notification.build());
@@ -253,33 +252,41 @@ public class AlertWorker extends ListenableWorker {
         Context context = getApplicationContext();
         String channelId;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channelId = createNotificationChannel("my_important_channel", "My Background Service");
+            channelId = createNotificationChannel("gps_fix_notification", "Location service updates", false);
         } else {
             channelId = "";
         }
         String title = "Someone needs help!";
 
         Notification notification = new NotificationCompat.Builder(context, channelId)
-                .setContentTitle(title)
-                .setContentText("We are confirming your location")
-                .setTicker(title)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setOngoing(true)
-                .build();
+            .setContentTitle(title)
+            .setContentText("We are confirming your location")
+            .setTicker(title)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setOngoing(true)
+            .build();
 
         return new ForegroundInfo(42, notification);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private String createNotificationChannel(String channelId, String channelName) {
-        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+    private String createNotificationChannel(String channelId, String channelName, boolean highPriority) {
+        NotificationChannel channel;
+        if (highPriority) {
+            channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+        } else {
+            channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE);
+        }
 
 
-        Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
-        AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
-        channel.setSound(defaultRingtoneUri, audioAttributes);
+        if (highPriority) {
+            Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+            AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
+            channel.setSound(defaultRingtoneUri, audioAttributes);
+        }
 
-        channel.enableVibration(true);
+
+
 
 
         NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);

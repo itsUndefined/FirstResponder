@@ -12,7 +12,7 @@ public class Alert implements Parcelable {
     public HashMap<String, Boolean> requiredSkills; // STOP_HEAVY_BLEEDING, TREATING_SHOCK, CPR, AED
     public GeoPoint coordinates;
 
-    Alert() {}
+    public Alert() {}
 
     protected Alert(Parcel in) {
         coordinates = new GeoPoint(in.readDouble(), in.readDouble());

@@ -122,18 +122,6 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("name", helloMessage.getText().toString());
-    }
-
-    /*@Override
-    public void onStart() {
-        super.onStart();
-        alertForMission();
-    }*/
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == PermissionRequest.LOCATION_ONLY) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -150,6 +138,18 @@ public class DashboardFragment extends Fragment {
             }
         }
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("name", helloMessage.getText().toString());
+    }
+
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        alertForMission();
+    }*/
 
     private void getUserName() {
         db.collection("users").document(currentUser.getUid()).get()

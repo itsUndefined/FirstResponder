@@ -10,8 +10,8 @@ public class AlertData implements Parcelable {
     public AlertData() {}
 
     protected AlertData(Parcel in) {
-        alert = in.readParcelable(Alert.class.getClassLoader());
         secondsOfDrivingRequired = in.readInt();
+        alert = Alert.CREATOR.createFromParcel(in);
     }
 
     public static final Creator<AlertData> CREATOR = new Creator<AlertData>() {
@@ -33,7 +33,7 @@ public class AlertData implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(alert, flags);
         dest.writeInt(secondsOfDrivingRequired);
+        alert.writeToParcel(dest, flags);
     }
 }
