@@ -25,7 +25,6 @@
                 android:layout_marginTop="24dp"
                 android:layout_weight="1"
                 android:text="@string/alert_time"
-                android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
