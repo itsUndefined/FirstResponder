@@ -30,6 +30,7 @@ import java.util.Objects;
 
 import gr.auth.csd.firstresponder.data.AlertData;
 import gr.auth.csd.firstresponder.helpers.FirebaseFunctionsInstance;
+import gr.auth.csd.firstresponder.services.OngoingMissionService;
 
 public class AlertActivity extends AppCompatActivity {
 
@@ -135,6 +136,9 @@ public class AlertActivity extends AppCompatActivity {
 
                         NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                         Objects.requireNonNull(manager).cancelAll();
+
+                        Intent intent = new Intent(getApplicationContext(), OngoingMissionService.class);
+                        startService(intent);
 
                         acceptMissionButton.setVisibility(View.GONE);
                         rejectMissionButton.setVisibility(View.GONE);
