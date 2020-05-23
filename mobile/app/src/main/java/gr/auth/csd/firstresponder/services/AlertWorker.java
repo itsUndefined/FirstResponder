@@ -195,6 +195,7 @@ public class AlertWorker extends ListenableWorker {
                                                     Intent alertIntent = new Intent(context, AlertActivity.class);
                                                     AlertData alertData = new AlertData();
                                                     alertData.alert = incomingAlert;
+                                                    alertData.alertId = alertId;
                                                     alertData.secondsOfDrivingRequired = secondsOfDrivingRequired;
                                                     alertIntent
                                                         .putExtra(DISPLAY_ALERT, alertData)

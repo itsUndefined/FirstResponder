@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 public class Alert implements Parcelable {
     public String notes;
+    public String address;
     public HashMap<String, Boolean> requiredSkills; // STOP_HEAVY_BLEEDING, TREATING_SHOCK, CPR, AED
     public GeoPoint coordinates;
 
@@ -17,6 +18,7 @@ public class Alert implements Parcelable {
     protected Alert(Parcel in) {
         coordinates = new GeoPoint(in.readDouble(), in.readDouble());
         notes = in.readString();
+        address = in.readString();
         requiredSkills = (HashMap<String, Boolean>) in.readSerializable();
     }
 
@@ -42,6 +44,7 @@ public class Alert implements Parcelable {
         dest.writeDouble(coordinates.getLatitude());
         dest.writeDouble(coordinates.getLongitude());
         dest.writeString(notes);
+        dest.writeString(address);
         dest.writeSerializable(requiredSkills);
     }
 }

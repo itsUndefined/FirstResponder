@@ -71,13 +71,13 @@ public class AlertFragment extends Fragment {
                         });*/
                 //Opening Google Maps application, navigation by foot (mode = c -> car).
                 Uri gmmIntentUri = Uri.parse("google.navigation:q=40.64873,22.9615117&mode=c");
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        if (mapIntent.resolveActivity(activity.getPackageManager()) != null) {
-            startActivity(mapIntent);
-        }
-    }
-});
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                if (mapIntent.resolveActivity(activity.getPackageManager()) != null) {
+                    startActivity(mapIntent);
+                }
+            }
+        });
 
 
 

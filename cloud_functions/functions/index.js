@@ -74,7 +74,7 @@ exports.alertUsers = functions.region('europe-west3').firestore.document('alerts
 });
 
 exports.updateUserStatus = functions.region('europe-west3').https.onCall(async (data, context) => {
-    console.log(data);
+
     const alertDoc = await db.collection('alertResponders').doc(data.alertId).get();
     if (!alertDoc.exists) {
         return;
@@ -82,10 +82,23 @@ exports.updateUserStatus = functions.region('europe-west3').https.onCall(async (
     const responders = alertDoc.data().respondersStatus;
     for (const uid in responders) {
         if (uid === context.auth.uid) {
-            alertDoc.ref.update(`respondersStatus.${uid}`, {
-                knownLocation: new admin.firestore.GeoPoint(data.knownLocation.latitude, data.knownLocation.longitude),
-                status: data.status
-            });
+
+            const updatedData = {};
+
+            if (data.status === 'awaiting') {
+                updatedData.knownLocation = new admin.firestore.GeoPoint(data.knownLocation.latitude, data.knownLocation.longitude);
+            }
+
+            if (data.status === 'accepted') {
+                var currentTime = (Date.now() / 1000);
+                if (currentTime - alertDoc.createTime.seconds > 90) {
+                    return false;
+                }
+            }
+
+            updatedData.status = data.status;
+
+            alertDoc.ref.update(`respondersStatus.${uid}`, updatedData);
             break;
         }
     }
@@ -93,9 +106,9 @@ exports.updateUserStatus = functions.region('europe-west3').https.onCall(async (
     if (data.status === "too_far" || data.status === "rejected") {
         await db.collection('users').doc(context.auth.uid).update("busy", false);
     } else {
-        await db.collection('users').doc(context.auth.uid).update("busy", false);
+        await db.collection('users').doc(context.auth.uid).update("busy", true);
     }
-
+    return true;
 
 });
 

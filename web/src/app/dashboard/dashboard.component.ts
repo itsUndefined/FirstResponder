@@ -29,8 +29,16 @@ export class DashboardComponent implements OnInit {
 
   displayInlineMap = false;
 
-  selectedAddress: string;
+  get selectedAddress() {
+    return this.alertForm.get('address').value;
+  }
+
+  set selectedAddress(address: string) {
+    this.alertForm.get('address').setValue(address);
+  }
+
   alertForm = new FormGroup({
+    address: new FormControl(null, [Validators.required]),
     coordinates: new FormControl(null, [Validators.required]),
     requiredSkills: new FormGroup({
       AED: new FormControl(null),
