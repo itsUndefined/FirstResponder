@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#253A4B</color>
     <color name="colorAccent">#F23B5F</color>
 
-    <color name="colorAcceptMissionButton">#00CC00</color>
-    <color name="colorRejectMissionButton">#FF0000</color>
+    <color name="colorAcceptMissionButton">#35D68D</color>
+    <color name="colorRejectMissionButton">#D6042A</color>
 
     <color name="colorAlertDetailsButton">#D3D3D3</color>
 
