@@ -19,11 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="04bb9dfb-f091-4a9e-874b-524e0da2c34a" name="Default Changelist" comment="cloud functions updated">
+    <list default="true" id="04bb9dfb-f091-4a9e-874b-524e0da2c34a" name="Default Changelist" comment="cloud tasks works">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/functions/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +67,9 @@
       <workItem from="1587754479427" duration="1478000" />
       <workItem from="1590318233708" duration="17000" />
       <workItem from="1590318273178" duration="1103000" />
-      <workItem from="1590326869880" duration="7822000" />
+      <workItem from="1590326869880" duration="8900000" />
+      <workItem from="1590335963264" duration="8000" />
+      <workItem from="1590335973182" duration="3000" />
     </task>
     <task id="LOCAL-00001" summary="cloud function initialize">
       <created>1587553547531</created>
@@ -113,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587746596762</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="cloud tasks works">
+      <created>1590334964276</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1590334964276</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,17 +145,19 @@
     <MESSAGE value="activatingAlert created" />
     <MESSAGE value="rejectAlert created" />
     <MESSAGE value="cloud functions updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="cloud functions updated" />
+    <MESSAGE value="cloud tasks works" />
+    <option name="LAST_COMMIT_MESSAGE" value="cloud tasks works" />
   </component>
   <component name="WindowStateProjectService">
     <state x="674" y="222" key="RollbackChangesDialog" timestamp="1587745335901">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="674" y="222" key="RollbackChangesDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1587745335901" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1587746601366">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1590334967994">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1587746601366" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1590334967994" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1587642913764">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

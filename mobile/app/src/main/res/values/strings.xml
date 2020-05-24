@@ -23,6 +23,7 @@
         Υπηρεσιών και την Πολιτική Απορρήτου. Ένα SMS μπορεί να σταλεί.
         \nΕνδέχεται να ισχύουν χρεώσεις μηνυμάτων και δεδομένων.
     </string>
+    <string name="code_hint">Κωδικός Επιβεβαίωσης</string>
     <string name="logIn_button">Επαλήθευση αριθμού τηλεφώνου</string>
     <string name="phoneCode_title">Εισάγετε τον κωδικό επαλήθευσης!</string>
     <string name="phoneCode_button">Υποβολή κωδικού</string>

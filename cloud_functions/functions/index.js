@@ -12,7 +12,6 @@ const {CloudTasksClient} = require('@google-cloud/tasks');
 exports.goingBackToNotBusy = functions.region('europe-west3').firestore.document('users/{userId}').onUpdate(async (change, context) => {
    const after = change.after.get('busy');
    if (after === true) {
-       var time = 10;
 
        const project = 'firstresponder-1f0df';
        const queue = 'alert';
