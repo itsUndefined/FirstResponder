@@ -38,13 +38,13 @@ import { AlertStatusComponent } from './alert-status/alert-status.component';
     NgbAlertModule
   ],
   providers: [
-    {
-      provide: FIRESTORE_SETTINGS,
-      useValue: environment.production ? undefined : {
-        host: 'localhost:8080',
-        ssl: false
-      }
-    }
+    // {
+    //   provide: FIRESTORE_SETTINGS,
+    //   useValue: environment.production ? undefined : {
+    //     host: 'localhost:8080',
+    //     ssl: false
+    //   }
+    // }
 ],
   bootstrap: [AppComponent]
 })

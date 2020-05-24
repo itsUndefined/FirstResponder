@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -34,13 +35,17 @@ import gr.auth.csd.firstresponder.services.OngoingMissionService;
 
 public class AlertActivity extends AppCompatActivity {
 
+    private AlertData alertData;
+    private Boolean accepted = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
-            return;
+            alertData = savedInstanceState.getParcelable(DISPLAY_ALERT);
+            accepted = savedInstanceState.getBoolean("accepted");
         }
 
         if (getIntent().hasExtra(DISPLAY_ALERT)) {
@@ -48,13 +53,12 @@ public class AlertActivity extends AppCompatActivity {
             if(Objects.requireNonNull(manager).isKeyguardLocked()) {
                 turnScreenOnAndKeyguardOff();
             }
-        } else {
-            finishAffinity(); // Activity cannot work without display_alert data
         }
 
         setContentView(R.layout.activity_alert);
 
-        final AlertData alertData = getIntent().getParcelableExtra(DISPLAY_ALERT);
+        alertData = getIntent().getParcelableExtra(DISPLAY_ALERT);
+        accepted = getIntent().getBooleanExtra("accepted", false);
 
         RadioGroup heavyBleedingRadio = this.findViewById(R.id.heavy_bleeding_radio_group);
         RadioGroup treatShockRadio = this.findViewById(R.id.treat_shock_radio_group);
@@ -108,6 +112,11 @@ public class AlertActivity extends AppCompatActivity {
         final Button acceptMissionButton = this.findViewById(R.id.button_accept_mission);
         final Button rejectMissionButton = this.findViewById(R.id.button_reject_mission);
 
+        if (accepted) {
+            acceptMissionButton.setVisibility(View.GONE);
+            rejectMissionButton.setVisibility(View.GONE);
+        }
+
         acceptMissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,8 +147,10 @@ public class AlertActivity extends AppCompatActivity {
                         Objects.requireNonNull(manager).cancelAll();
 
                         Intent intent = new Intent(getApplicationContext(), OngoingMissionService.class);
+                        intent.putExtra(DISPLAY_ALERT, alertData);
                         startService(intent);
 
+                        accepted = true;
                         acceptMissionButton.setVisibility(View.GONE);
                         rejectMissionButton.setVisibility(View.GONE);
                     }
@@ -202,6 +213,13 @@ public class AlertActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putParcelable(DISPLAY_ALERT, alertData);
+        outState.putBoolean("accepted", accepted);
     }
 
     public static String DISPLAY_ALERT = "gr.auth.csd.firstresponder.DisplayAlert";

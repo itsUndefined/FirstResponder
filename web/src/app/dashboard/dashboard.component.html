@@ -2,14 +2,14 @@
   <div class="input-group mt-3 mb-2">
     <input  type="text" class="form-control" placeholder="Διεύθυνση συμβάντος" [(ngModel)]="address">
     <div class="input-group-append">
-      <button class="btn btn-primary" type="button" (click)="onFindAddress()">Find</button>
+      <button class="btn btn-primary" type="button" (click)="onFindAddress()">Αναζήτηση</button>
     </div>
   </div>
 
   <ngb-alert type="warning" (close)="onAlertClose()" *ngIf="alertMessage">{{ alertMessage }}</ngb-alert>
 
   <div class="mx-auto">
-    <google-map *ngIf="!selectedAddress" width="100%" [center]="center" [zoom]="mapZoomLevel" (mapClick)="onAddMarker($event)">
+    <google-map *ngIf="!confirmedAddress" width="100%" [center]="center" [zoom]="mapZoomLevel" (mapClick)="onAddMarker($event)">
       <map-marker
         [position]="markerPosition"
         *ngIf="markerPosition"
@@ -20,7 +20,17 @@
     </google-map>
   </div>
 
-  <div class="card" *ngIf="selectedAddress">
+  <div style="margin: auto; width: fit-content;" *ngIf="selectedAddress && !confirmedAddress">
+    <br>
+    <p>
+      Διεύθυνση: {{ selectedAddress }}
+    </p>
+    <p>
+      <button class="btn btn-primary mx-auto" style="padding: 8px 48px; display: block;" (click)="confirmedAddress = true">Επιβεβαίωση επιλογής</button>
+    </p>
+  </div>
+
+  <div class="card" *ngIf="confirmedAddress">
     <div class="card-body">
       <h5 class="card-title">Αποστολή πρώτων ανταποκριτών έκτακτης ανάγκης</h5>
       <form [formGroup]="alertForm" (submit)="onAlertSubmit()">

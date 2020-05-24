@@ -53,7 +53,7 @@ exports.alertUsers = functions.region('europe-west3').firestore.document('alerts
     const maxDistance = 5;
     const alertData = change.data();
     let mainLocation = [alertData.coordinates.latitude, alertData.coordinates.longitude];
-    let idleUsersQuery = db.collection('users');//.where('busy', '==', false);
+    let idleUsersQuery = db.collection('users').where('busy', '==', false);
 
     Object.keys(alertData.requiredSkills).forEach(skill => {
         console.log('skill: ' + skill);
@@ -97,11 +97,6 @@ exports.alertUsers = functions.region('europe-west3').firestore.document('alerts
                 }
             )
         );
-            // let pendingData = {
-            //     alertId: change.id,
-            //     isActive: false
-            // };
-            // await db.collection('pending').user(userId).set(pendingData);
     }
 
     await Promise.all(userTask);
@@ -150,25 +145,4 @@ exports.updateUserStatus = functions.region('europe-west3').https.onCall(async (
         await db.collection('users').doc(context.auth.uid).update("busy", true);
     }
     return true;
-
 });
-
-// exports.acceptAlert = functions.region('europe-west3').firestore.document('pending/{pendingId}').onUpdate((change, context) => {
-//     db.collection('pending')
-//         .where('alertId', '==', change.after.data()['alertId'])
-//         .where('isActive', '==', false)
-//         .delete()
-//         .then()
-//         .catch();
-// });
-
-// exports.rejectAlert = functions.region('europe-west3').firestore.document('pending/{pendingId}').onDelete((change, context) => {
-//     db.collection('pending').where('alertId', '==', change.data()['alertId']).get()
-//         .then(async snapshot => {
-//             // eslint-disable-next-line promise/always-return
-//             if (snapshot.empty) {
-//                 await db.collection('alerts').doc(change.data()['alertId']).delete();
-//             }
-//         })
-//         .catch();
-// });
