@@ -7,6 +7,48 @@ const db = admin.firestore();
 
 const geofire = require('geofire');
 
+const {CloudTasksClient} = require('@google-cloud/tasks');
+
+exports.goingBackToNotBusy = functions.region('europe-west3').firestore.document('users/{userId}').onUpdate(async (change, context) => {
+   const after = change.after.get('busy');
+   if (after === true) {
+       var time = 10;
+
+       const project = 'firstresponder-1f0df';
+       const queue = 'alert';
+       const location = 'europe-west1';
+       const url = 'https://europe-west3-firstresponder-1f0df.cloudfunctions.net/alertCallback';
+       const payload = {
+           id: change.after.id
+       };
+
+       console.log('goingBackToNotBusy: ', payload.id);
+
+       const client = new CloudTasksClient();
+
+       const task = {
+            httpRequest: {
+                httpMethod: 'POST',
+                url,
+                body: Buffer.from(JSON.stringify(payload)).toString('base64'),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            },
+            executeTime: Date.now() / 1000 + 1
+       };
+
+       const parent = client.queuePath(project, location, queue);
+
+       await client.createTask({ parent: parent, task });
+   }
+});
+
+exports.alertCallback = functions.region('europe-west3').https.onRequest(async (req, res) => {
+    await db.collection('users').doc(req.body.id).update("busy", false);
+    res.end();
+});
+
 exports.alertUsers = functions.region('europe-west3').firestore.document('alerts/{alertId}').onCreate(async (change, context) => {
 
     const maxDistance = 5;

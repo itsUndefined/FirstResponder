@@ -21,7 +21,9 @@
   <component name="ChangeListManager">
     <list default="true" id="04bb9dfb-f091-4a9e-874b-524e0da2c34a" name="Default Changelist" comment="cloud functions updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../mobile/app/src/main/java/gr/auth/csd/firstresponder/MissionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../mobile/app/src/main/java/gr/auth/csd/firstresponder/MissionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/functions/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/functions/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +67,9 @@
       <workItem from="1587736915119" duration="586000" />
       <workItem from="1587744418983" duration="2874000" />
       <workItem from="1587754479427" duration="1478000" />
+      <workItem from="1590318233708" duration="17000" />
+      <workItem from="1590318273178" duration="1103000" />
+      <workItem from="1590326869880" duration="7822000" />
     </task>
     <task id="LOCAL-00001" summary="cloud function initialize">
       <created>1587553547531</created>
