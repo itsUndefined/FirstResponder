@@ -1,3 +1,27 @@
-<div *ngIf="alert">
-  {{alert.respondersStatus | json}}
+<div class="container">
+  <h2>Κατάσταση περιστατικού</h2>
+  <div *ngIf="alert">
+
+    <ngb-alert type="info" *ngIf="pendingCount" [dismissible]="false">
+      {{ pendingCount > 1 ? 'Έχουν' : 'Έχει' }} βρεθεί {{ pendingCount }} {{ pendingCount > 1 ? 'συσκευές' : 'συσκευή' }} που πιθανόν είναι κοντά στο περιστατικό.
+      Ψάχνουμε την ακριβή τοποθεσία {{ pendingCount > 1 ? 'τους' : 'της' }}.
+    </ngb-alert>
+
+    <ngb-alert type="info" *ngIf="awaitingCount" [dismissible]="false">
+      Έχουμε επιβεβαιώσει την τοποθεσία και καλούμε {{ awaitingCount }} {{ awaitingCount > 1 ? 'εθελοντές' : 'εθελοντή' }}.
+    </ngb-alert>
+
+    <ngb-alert type="success" *ngIf="acceptedCount" [dismissible]="false">
+      {{ acceptedCount }} {{ acceptedCount > 1 ? 'εθελοντές βρίσκονται' : 'εθελοντής βρίσκεται' }} καθοδόν!
+    </ngb-alert>
+
+    <ngb-alert type="warning" *ngIf="tooFarCount" [dismissible]="false">
+      Δυστυχώς {{ tooFarCount }} {{ tooFarCount > 1 ? 'συσκευές βρίσκονται' : 'συσκευή βρίσκεται' }} πολύ μακριά από το περιστατικό.
+    </ngb-alert>
+
+    <ngb-alert type="danger" *ngIf="rejectCount" [dismissible]="false">
+      {{ rejectCount }} {{ rejectCount > 1 ? 'εθελοντές έχουν' : 'εθελοντής έχει' }} απορρίψει την αίτηση.
+    </ngb-alert>
+
+  </div>
 </div>

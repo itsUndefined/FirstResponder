@@ -17,12 +17,36 @@ export class AlertStatusComponent implements OnInit, OnDestroy {
 
   alert: AlertResponders;
 
+  pendingCount: number;
+  rejectCount: number;
+  tooFarCount: number;
+  awaitingCount: number;
+  acceptedCount: number;
+
   ngOnInit(): void {
     const alertId = this.activatedRoute.snapshot.params.alertId;
 
     this.changesObserver = this.firestore.collection('alertResponders').doc<AlertResponders>(alertId).snapshotChanges().subscribe((res) => {
       this.alert = res.payload.data();
+      if (!this.alert) {
+        return;
+      }
+      this.pendingCount = this.getStatusCount('pending_location');
+      this.acceptedCount = this.getStatusCount('accepted');
+      this.rejectCount = this.getStatusCount('rejected');
+      this.tooFarCount = this.getStatusCount('too_far');
+      this.awaitingCount = this.getStatusCount('awaiting');
     });
+  }
+
+  getStatusCount(type: 'accepted' | 'too_far' | 'rejected' | 'awaiting' | 'pending_location') {
+    let count = 0;
+    Object.keys(this.alert.respondersStatus).forEach(responder => {
+      if (this.alert.respondersStatus[responder].status === type) {
+        count++;
+      }
+    });
+    return count;
   }
 
   ngOnDestroy() {
