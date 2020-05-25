@@ -15,57 +15,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <Button
                 android:id="@+id/basicSettingsBack"
-                android:layout_width="34dp"
-                android:layout_height="27dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/back"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/settingsNameTitleTextView"
-                android:layout_width="75dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
-                android:gravity="center"
-                android:text="@string/settings_name"
-                android:textAlignment="textEnd"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/namePlainText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/basicSettingsBack"
-                tools:ignore="RtlCompat" />
-
-            <TextView
-                android:id="@+id/settingsSurnameTitleTextView"
-                android:layout_width="75dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
-                android:gravity="center"
-                android:text="@string/settings_surname"
-                android:textAlignment="textEnd"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/surnamePlainText"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/settingsNameTitleTextView"
-                tools:ignore="RtlCompat" />
-
-            <TextView
-                android:id="@+id/settingsKnownSkillsHeaderTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:icon="@drawable/ic_arrow_back_black_24dp"
+                style="@style/Widget.App.Button.OutlinedButton.IconOnly"/>
+
+            <TextView
+                android:id="@+id/settingsKnownSkillsHeaderTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="12dp"
                 android:text="@string/settings_knownSkills"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display1"
@@ -73,7 +41,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/settingsSurnameTitleTextView" />
+                app:layout_constraintTop_toBottomOf="@+id/surnamePlainText" />
 
             <CheckBox
                 android:id="@+id/heavyBleedingCheckBox"
@@ -123,35 +91,45 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cprCheckbox" />
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/namePlainText"
-                android:layout_width="220dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="4dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/input_form"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:hint="@string/settings_name"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/settingsNameTitleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/basicSettingsBack" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15">
 
-            <EditText
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/surnamePlainText"
-                android:layout_width="220dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="12dp"
-                android:background="@drawable/input_form"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:hint="@string/settings_surname"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/settingsSurnameTitleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/namePlainText" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/namePlainText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/settingSaveChangesButton"
@@ -161,9 +139,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="48dp"
-                android:background="@drawable/button"
                 android:text="@string/settings_SaveChanges_Button"
-                android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -171,6 +147,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/aedCheckbox"
                 app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/settings_title"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/basicSettingsBack" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

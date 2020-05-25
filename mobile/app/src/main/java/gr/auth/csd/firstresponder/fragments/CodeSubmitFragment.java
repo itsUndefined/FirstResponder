@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import gr.auth.csd.firstresponder.Callback;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.fragments.LogInFragment;
@@ -20,7 +22,7 @@ import gr.auth.csd.firstresponder.fragments.LogInFragment;
 public class CodeSubmitFragment extends Fragment {
 
     private Callback callback;
-    private EditText code;
+    private TextInputLayout code;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
@@ -34,11 +36,11 @@ public class CodeSubmitFragment extends Fragment {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.phoneCodeVerification(code.getText().toString());
+                callback.phoneCodeVerification(code.getEditText().getText().toString());
             }
         });
 
-        ImageButton back = view.findViewById(R.id.backR);
+        Button back = view.findViewById(R.id.backR);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +52,7 @@ public class CodeSubmitFragment extends Fragment {
         });
 
         if (savedInstanceState != null) {
-            code.setText(savedInstanceState.getString("code"));
+            code.getEditText().setText(savedInstanceState.getString("code"));
         }
 
         return view;
@@ -59,6 +61,6 @@ public class CodeSubmitFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("code", code.getText().toString());
+        outState.putString("code", code.getEditText().getText().toString());
     }
 }

@@ -205,7 +205,7 @@ public class AlertWorker extends ListenableWorker {
 
                                                     Notification.Builder notification = new Notification.Builder(context)
                                                         .setContentTitle("SOMEONE NEEDS HELP RIGHT NOW")
-                                                        .setSmallIcon(R.drawable.accept_mission_button)
+                                                        .setSmallIcon(R.drawable.ic_launcher_foreground)
                                                         .setPriority(Notification.PRIORITY_MAX)
                                                         .setCategory(Notification.CATEGORY_CALL)
                                                         .setOngoing(true)

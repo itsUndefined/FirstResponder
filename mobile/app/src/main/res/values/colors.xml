@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#253A4B</color>
-    <color name="colorAccent">#F23B5F</color>
+    <color name="colorPrimary">#F23B5F</color>
+    <color name="colorPrimaryDark">#AE8CA3</color>
+    <color name="colorAccent">#6DD6DA</color>#
 
     <color name="colorAcceptMissionButton">#35D68D</color>
     <color name="colorRejectMissionButton">#D6042A</color>
 
     <color name="colorAlertDetailsButton">#D3D3D3</color>
 
-    <color name="formPrimary">#E8EBEC</color>
+    <color name="my_app_primary_variant_color">#FFE2D1</color>
+    <color name="my_app_secondary_variant_color">#E1F0C4</color>
+    <color name="my_app_surface_color">#6BAB90</color>
+    <color name="my_app_color_on_primary">#55917F</color>
+    <color name="my_app_color_on_secondary">#5E4C5A</color>
+    <color name="my_app_color_on_background">#D6BBC0</color>
+    <color name="my_app_color_on_error">#D0A3BF</color>
+    <color name="my_app_color_on_surface">#C585B3</color>
+    <color name="mtrl_scrim_color">#BC69AA</color>
+
 </resources>

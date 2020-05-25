@@ -52,7 +52,7 @@ public class OngoingMissionService extends Service {
 
         Notification.Builder notification = new Notification.Builder(getApplicationContext())
                 .setContentTitle("asdsada")
-                .setSmallIcon(R.drawable.accept_mission_button)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setPriority(Notification.PRIORITY_MIN)
                 .setCategory(Notification.CATEGORY_STATUS)
                 .setContentIntent(pendingAlertIntent)

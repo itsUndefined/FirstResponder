@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import gr.auth.csd.firstresponder.R;
@@ -22,7 +23,7 @@ public class AboutUsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_about_us, container, false);
 
-        ImageButton back = view.findViewById(R.id.aboutUsBack);
+        Button back = view.findViewById(R.id.aboutUsBack);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

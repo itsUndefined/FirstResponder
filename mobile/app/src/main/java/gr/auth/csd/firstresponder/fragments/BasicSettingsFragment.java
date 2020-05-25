@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -34,8 +35,8 @@ public class BasicSettingsFragment extends Fragment {
     private FirebaseUser currentUser;
     private FirebaseFirestore database;
 
-    private TextView name;
-    private TextView surname;
+    private TextInputLayout name;
+    private TextInputLayout surname;
     private CheckBox heavyBleedingCheckbox;
     private CheckBox treatShockCheckbox;
     private CheckBox cprCheckbox;
@@ -60,7 +61,7 @@ public class BasicSettingsFragment extends Fragment {
 
         user = new Responder();
 
-        ImageButton returnToLogInActivityArrow = view.findViewById(R.id.basicSettingsBack);
+        Button returnToLogInActivityArrow = view.findViewById(R.id.basicSettingsBack);
         returnToLogInActivityArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,8 +73,8 @@ public class BasicSettingsFragment extends Fragment {
         if (savedInstanceState == null) {
             readFieldsFromDatabase();
         } else {
-            name.setText(savedInstanceState.getString("name"));
-            surname.setText(savedInstanceState.getString("surname"));
+            name.getEditText().setText(savedInstanceState.getString("name"));
+            surname.getEditText().setText(savedInstanceState.getString("surname"));
             heavyBleedingCheckbox.setChecked(savedInstanceState.getBoolean("heavyBleedingCheckbox"));
             treatShockCheckbox.setChecked(savedInstanceState.getBoolean("treatShockCheckbox"));
             cprCheckbox.setChecked(savedInstanceState.getBoolean("cprCheckbox"));
@@ -87,8 +88,8 @@ public class BasicSettingsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("name", name.getText().toString());
-        outState.putString("surname", surname.getText().toString());
+        outState.putString("name", name.getEditText().getText().toString());
+        outState.putString("surname", surname.getEditText().getText().toString());
         outState.putBoolean("heavyBleedingCheckbox", heavyBleedingCheckbox.isChecked());
         outState.putBoolean("treatShockCheckbox", treatShockCheckbox.isChecked());
         outState.putBoolean("cprCheckbox", cprCheckbox.isChecked());
@@ -107,8 +108,8 @@ public class BasicSettingsFragment extends Fragment {
     }
 
     private void initializeViews(){
-        name.setText(user.getFirstName());
-        surname.setText(user.getLastName());
+        name.getEditText().setText(user.getFirstName());
+        surname.getEditText().setText(user.getLastName());
         heavyBleedingCheckbox.setChecked(user.getSkills().get("STOP_HEAVY_BLEEDING"));
         treatShockCheckbox.setChecked(user.getSkills().get("TREATING_SHOCK"));
         cprCheckbox.setChecked(user.getSkills().get("CPR"));
@@ -119,8 +120,8 @@ public class BasicSettingsFragment extends Fragment {
         saveChangesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setFirstName(name.getText().toString());
-                user.setLastName(surname.getText().toString());
+                user.setFirstName(name.getEditText().getText().toString());
+                user.setLastName(surname.getEditText().getText().toString());
                 HashMap<String, Boolean> skills = new HashMap<>();
                 if (heavyBleedingCheckbox.isChecked()) {
                     skills.put("STOP_HEAVY_BLEEDING", true);

@@ -37,10 +37,12 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Objects;
 
+import gr.auth.csd.firstresponder.AlertActivity;
 import gr.auth.csd.firstresponder.LocationReceiver;
 import gr.auth.csd.firstresponder.MainActivity;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.SettingsActivity;
+import gr.auth.csd.firstresponder.data.Alert;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 import gr.auth.csd.firstresponder.helpers.PermissionRequest;
 import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
@@ -55,8 +57,6 @@ public class DashboardFragment extends Fragment {
     private Context context;
     private Activity activity;
     private TextView helloMessage;
-    private TextView serverStatus;
-    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,12 +68,8 @@ public class DashboardFragment extends Fragment {
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestoreInstance.Create();
 
-        Button alert = view.findViewById(R.id.alertButton);
-
         Toolbar toolbar = view.findViewById(R.id.toolbarW);
         helloMessage = view.findViewById(R.id.helloUser);
-        serverStatus = view.findViewById(R.id.serverStatus);
-        progressBar = view.findViewById(R.id.progressBar);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -104,20 +100,11 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        alert.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.dashboard_activity_fragment_container, new AlertFragment());
-                fragmentTransaction.commit();
-            }
-        });
         if (savedInstanceState == null) {
             getUserName();
         } else {
             helloMessage.setText(savedInstanceState.getString("name"));
         }
-        getServerStatus();
         return view;
     }
 
@@ -170,12 +157,6 @@ public class DashboardFragment extends Fragment {
                         }
                     }
                 });
-    }
-
-    private void getServerStatus() {
-        // TODO: code to retrieve server status
-        serverStatus.setText("Disconnected from server");
-        progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
     }
 
     private void showAccessDeniedWarningMessage(){

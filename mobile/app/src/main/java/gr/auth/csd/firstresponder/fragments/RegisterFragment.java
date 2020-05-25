@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,8 +37,8 @@ public class RegisterFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseUser currentUser;
 
-    private EditText fName;
-    private EditText lName;
+    private TextInputLayout fName;
+    private TextInputLayout lName;
     private CheckBox hb;
     private CheckBox ts;
     private CheckBox cpr;
@@ -61,8 +62,8 @@ public class RegisterFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fName.getText().toString().matches("") || lName.getText().toString().matches("")) {
-                    if (fName.getText().toString().matches("")) {
+                if (fName.getEditText().getText().toString().matches("") || lName.getEditText().getText().toString().matches("")) {
+                    if (fName.getEditText().getText().toString().matches("")) {
                         Toast.makeText(getActivity(), "Invalid first name", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getActivity(), "Invalid last name", Toast.LENGTH_SHORT).show();
@@ -78,7 +79,7 @@ public class RegisterFragment extends Fragment {
                     // User knows how to use a defibrillator.
                     if (d.isChecked()) { skills.put("AED", true); } else {skills.put("AED", false); }
 
-                    Responder responder = new Responder(fName.getText().toString(), lName.getText().toString(), skills);
+                    Responder responder = new Responder(fName.getEditText().getText().toString(), lName.getEditText().getText().toString(), skills);
 
                     db.collection("users").document(currentUser.getUid())
                             .set(responder)
@@ -101,8 +102,8 @@ public class RegisterFragment extends Fragment {
         });
 
         if (savedInstanceState != null) {
-            fName.setText(savedInstanceState.getString("fname"));
-            lName.setText(savedInstanceState.getString("lname"));
+            fName.getEditText().setText(savedInstanceState.getString("fname"));
+            lName.getEditText().setText(savedInstanceState.getString("lname"));
             hb.setChecked(savedInstanceState.getBoolean("hb"));
             ts.setChecked(savedInstanceState.getBoolean("ts"));
             cpr.setChecked(savedInstanceState.getBoolean("cpr"));
@@ -115,8 +116,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("fname", fName.getText().toString());
-        outState.putString("lname", lName.getText().toString());
+        outState.putString("fname", fName.getEditText().getText().toString());
+        outState.putString("lname", lName.getEditText().getText().toString());
         outState.putBoolean("hb", hb.isChecked());
         outState.putBoolean("ts", ts.isChecked());
         outState.putBoolean("cpr", cpr.isChecked());

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 
@@ -65,11 +66,11 @@ public class AlertActivity extends AppCompatActivity {
         RadioGroup cprRadio = this.findViewById(R.id.cpr_radio_group);
         RadioGroup aedRadio = this.findViewById(R.id.aed_radio_group);
 
-        TextView estimatedTimeText = this.findViewById(R.id.estimated_time_value_text);
-        estimatedTimeText.setText(Integer.toString(alertData.secondsOfDrivingRequired) + " δευτερόλεπτα");
+        TextInputLayout estimatedTimeText = this.findViewById(R.id.estimated_time_value_text);
+        estimatedTimeText.getEditText().setText(Integer.toString(alertData.secondsOfDrivingRequired) + " δευτερόλεπτα");
 
-        TextView alertAddressText = this.findViewById(R.id.alert_address);
-        alertAddressText.setText(alertData.alert.address);
+        TextInputLayout alertAddressText = this.findViewById(R.id.alert_address);
+        alertAddressText.getEditText().setText(alertData.alert.address);
 
         if (Boolean.TRUE.equals(alertData.alert.requiredSkills.get("STOP_HEAVY_BLEEDING"))) {
             heavyBleedingRadio.check(R.id.heavy_bleeding_yes);
