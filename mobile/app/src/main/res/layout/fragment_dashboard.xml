@@ -28,14 +28,13 @@
                 android:id="@+id/toolbarW"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:theme="@style/ToolbarOverflowIcon"
+                android:background="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:menu="@menu/main_menu"
                 app:title="First Responder"
-                app:titleTextColor="@color/colorPrimary" />
+                app:titleTextColor="@color/my_app_color_on_primary" />
 
             <TextView
                 android:id="@+id/helloUser"
