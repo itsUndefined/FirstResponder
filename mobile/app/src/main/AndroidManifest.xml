@@ -20,9 +20,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service  android:name=".services.OngoingMissionService" />
+        <service
+            android:name=".services.IncomingAlertService"
+            android:enabled="true"
+            android:exported="false"></service>
+        <service android:name=".services.OngoingMissionService" />
 
-        <activity android:name=".AlertActivity" android:screenOrientation="sensorPortrait"
+        <activity
+            android:name=".AlertActivity"
+            android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
 
         <meta-data

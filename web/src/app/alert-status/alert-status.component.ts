@@ -28,6 +28,7 @@ export class AlertStatusComponent implements OnInit, OnDestroy {
 
     this.changesObserver = this.firestore.collection('alertResponders').doc<AlertResponders>(alertId).snapshotChanges().subscribe((res) => {
       this.alert = res.payload.data();
+      console.log(this.alert);
       if (!this.alert) {
         return;
       }

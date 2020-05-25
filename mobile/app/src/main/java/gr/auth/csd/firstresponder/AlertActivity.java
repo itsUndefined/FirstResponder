@@ -2,17 +2,23 @@ package gr.auth.csd.firstresponder;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.ListenableWorker;
 
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -32,12 +38,16 @@ import java.util.Objects;
 
 import gr.auth.csd.firstresponder.data.AlertData;
 import gr.auth.csd.firstresponder.helpers.FirebaseFunctionsInstance;
+import gr.auth.csd.firstresponder.services.IncomingAlertService;
 import gr.auth.csd.firstresponder.services.OngoingMissionService;
 
-public class AlertActivity extends AppCompatActivity {
+public class AlertActivity extends AppCompatActivity implements IncomingAlertService.Callback {
 
     private AlertData alertData;
     private Boolean accepted = false;
+
+    private IncomingAlertService incomingAlertService;
+    private ServiceConnection connection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +57,33 @@ public class AlertActivity extends AppCompatActivity {
             onRestoreInstanceState(savedInstanceState);
             alertData = savedInstanceState.getParcelable(DISPLAY_ALERT);
             accepted = savedInstanceState.getBoolean("accepted");
+        } else {
+            alertData = getIntent().getParcelableExtra(DISPLAY_ALERT);
+            accepted = getIntent().getBooleanExtra("accepted", false);
         }
-
-        if (getIntent().hasExtra(DISPLAY_ALERT)) {
-            KeyguardManager manager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
-            if(Objects.requireNonNull(manager).isKeyguardLocked()) {
-                turnScreenOnAndKeyguardOff();
-            }
+        KeyguardManager manager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
+        if(Objects.requireNonNull(manager).isKeyguardLocked()) {
+            turnScreenOnAndKeyguardOff();
         }
 
         setContentView(R.layout.activity_alert);
 
-        alertData = getIntent().getParcelableExtra(DISPLAY_ALERT);
-        accepted = getIntent().getBooleanExtra("accepted", false);
+        Intent alertIntent = new Intent(this, IncomingAlertService.class);
+        final IncomingAlertService.Callback callbacks = this;
+        connection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                IncomingAlertService.LocalBinder binding = (IncomingAlertService.LocalBinder) service;
+                incomingAlertService = binding.getService();
+                incomingAlertService.registerClient(callbacks);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                incomingAlertService = null;
+            }
+        };
+        bindService(new Intent(this, IncomingAlertService.class), connection, 0);
 
         RadioGroup heavyBleedingRadio = this.findViewById(R.id.heavy_bleeding_radio_group);
         RadioGroup treatShockRadio = this.findViewById(R.id.treat_shock_radio_group);
@@ -92,7 +116,6 @@ public class AlertActivity extends AppCompatActivity {
         } else {
             aedRadio.check(R.id.aed_no);
         }
-
 
         Button goToMapsButton = this.findViewById(R.id.alert_maps);
         goToMapsButton.setOnClickListener(new View.OnClickListener() {
@@ -144,8 +167,7 @@ public class AlertActivity extends AppCompatActivity {
                             return;
                         }
 
-                        NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                        Objects.requireNonNull(manager).cancelAll();
+                        incomingAlertService.terminateIncomingCall(false);
 
                         Intent intent = new Intent(getApplicationContext(), OngoingMissionService.class);
                         intent.putExtra(DISPLAY_ALERT, alertData);
@@ -175,9 +197,7 @@ public class AlertActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<HttpsCallableResult> task) {
                         Toast.makeText(getApplicationContext(), "Η αποστολή απορρίφθηκε.", Toast.LENGTH_SHORT).show();
-                        NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                        Objects.requireNonNull(manager).cancelAll();
-                        finishAffinity();
+                        incomingAlertService.terminateIncomingCall(true);
                     }
                 });
             }
@@ -223,6 +243,18 @@ public class AlertActivity extends AppCompatActivity {
         outState.putBoolean("accepted", accepted);
     }
 
+    @Override
+    public void terminate() {
+        finishAffinity();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
+    }
+
     public static String DISPLAY_ALERT = "gr.auth.csd.firstresponder.DisplayAlert";
+
 
 }
