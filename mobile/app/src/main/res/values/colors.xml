@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#F23B5F</color>
     <color name="colorPrimaryDark">#AE8CA3</color>
-    <color name="colorAccent">#6DD6DA</color>#
+    <color name="colorAccent">#6DD6DA</color>
 
     <color name="colorAcceptMissionButton">#35D68D</color>
     <color name="colorRejectMissionButton">#D6042A</color>

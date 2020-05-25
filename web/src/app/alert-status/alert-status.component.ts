@@ -21,6 +21,7 @@ export class AlertStatusComponent implements OnInit, OnDestroy {
   rejectCount: number;
   tooFarCount: number;
   awaitingCount: number;
+  ignoredCount: number;
   acceptedCount: number;
 
   ngOnInit(): void {
@@ -37,10 +38,11 @@ export class AlertStatusComponent implements OnInit, OnDestroy {
       this.rejectCount = this.getStatusCount('rejected');
       this.tooFarCount = this.getStatusCount('too_far');
       this.awaitingCount = this.getStatusCount('awaiting');
+      this.ignoredCount = this.getStatusCount('ignored');
     });
   }
 
-  getStatusCount(type: 'accepted' | 'too_far' | 'rejected' | 'awaiting' | 'pending_location') {
+  getStatusCount(type: 'accepted' | 'too_far' | 'rejected' | 'awaiting' | 'pending_location' | 'ignored') {
     let count = 0;
     Object.keys(this.alert.respondersStatus).forEach(responder => {
       if (this.alert.respondersStatus[responder].status === type) {

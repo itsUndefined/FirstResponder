@@ -93,7 +93,6 @@ public class IncomingAlertService extends Service {
         this.activity = activity;
     }
 
-
     private void startTimeoutTimer(int remainingMS) {
         timeout = new Handler();
         exitCallback = exitCallback;

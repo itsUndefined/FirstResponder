@@ -2,7 +2,6 @@ package gr.auth.csd.firstresponder;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.work.ListenableWorker;
 
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
@@ -15,15 +14,12 @@ import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,13 +37,18 @@ import gr.auth.csd.firstresponder.helpers.FirebaseFunctionsInstance;
 import gr.auth.csd.firstresponder.services.IncomingAlertService;
 import gr.auth.csd.firstresponder.services.OngoingMissionService;
 
-public class AlertActivity extends AppCompatActivity implements IncomingAlertService.Callback {
+import static gr.auth.csd.firstresponder.services.OngoingMissionService.START_MISSION;
+
+public class AlertActivity extends AppCompatActivity implements IncomingAlertService.Callback, OngoingMissionService.Callback {
 
     private AlertData alertData;
     private Boolean accepted = false;
 
     private IncomingAlertService incomingAlertService;
-    private ServiceConnection connection;
+    private OngoingMissionService ongoingMissionService;
+
+    private ServiceConnection connection1;
+    private ServiceConnection connection2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,13 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
             alertData = getIntent().getParcelableExtra(DISPLAY_ALERT);
             accepted = getIntent().getBooleanExtra("accepted", false);
         }
+
+        if (accepted) {
+            Intent ongoingIntent = new Intent(getApplicationContext(), OngoingMissionService.class);
+            startService(ongoingIntent);
+            bindToOngoingService(ongoingIntent);
+        }
+
         KeyguardManager manager = (KeyguardManager) getSystemService(Context.KEYGUARD_SERVICE);
         if(Objects.requireNonNull(manager).isKeyguardLocked()) {
             turnScreenOnAndKeyguardOff();
@@ -68,14 +76,15 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
 
         setContentView(R.layout.activity_alert);
 
-        Intent alertIntent = new Intent(this, IncomingAlertService.class);
-        final IncomingAlertService.Callback callbacks = this;
-        connection = new ServiceConnection() {
+        final IncomingAlertService.Callback callback = this;
+
+
+        connection1 = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 IncomingAlertService.LocalBinder binding = (IncomingAlertService.LocalBinder) service;
                 incomingAlertService = binding.getService();
-                incomingAlertService.registerClient(callbacks);
+                incomingAlertService.registerClient(callback);
             }
 
             @Override
@@ -83,7 +92,8 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
                 incomingAlertService = null;
             }
         };
-        bindService(new Intent(this, IncomingAlertService.class), connection, 0);
+        Intent alertIntent = new Intent(this, IncomingAlertService.class);
+        bindService(alertIntent, connection1, 0);
 
         RadioGroup heavyBleedingRadio = this.findViewById(R.id.heavy_bleeding_radio_group);
         RadioGroup treatShockRadio = this.findViewById(R.id.treat_shock_radio_group);
@@ -91,9 +101,11 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
         RadioGroup aedRadio = this.findViewById(R.id.aed_radio_group);
 
         TextInputLayout estimatedTimeText = this.findViewById(R.id.estimated_time_value_text);
+        Objects.requireNonNull(estimatedTimeText.getEditText()).setEnabled(false);
         estimatedTimeText.getEditText().setText(Integer.toString(alertData.secondsOfDrivingRequired) + " δευτερόλεπτα");
 
         TextInputLayout alertAddressText = this.findViewById(R.id.alert_address);
+        Objects.requireNonNull(alertAddressText.getEditText()).setEnabled(false);
         alertAddressText.getEditText().setText(alertData.alert.address);
 
         if (Boolean.TRUE.equals(alertData.alert.requiredSkills.get("STOP_HEAVY_BLEEDING"))) {
@@ -141,6 +153,18 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
             rejectMissionButton.setVisibility(View.GONE);
         }
 
+
+        Button missionEndButton = findViewById(R.id.button_end_mission);
+        missionEndButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unbindService(connection2);
+                Intent ongoingIntent = new Intent(getApplicationContext(), OngoingMissionService.class);
+                stopService(ongoingIntent);
+                finishAffinity();
+            }
+        });
+
         acceptMissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,9 +193,12 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
 
                         incomingAlertService.terminateIncomingCall(false);
 
-                        Intent intent = new Intent(getApplicationContext(), OngoingMissionService.class);
-                        intent.putExtra(DISPLAY_ALERT, alertData);
-                        startService(intent);
+                        Intent ongoingIntent = new Intent(getApplicationContext(), OngoingMissionService.class);
+                        ongoingIntent.setAction(START_MISSION);
+                        ongoingIntent.putExtra(DISPLAY_ALERT, alertData);
+                        startService(ongoingIntent);
+
+                        bindToOngoingService(ongoingIntent);
 
                         accepted = true;
                         acceptMissionButton.setVisibility(View.GONE);
@@ -251,10 +278,34 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(connection);
+        unbindService(connection1);
+        unbindService(connection2);
     }
 
     public static String DISPLAY_ALERT = "gr.auth.csd.firstresponder.DisplayAlert";
 
 
+    @Override
+    public void onArrival() {
+        Button missionEndButton = findViewById(R.id.button_end_mission);
+        missionEndButton.setVisibility(View.VISIBLE);
+    }
+
+    private void bindToOngoingService(Intent intent) {
+        final OngoingMissionService.Callback callback = this;
+        connection2 = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                OngoingMissionService.LocalBinder binding = (OngoingMissionService.LocalBinder) service;
+                ongoingMissionService = binding.getService();
+                ongoingMissionService.registerClient(callback);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                ongoingMissionService = null;
+            }
+        };
+        bindService(intent, connection2, 0);
+    }
 }

@@ -19,6 +19,10 @@
       Δυστυχώς {{ tooFarCount }} {{ tooFarCount > 1 ? 'συσκευές βρίσκονται' : 'συσκευή βρίσκεται' }} πολύ μακριά από το περιστατικό.
     </ngb-alert>
 
+    <ngb-alert type="danger" *ngIf="ignoredCount" [dismissible]="false">
+      {{ ignoredCount }} {{ ignoredCount > 1 ? 'εθελοντές' : 'εθελοντής' }} δεν {{ ignoredCount > 1 ? 'απάντησαν' : 'απάντησε' }} στην αίτηση.
+    </ngb-alert>
+
     <ngb-alert type="danger" *ngIf="rejectCount" [dismissible]="false">
       {{ rejectCount }} {{ rejectCount > 1 ? 'εθελοντές έχουν' : 'εθελοντής έχει' }} απορρίψει την αίτηση.
     </ngb-alert>

@@ -56,6 +56,8 @@
     <string name="alert_maps">Προβολή διαδρομής</string>
     <string name="alert_accept">Αποδοχή</string>
     <string name="alert_reject">Απόρριψη</string>
+    <string name="alert_complete_mission">Ολοκλήρωση αποστολής</string>
     <string name="alert_yes">ΝΑΙ</string>
     <string name="alert_no">ΟΧΙ</string>
+
 </resources>

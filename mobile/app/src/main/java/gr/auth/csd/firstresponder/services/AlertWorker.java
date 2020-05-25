@@ -3,22 +3,18 @@ package gr.auth.csd.firstresponder.services;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.AudioAttributes;
-import android.media.RingtoneManager;
-import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.work.ForegroundInfo;
 import androidx.work.ListenableWorker;
@@ -49,8 +45,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import gr.auth.csd.firstresponder.AlertActivity;
-import gr.auth.csd.firstresponder.DashboardActivity;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.data.Alert;
 import gr.auth.csd.firstresponder.data.AlertData;
@@ -229,7 +223,12 @@ public class AlertWorker extends ListenableWorker {
         Context context = getApplicationContext();
         String channelId;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channelId = createNotificationChannel("gps_fix_notification", "Location service updates", false);
+            NotificationChannel channel;
+            channel = new NotificationChannel("location_update_request", "Location service updates", NotificationManager.IMPORTANCE_LOW);
+            NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.createNotificationChannel(channel);
+            channelId = "location_update_request";
         } else {
             channelId = "";
         }
@@ -245,26 +244,5 @@ public class AlertWorker extends ListenableWorker {
             .build();
 
         return new ForegroundInfo(42, notification);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String createNotificationChannel(String channelId, String channelName, boolean highPriority) {
-        NotificationChannel channel;
-        if (highPriority) {
-            channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
-        } else {
-            channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_MIN);
-        }
-
-        if (highPriority) {
-            Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
-            AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
-            channel.setSound(defaultRingtoneUri, audioAttributes);
-        }
-
-        NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        assert manager != null;
-        manager.createNotificationChannel(channel);
-        return channelId;
     }
 }
