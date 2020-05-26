@@ -19,13 +19,13 @@
                 android:id="@+id/press_for_perms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/dashboard_permsB"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/permsText"
-                app:layout_constraintTop_toBottomOf="@+id/helloUser" />
+                app:layout_constraintTop_toBottomOf="@+id/gpsStatusView" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarW"
@@ -68,12 +68,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/dashboard_perms"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/press_for_perms"
                 app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gpsStatusView" />
+
+            <TextView
+                android:id="@+id/gpsStatusView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/helloUser" />
 
