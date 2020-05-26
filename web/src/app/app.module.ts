@@ -37,15 +37,7 @@ import { AlertStatusComponent } from './alert-status/alert-status.component';
     GoogleMapsModule,
     NgbAlertModule
   ],
-  providers: [
-    // {
-    //   provide: FIRESTORE_SETTINGS,
-    //   useValue: environment.production ? undefined : {
-    //     host: 'localhost:8080',
-    //     ssl: false
-    //   }
-    // }
-],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
