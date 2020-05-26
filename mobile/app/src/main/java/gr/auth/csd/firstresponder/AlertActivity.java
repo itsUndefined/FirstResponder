@@ -78,22 +78,24 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
 
         final IncomingAlertService.Callback callback = this;
 
+        if (!accepted) {
+            connection1 = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    IncomingAlertService.LocalBinder binding = (IncomingAlertService.LocalBinder) service;
+                    incomingAlertService = binding.getService();
+                    incomingAlertService.registerClient(callback);
+                }
 
-        connection1 = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                IncomingAlertService.LocalBinder binding = (IncomingAlertService.LocalBinder) service;
-                incomingAlertService = binding.getService();
-                incomingAlertService.registerClient(callback);
-            }
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    incomingAlertService = null;
+                }
+            };
+            Intent alertIntent = new Intent(this, IncomingAlertService.class);
+            bindService(alertIntent, connection1, 0);
+        }
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                incomingAlertService = null;
-            }
-        };
-        Intent alertIntent = new Intent(this, IncomingAlertService.class);
-        bindService(alertIntent, connection1, 0);
 
         RadioGroup heavyBleedingRadio = this.findViewById(R.id.heavy_bleeding_radio_group);
         RadioGroup treatShockRadio = this.findViewById(R.id.treat_shock_radio_group);
@@ -159,6 +161,7 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
             @Override
             public void onClick(View v) {
                 unbindService(connection2);
+                connection2 = null;
                 Intent ongoingIntent = new Intent(getApplicationContext(), OngoingMissionService.class);
                 stopService(ongoingIntent);
                 finishAffinity();
@@ -192,6 +195,8 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
                         }
 
                         incomingAlertService.terminateIncomingCall(false);
+                        unbindService(connection1);
+                        connection1 = null;
 
                         Intent ongoingIntent = new Intent(getApplicationContext(), OngoingMissionService.class);
                         ongoingIntent.setAction(START_MISSION);
@@ -272,14 +277,22 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
 
     @Override
     public void terminate() {
+        unbindService(connection1);
+        connection1 = null;
         finishAffinity();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(connection1);
-        unbindService(connection2);
+        if (connection1 != null) {
+            unbindService(connection1);
+        }
+
+        if (connection2 != null) {
+            unbindService(connection2);
+        }
+
     }
 
     public static String DISPLAY_ALERT = "gr.auth.csd.firstresponder.DisplayAlert";
