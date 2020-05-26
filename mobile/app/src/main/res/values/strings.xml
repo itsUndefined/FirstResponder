@@ -3,7 +3,7 @@
     <string name="start_title1">Καλωσήρθατε</string>
     <string name="start_title2">στο First Responder!</string>
     <string name="start_title3">Μία εφαρμογή για εθελοντές διασώστες.</string>
-    <string name="start_button">Σύνδεση ή Εγγραφή</string>
+    <string name="start_button">Συνδεση ή Εγγραφη</string>
     <string name="settings_name">Όνομα</string>
     <string name="settings_surname">Επώνυμο</string>
     <string name="settings_title">Προσωπικές Πληροφορίες</string>
@@ -12,7 +12,7 @@
     <string name="settings_cpr_checkbox">Ξέρω κυκλική αναπνοή - CPR</string>
     <string name="settings_treatShock_checkbox">Ξέρω να αντιμετωπίζω σοκ</string>
     <string name="settings_aed_checkbox">Ξέρω να χρησιμοποιώ έναν απινιδωτή</string>
-    <string name="settings_SaveChanges_Button">Αποθήκευση αλλαγών</string>
+    <string name="settings_SaveChanges_Button">Αποθηκευση αλλαγων</string>
     <string name="logIn_title">Πληκτρολόγησε τον αριθμό του τηλεφώνου σου!</string>
     <string-array name="logIn_code">
         <item>+30</item>
@@ -24,9 +24,9 @@
         \nΕνδέχεται να ισχύουν χρεώσεις μηνυμάτων και δεδομένων.
     </string>
     <string name="code_hint">Κωδικός Επιβεβαίωσης</string>
-    <string name="logIn_button">Επαλήθευση αριθμού τηλεφώνου</string>
+    <string name="logIn_button">Επαληθευση αριθμου τηλεφωνου</string>
     <string name="phoneCode_title">Εισάγετε τον κωδικό επαλήθευσης!</string>
-    <string name="phoneCode_button">Υποβολή κωδικού</string>
+    <string name="phoneCode_button">Υποβολη κωδικου</string>
     <string name="register_title1">Ολοκληρώστε το προφίλ σας!</string>
     <string name="register_fname">Όνομα</string>
     <string name="register_lname">Επώνυμο</string>
@@ -35,7 +35,7 @@
     <string name="register_skill2">Ξέρω να αντιμετωπίζω σοκ</string>
     <string name="register_skill3">Ξέρω κυκλική αναπνοή - CPR</string>
     <string name="register_skill4">Ξέρω να χρησιμοποιώ έναν απινιδωτή</string>
-    <string name="register_button">Δημιουργήστε τον λογαριασμό σας</string>
+    <string name="register_button">Δημιουργηστε τον λογαριασμο σας</string>
     <string name="dashboard">Γεια σου</string>
     <string name="dashboard_perms">Για την λειτουργία της εφαρμογής απαιτείται έγκριση άδειας χρήσης της τοποθεσίας!</string>
     <string name="dashboard_gpsStatus">Το GPS είναι ανενεργό!</string>

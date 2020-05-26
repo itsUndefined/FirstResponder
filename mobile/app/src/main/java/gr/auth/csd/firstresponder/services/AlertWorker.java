@@ -232,7 +232,7 @@ public class AlertWorker extends ListenableWorker {
         } else {
             channelId = "";
         }
-        String title = "ΚΑΠΟΙΟΣ ΧΡΕΙΑΖΕΤΑΙ ΤΗ ΒΟΗΘΕΙΑ ΣΟΥ ΤΩΡΑ!"; //R.string.incomingAlertServiceSomeoneNeedsHelp
+        String title = "Κάποιοες χρειάζεται τη βοήθειά σου τώρα!"; //R.string.incomingAlertServiceSomeoneNeedsHelp
 
         Notification notification = new NotificationCompat.Builder(context, channelId)
             .setPriority(NotificationCompat.PRIORITY_LOW)
