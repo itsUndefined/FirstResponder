@@ -46,7 +46,7 @@ public class IncomingAlertService extends Service {
         PendingIntent pendingAlertIntent = PendingIntent.getActivity(getApplicationContext(), 0, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder notification = new Notification.Builder(getApplicationContext())
-            .setContentTitle("SOMEONE NEEDS HELP RIGHT NOW")
+            .setContentTitle("ΚΑΠΟΙΟΣ ΧΡΕΙΑΖΕΤΑΙ ΤΗ ΒΟΗΘΕΙΑ ΣΟΥ ΤΩΡΑ!") //R.string.incomingAlertServiceSomeoneNeedsHelp
             .setSmallIcon(R.drawable.icon)
             .setPriority(Notification.PRIORITY_MAX)
             .setCategory(Notification.CATEGORY_CALL)

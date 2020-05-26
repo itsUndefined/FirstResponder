@@ -56,7 +56,7 @@ public class OngoingMissionService extends Service {
         PendingIntent pendingAlertIntent = PendingIntent.getActivity(getApplicationContext(), 0, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder notification = new Notification.Builder(getApplicationContext())
-                .setContentTitle("asdsada")
+                .setContentTitle("Αποστολή σε εξέλιξη") //.setContentTitle(R.string.ongoingMission)
                 .setSmallIcon(R.drawable.icon)
                 .setPriority(Notification.PRIORITY_LOW)
                 .setCategory(Notification.CATEGORY_STATUS)
