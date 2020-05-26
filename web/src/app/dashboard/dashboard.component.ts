@@ -56,8 +56,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.center = new google.maps.LatLng(38.3, 23); // Center to greece
 
-    this.markerPosition = new google.maps.LatLng(40.64874337, 22.961516);
-    this.selectedAddress = 'Something do not chnage';
+    // this.markerPosition = new google.maps.LatLng(40.64874337, 22.961516);
+    // this.selectedAddress = 'Something do not change';
   }
 
   onFindAddress() {
