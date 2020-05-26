@@ -84,7 +84,9 @@ public class DashboardFragment extends Fragment {
                 } else if (item.getItemId() == R.id.logoutM) {
                     mAuth.signOut();
                     Intent intent = new Intent(context, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+                    getActivity().finish();
                 }
                 return false;
             }

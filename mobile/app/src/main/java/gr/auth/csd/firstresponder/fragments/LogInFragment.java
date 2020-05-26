@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -67,6 +68,16 @@ public class LogInFragment extends Fragment {
         if (savedInstanceState != null) {
             phoneNumber.getEditText().setText((savedInstanceState.getString("phoneNumber")));
         }
+
+        OnBackPressedCallback returnToPreviousFragment = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_activity_fragment_container, new StartFragment());
+                fragmentTransaction.commit();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), returnToPreviousFragment);
 
         return view;
     }

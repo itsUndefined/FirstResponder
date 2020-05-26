@@ -88,7 +88,9 @@ public class RegisterFragment extends Fragment {
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
                                     Intent intent = new Intent(getActivity(), DashboardActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
+                                    getActivity().finish();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {

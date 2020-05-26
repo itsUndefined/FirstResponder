@@ -185,7 +185,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
                                     if (Objects.requireNonNull(documentSnapshot).exists()) {
                                         Log.d(TAG, "Document exists!");
                                         Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
+                                        finish();
                                     } else {
                                         Log.d(TAG, "Document does not exist!");
                                         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -222,7 +224,9 @@ public class MainActivity extends AppCompatActivity implements Callback {
                                 if (Objects.requireNonNull(documentSnapshot).exists()) {
                                     Log.d(TAG, "Document exists!");
                                     Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
+                                    finish();
                                 } else {
                                     Log.d(TAG, "Document does not exist!");
                                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

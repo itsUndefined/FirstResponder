@@ -66,7 +66,9 @@ public class BasicSettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), DashboardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -147,7 +149,9 @@ public class BasicSettingsFragment extends Fragment {
                 database.collection("users").document(currentUser.getUid())
                         .set(user);
                 Intent intent = new Intent(getActivity(), DashboardActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
     }
