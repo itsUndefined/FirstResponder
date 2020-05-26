@@ -47,7 +47,7 @@ public class IncomingAlertService extends Service {
 
         Notification.Builder notification = new Notification.Builder(getApplicationContext())
             .setContentTitle("SOMEONE NEEDS HELP RIGHT NOW")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.icon)
             .setPriority(Notification.PRIORITY_MAX)
             .setCategory(Notification.CATEGORY_CALL)
             .setOngoing(true)

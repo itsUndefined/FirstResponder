@@ -239,7 +239,7 @@ public class AlertWorker extends ListenableWorker {
             .setContentTitle(title)
             .setContentText("We are confirming your location")
             .setTicker(title)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.icon)
             .setOngoing(true)
             .build();
 
