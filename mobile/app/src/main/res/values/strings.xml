@@ -8,9 +8,9 @@
     <string name="settings_surname">Επώνυμο</string>
     <string name="settings_title">Προσωπικές Πληροφορίες</string>
     <string name="settings_knownSkills">Γνωστές Δεξιότητες</string>
-    <string name="settings_heavyBleeding_checkbox">Ξέρω να σταματήσω τη βαριά αιμορραγία</string>
-    <string name="settings_cpr_checkbox">Ξέρω να εκτελέσω κυκλική αναπνοή - CPR</string>
-    <string name="settings_treatShock_checkbox">Ξέρω να αντιμετωπίσω το σοκ</string>
+    <string name="settings_heavyBleeding_checkbox">Ξέρω να σταματώ βαριές αιμορραγίες</string>
+    <string name="settings_cpr_checkbox">Ξέρω κυκλική αναπνοή - CPR</string>
+    <string name="settings_treatShock_checkbox">Ξέρω να αντιμετωπίζω σοκ</string>
     <string name="settings_aed_checkbox">Ξέρω να χρησιμοποιώ έναν απινιδωτή</string>
     <string name="settings_SaveChanges_Button">Αποθήκευση αλλαγών</string>
     <string name="logIn_title">Πληκτρολόγησε τον αριθμό του τηλεφώνου σου!</string>
@@ -31,9 +31,9 @@
     <string name="register_fname">Όνομα</string>
     <string name="register_lname">Επώνυμο</string>
     <string name="register_title2">Πείτε μας για τις δεξιότητές σας!</string>
-    <string name="register_skill1">Ξέρω να σταματήσω τη βαριά αιμορραγία</string>
-    <string name="register_skill2">Ξέρω να αντιμετωπίσω το σοκ</string>
-    <string name="register_skill3">Ξέρω να εκτελέσω κυκλική αναπνοή - CPR</string>
+    <string name="register_skill1">Ξέρω να σταματώ βαριές αιμορραγίες</string>
+    <string name="register_skill2">Ξέρω να αντιμετωπίζω σοκ</string>
+    <string name="register_skill3">Ξέρω κυκλική αναπνοή - CPR</string>
     <string name="register_skill4">Ξέρω να χρησιμοποιώ έναν απινιδωτή</string>
     <string name="register_button">Δημιουργήστε τον λογαριασμό σας</string>
     <string name="dashboard">Γεια σου</string>
@@ -63,5 +63,9 @@
     <string name="alert_complete_mission">Ολοκλήρωση αποστολής</string>
     <string name="alert_yes">ΝΑΙ</string>
     <string name="alert_no">ΟΧΙ</string>
+
+    <string name="alertWorkerConfirmingLocation">Επιβεβαιώνουμε τη θέση σας</string>
+    <string name="incomingAlertServiceSomeoneNeedsHelp">ΚΑΠΟΙΟΣ ΧΡΕΙΑΖΕΤΑΙ ΤΗ ΒΟΗΘΕΙΑ ΣΟΥ ΤΩΡΑ!</string>
+    <string name="ongoingMission">Αποστολή σε εξέλιξη</string>
 
 </resources>
