@@ -26,15 +26,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import gr.auth.csd.firstresponder.callbacks.MainActivityCallback;
 import gr.auth.csd.firstresponder.fragments.CodeSubmitFragment;
-import gr.auth.csd.firstresponder.fragments.LogInFragment;
 import gr.auth.csd.firstresponder.fragments.RegisterFragment;
 import gr.auth.csd.firstresponder.fragments.StartFragment;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
-public class MainActivity extends AppCompatActivity implements Callback {
+public class MainActivity extends AppCompatActivity implements MainActivityCallback {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;

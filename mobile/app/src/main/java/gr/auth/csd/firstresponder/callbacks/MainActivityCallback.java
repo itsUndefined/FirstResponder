@@ -1,6 +1,6 @@
-package gr.auth.csd.firstresponder;
+package gr.auth.csd.firstresponder.callbacks;
 
-public interface Callback {
+public interface MainActivityCallback {
     void phoneVerification(String string);
     void phoneCodeVerification(String string);
     void reSendCode();

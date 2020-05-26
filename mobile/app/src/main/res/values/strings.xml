@@ -37,6 +37,8 @@
     <string name="register_skill4">Ξέρω να χρησιμοποιώ έναν απινιδωτή</string>
     <string name="register_button">Δημιουργήστε τον λογαριασμό σας</string>
     <string name="dashboard">Γεια σου</string>
+    <string name="dashboard_perms">Απαιτείτε έγκριση αδειών για την λειτουργία της εφαρμογής!</string>
+    <string name="dashboard_permsB">Έγκριση αδειών</string>
     <string name="aboutUs">
         Η εφαρμογή αυτή φτιάχτηκε στο πλαίσιο του μαθήματος «Ανάπτυξη Εφαρμογών Κινητών Συσκευών»
         του τμήματος Πληροφορικής του ΑΠΘ. Οι φοιτητές που κατασκεύασαν την παρούσα εφαρμογή είναι

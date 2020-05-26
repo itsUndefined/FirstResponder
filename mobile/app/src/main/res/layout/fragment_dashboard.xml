@@ -19,10 +19,13 @@
                 android:id="@+id/press_for_perms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Press for perms"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/dashboard_permsB"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/permsText"
+                app:layout_constraintTop_toBottomOf="@+id/helloUser" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarW"
@@ -59,6 +62,20 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbarW" />
+
+            <TextView
+                android:id="@+id/permsText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/dashboard_perms"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/press_for_perms"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/helloUser" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </android.widget.ScrollView>

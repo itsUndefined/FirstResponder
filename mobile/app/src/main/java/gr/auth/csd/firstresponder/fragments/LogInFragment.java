@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -20,18 +18,18 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Arrays;
 import java.util.List;
 
-import gr.auth.csd.firstresponder.Callback;
+import gr.auth.csd.firstresponder.callbacks.MainActivityCallback;
 import gr.auth.csd.firstresponder.R;
 
 public class LogInFragment extends Fragment {
 
-    private Callback callback;
+    private MainActivityCallback mainActivityCallback;
     private AutoCompleteTextView countryCode;
     private TextInputLayout phoneNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        callback = (Callback) getActivity();
+        mainActivityCallback = (MainActivityCallback) getActivity();
         View view = inflater.inflate(R.layout.fragment_log_in, container, false);
         Button login = view.findViewById(R.id.logInButton);
 
@@ -51,7 +49,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String validPhoneNumber = countryCode.getEditableText().toString() + phoneNumber.getEditText().getText().toString();
-                callback.phoneVerification(validPhoneNumber);
+                mainActivityCallback.phoneVerification(validPhoneNumber);
             }
         });
 
