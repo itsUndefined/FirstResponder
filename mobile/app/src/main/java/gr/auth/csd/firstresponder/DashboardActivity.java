@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,16 +21,12 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import gr.auth.csd.firstresponder.callbacks.DashboardActivityCallback;
+import gr.auth.csd.firstresponder.callbacks.DashboardFragmentCallback;
 import gr.auth.csd.firstresponder.fragments.DashboardFragment;
 import gr.auth.csd.firstresponder.helpers.PermissionRequest;
 import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
 
-public class DashboardActivity extends AppCompatActivity implements DashboardActivityCallback {
-
-    private Context context;
-    private Button button;
-    private TextView textView;
+public class DashboardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,46 +44,38 @@ public class DashboardActivity extends AppCompatActivity implements DashboardAct
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        DashboardFragmentCallback fragment = (DashboardFragmentCallback) getSupportFragmentManager().getFragments().get(0);
         if(requestCode == PermissionRequest.LOCATION_ONLY) {
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                onRequestPermission();
+                fragment.onPermissionsEnabled();
             } else {
                 showAccessDeniedWarningMessage();
             }
         }
         if(requestCode == PermissionRequest.LOCATION_WITH_BACKGROUND) {
             if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                onRequestPermission();
+                fragment.onPermissionsEnabled();
             } else {
                 showAccessDeniedWarningMessage();
             }
         }
     }
 
-    private void onRequestPermission() {
-        if (PermissionsHandler.checkLocationPermissions(context) == PackageManager.PERMISSION_DENIED) {
-            PermissionsHandler.requestLocationPermissions(this);
-        } else {
-            button.setVisibility(View.GONE);
-            textView.setVisibility(View.GONE);
-
-            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-
-            LocationRequest locationRequest = new LocationRequest();
-            locationRequest.setInterval(60000);
-            locationRequest.setFastestInterval(5000);
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-            Intent locationIntent = new Intent(getApplicationContext(), LocationReceiver.class);
-            locationIntent.setAction(LocationReceiver.LOCATION_UPDATE);
-
-            PendingIntent locationPendingIntent =  PendingIntent.getBroadcast(getApplicationContext(), 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationPendingIntent);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTINGS) {
+            DashboardFragmentCallback fragment = (DashboardFragmentCallback) getSupportFragmentManager().getFragments().get(0);
+            if (resultCode == RESULT_OK) {
+                fragment.onLocationEnabled();
+            } else if (resultCode == RESULT_CANCELED) {
+                fragment.onLocationRequestIgnored();
+            }
         }
     }
 
     private void showAccessDeniedWarningMessage(){
-        AlertDialog.Builder fineLocationAlertBuilder = new AlertDialog.Builder(context);
+        AlertDialog.Builder fineLocationAlertBuilder = new AlertDialog.Builder(this);
         fineLocationAlertBuilder.setTitle("Warning!");
         fineLocationAlertBuilder.setMessage("Background location permission is required for the use of this application." +
                 " Application will now exit");
@@ -105,15 +94,5 @@ public class DashboardActivity extends AppCompatActivity implements DashboardAct
         alertDialog.show();
     }
 
-    @Override
-    public void getPermissions(Context context) {
-        this.context = context;
-        onRequestPermission();
-    }
-
-    @Override
-    public void setPermissionsGUI(Button button, TextView textView) {
-        this.button = button;
-        this.textView = textView;
-    }
+    public static int REQUEST_CHECK_SETTINGS = 17;
 }

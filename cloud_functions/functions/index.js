@@ -85,7 +85,7 @@ exports.checkUnanswered = functions.region('europe-west3').https.onRequest(async
         Object.keys(responders).forEach((responder) => {
             console.log('displaying responder');
             console.log(responder);
-            if (responders[responder].status === 'awaiting') {
+            if (responders[responder].status === 'awaiting' || responders[responder].status === 'pending_location') {
                 updates.push(alertRespondersDoc.update(`respondersStatus.${responder}`, {
                     status: 'ignored'
                 }));

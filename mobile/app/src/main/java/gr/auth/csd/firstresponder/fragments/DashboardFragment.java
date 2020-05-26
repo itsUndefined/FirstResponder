@@ -1,8 +1,10 @@
 package gr.auth.csd.firstresponder.fragments;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +19,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,17 +39,17 @@ import com.google.firebase.iid.InstanceIdResult;
 import java.util.Objects;
 
 import gr.auth.csd.firstresponder.DashboardActivity;
-import gr.auth.csd.firstresponder.callbacks.DashboardActivityCallback;
+import gr.auth.csd.firstresponder.LocationReceiver;
 import gr.auth.csd.firstresponder.MainActivity;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.SettingsActivity;
+import gr.auth.csd.firstresponder.callbacks.DashboardFragmentCallback;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
 import gr.auth.csd.firstresponder.helpers.UserHelpers;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements DashboardFragmentCallback {
 
-    private DashboardActivityCallback dashboardActivityCallback;
     private View view;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -49,12 +59,13 @@ public class DashboardFragment extends Fragment {
     private TextView helloMessage;
     private Button pressForPerms;
     private TextView permsText;
+    private TextView noGpsText;
+
+    private ResolvableApiException resolvable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
-        dashboardActivityCallback = (DashboardActivity) getActivity();
 
         context = getContext();
         activity = getActivity();
@@ -88,18 +99,32 @@ public class DashboardFragment extends Fragment {
 
         firebaseInstanceId();
 
-        pressForPerms = view.findViewById(R.id.press_for_perms);
-        permsText = view.findViewById(R.id.permsText);
-        if (PermissionsHandler.checkLocationPermissions(context) == PackageManager.PERMISSION_GRANTED) {
-            pressForPerms.setVisibility(View.GONE);
-            permsText.setVisibility(View.GONE);
+        pressForPerms = view.findViewById(R.id.press_for_fix);
+
+        permsText = view.findViewById(R.id.noPermsView);
+        noGpsText = view.findViewById(R.id.gpsOfflineView);
+        noGpsText.setVisibility(View.GONE);
+        pressForPerms.setVisibility(View.GONE);
+        permsText.setVisibility(View.GONE);
+
+        if (PermissionsHandler.checkLocationPermissions(context) == PackageManager.PERMISSION_DENIED) {
+            pressForPerms.setVisibility(View.VISIBLE);
+            permsText.setVisibility(View.VISIBLE);
         }
 
         pressForPerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dashboardActivityCallback.setPermissionsGUI(pressForPerms, permsText);
-                dashboardActivityCallback.getPermissions(context);
+                if (permsText.getVisibility() == View.VISIBLE) {
+                    onStartLocationTracking();
+                }
+                if (noGpsText.getVisibility() == View.VISIBLE) {
+                    try {
+                        resolvable.startResolutionForResult(activity, DashboardActivity.REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException e) {
+                        // Ignore the error.
+                    }
+                }
             }
         });
 
@@ -108,7 +133,61 @@ public class DashboardFragment extends Fragment {
         } else {
             helloMessage.setText(savedInstanceState.getString("name"));
         }
+
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest locationSettingsRequest = new LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+            .setAlwaysShow(true)
+            .build();
+
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(context)
+            .checkLocationSettings(locationSettingsRequest)
+            .addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+                @Override
+                public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+                    try {
+                        LocationSettingsResponse response = task.getResult(ApiException.class);
+                        // all good
+                    } catch (ApiException exception) {
+                        pressForPerms.setVisibility(View.VISIBLE);
+                        noGpsText.setVisibility(View.VISIBLE);
+                        switch (exception.getStatusCode()) {
+                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                                try {
+                                    resolvable = (ResolvableApiException) exception;
+                                } catch (ClassCastException e) {
+                                    // Ignore, should be an impossible error.
+                                }
+                                break;
+                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                                // TODO
+                                break;
+                        }
+                    }
+                }
+            });
         return view;
+    }
+
+    private void onStartLocationTracking() {
+        if (PermissionsHandler.checkLocationPermissions(activity) == PackageManager.PERMISSION_DENIED) {
+            PermissionsHandler.requestLocationPermissions(activity);
+        } else {
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+
+            LocationRequest locationRequest = new LocationRequest();
+            locationRequest.setInterval(60000);
+            locationRequest.setFastestInterval(5000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            Intent locationIntent = new Intent(getContext(), LocationReceiver.class);
+            locationIntent.setAction(LocationReceiver.LOCATION_UPDATE);
+
+            PendingIntent locationPendingIntent =  PendingIntent.getBroadcast(getContext(), 0, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationPendingIntent);
+        }
     }
 
     @Override
@@ -149,4 +228,22 @@ public class DashboardFragment extends Fragment {
                 }
             });
     }
+
+    public void onLocationEnabled() {
+        pressForPerms.setVisibility(permsText.getVisibility());
+        noGpsText.setVisibility(View.GONE);
+    }
+
+    public void onLocationRequestIgnored() {
+        //all bad
+    }
+
+    @Override
+    public void onPermissionsEnabled() {
+        pressForPerms.setVisibility(noGpsText.getVisibility());
+        permsText.setVisibility(View.GONE);
+        onStartLocationTracking();
+    }
+
+
 }

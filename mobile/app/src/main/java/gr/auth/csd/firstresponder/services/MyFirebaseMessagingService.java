@@ -1,8 +1,5 @@
 package gr.auth.csd.firstresponder.services;
 
-
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;

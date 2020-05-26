@@ -16,16 +16,17 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/press_for_perms"
-                android:layout_width="170dp"
+                android:id="@+id/press_for_fix"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/dashboard_permsB"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/permsText"
-                app:layout_constraintTop_toBottomOf="@+id/gpsStatusView" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/noPermsView"
+                tools:visibility="gone" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarW"
@@ -64,7 +65,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/toolbarW" />
 
             <TextView
-                android:id="@+id/permsText"
+                android:id="@+id/noPermsView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -72,13 +73,14 @@
                 android:layout_marginEnd="16dp"
                 android:text="@string/dashboard_perms"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/press_for_perms"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/gpsStatusView" />
+                app:layout_constraintTop_toBottomOf="@+id/gpsOfflineView"
+                tools:visibility="gone" />
 
             <TextView
-                android:id="@+id/gpsStatusView"
+                android:id="@+id/gpsOfflineView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -86,22 +88,11 @@
                 android:layout_marginEnd="16dp"
                 android:text="@string/dashboard_gpsStatus"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/gpsStatusButton"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/helloUser" />
-
-            <Button
-                android:id="@+id/gpsStatusButton"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:text="@string/dashboard_gpsStatusB"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/gpsStatusView"
-                app:layout_constraintTop_toBottomOf="@+id/helloUser" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/helloUser"
+                tools:visibility="gone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </android.widget.ScrollView>

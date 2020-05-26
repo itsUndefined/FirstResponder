@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 
-
 import java.util.Objects;
 
 import gr.auth.csd.firstresponder.AlertActivity;
@@ -95,7 +94,6 @@ public class IncomingAlertService extends Service {
 
     private void startTimeoutTimer(int remainingMS) {
         timeout = new Handler();
-        exitCallback = exitCallback;
         timeout.postDelayed(exitCallback, remainingMS);
     }
 
@@ -123,7 +121,6 @@ public class IncomingAlertService extends Service {
     public IBinder onBind(Intent intent) {
         return binder;
     }
-
 
     public interface Callback {
         void terminate();
