@@ -49,13 +49,13 @@ public final class PermissionsHandler {
 
     private static void explainLocationPermissionRequirements(final Activity activity) {
         AlertDialog.Builder fineLocationAlertBuilder = new AlertDialog.Builder(activity);
-        fineLocationAlertBuilder.setTitle("Warning!");
+        fineLocationAlertBuilder.setTitle("Προειδοποίηση!");
         fineLocationAlertBuilder.setMessage(
-                "Background location permission is required for the use of this application." +
-                " In case you deny permission, the app will exit.");
+                "Απαιτείται αποδοχή της λήψης τοποθεσίας στο παρασκήνιο για την λειτουργία της εφαρμογής." +
+                " Σε περίπτωση που αρνηθείτε τότε η εφαρμογή θα κλείσει.");
         fineLocationAlertBuilder.setCancelable(false);
         fineLocationAlertBuilder.setPositiveButton(
-            "I understand",
+            "Αποδοχή",
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
