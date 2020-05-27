@@ -39,6 +39,11 @@ import gr.auth.csd.firstresponder.services.OngoingMissionService;
 
 import static gr.auth.csd.firstresponder.services.OngoingMissionService.START_MISSION;
 
+/**
+ * Creates the alert screen and the user can see the mission. Also user has the choice to accept or
+ * reject the mission, to see the mission details, requirements and the location in a gps app. After
+ * user accepts the mission, the activity will be active until the user is near to the location.
+ */
 public class AlertActivity extends AppCompatActivity implements IncomingAlertService.Callback, OngoingMissionService.Callback {
 
     private AlertData alertData;

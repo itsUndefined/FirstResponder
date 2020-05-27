@@ -34,6 +34,9 @@ import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
+/**
+ * The class contains the login and register functionality.
+ */
 public class MainActivity extends AppCompatActivity implements MainActivityCallback {
 
     private FirebaseAuth mAuth;
@@ -168,6 +171,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
         );
     }
 
+    /**
+     * If the user is sign-in but he does not have a document to the database then the app navigates
+     * to the register fragment.
+     * If the user is sign-in and has a document to the database then the app navigates to the
+     * dashboard activity.
+     */
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -213,6 +222,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
         });
     }
 
+    /**
+     * If the user is sign-in but he does not have a document to the database then the app navigates
+     * to the register fragment.
+     * If the user is sign-in and has a document to the database then the app navigates to the
+     * dashboard activity.
+     */
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
             db.collection("users").document(currentUser.getUid()).get()

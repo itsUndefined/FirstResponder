@@ -32,6 +32,9 @@ import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
+/**
+ * Creates the register screen.
+ */
 public class RegisterFragment extends Fragment {
 
     private FirebaseFirestore db;

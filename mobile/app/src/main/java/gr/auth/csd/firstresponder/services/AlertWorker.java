@@ -54,6 +54,11 @@ import gr.auth.csd.firstresponder.helpers.FirebaseFunctionsInstance;
 import static gr.auth.csd.firstresponder.AlertActivity.DISPLAY_ALERT;
 import static gr.auth.csd.firstresponder.services.IncomingAlertService.START_INCOMING_ALERT;
 
+/**
+ * This worker starts up on a new incoming alert and then it uses the distance matrix api in order
+ * to check if the user is at most 10 minutes away from the alert and creates the alert. Then starts
+ * the IncomingAlertService.
+ */
 public class AlertWorker extends ListenableWorker {
     /**
      * @param appContext   The application {@link Context}

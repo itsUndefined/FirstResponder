@@ -3,6 +3,9 @@ package gr.auth.csd.firstresponder.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Helper class in order to store extra information of user that it does not exist in firestore.
+ */
 public class AlertData implements Parcelable {
     public Alert alert;
     public int secondsOfDrivingRequired;

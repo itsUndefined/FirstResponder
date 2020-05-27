@@ -7,6 +7,9 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 
+/**
+ * Alert data as stored in firestore.
+ */
 public class Alert implements Parcelable {
     public String notes;
     public String address;

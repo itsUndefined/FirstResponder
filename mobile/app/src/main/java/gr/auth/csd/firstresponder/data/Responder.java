@@ -4,6 +4,9 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 
+/**
+ * User data as stored in firestore.
+ */
 public class Responder {
 
     private String firstName;

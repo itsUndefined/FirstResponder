@@ -13,6 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.fragments.LogInFragment;
 
+/**
+ * Creates the start (welcome) screen.
+ */
 public class StartFragment extends Fragment {
 
     @Override

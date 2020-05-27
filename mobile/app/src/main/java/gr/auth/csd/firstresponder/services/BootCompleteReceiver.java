@@ -1,4 +1,4 @@
-package gr.auth.csd.firstresponder;
+package gr.auth.csd.firstresponder.services;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -14,7 +14,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
+import gr.auth.csd.firstresponder.services.LocationReceiver;
 
+/**
+ * Register for continuous background location updates after device boots.
+ */
 public class BootCompleteReceiver extends BroadcastReceiver {
 
     @Override
@@ -27,8 +31,8 @@ public class BootCompleteReceiver extends BroadcastReceiver {
                     FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
 
                     LocationRequest locationRequest = new LocationRequest();
-                    locationRequest.setInterval(5000);
-                    locationRequest.setFastestInterval(5000);
+                    locationRequest.setInterval(600000);
+                    locationRequest.setFastestInterval(60000);
                     locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
                     Intent locationIntent = new Intent(context, LocationReceiver.class);

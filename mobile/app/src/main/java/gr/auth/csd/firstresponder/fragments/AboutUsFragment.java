@@ -16,6 +16,9 @@ import android.widget.ImageButton;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.fragments.DashboardFragment;
 
+/**
+ * Creates the about us screen.
+ */
 public class AboutUsFragment extends Fragment {
 
     private View view;

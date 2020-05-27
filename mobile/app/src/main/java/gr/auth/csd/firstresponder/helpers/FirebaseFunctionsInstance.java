@@ -2,6 +2,9 @@ package gr.auth.csd.firstresponder.helpers;
 
 import com.google.firebase.functions.FirebaseFunctions;
 
+/**
+ * Gets the cloud functions instance.
+ */
 public class FirebaseFunctionsInstance {
     public static FirebaseFunctions Create() {
         FirebaseFunctions functionsInstance = FirebaseFunctions.getInstance("europe-west3");

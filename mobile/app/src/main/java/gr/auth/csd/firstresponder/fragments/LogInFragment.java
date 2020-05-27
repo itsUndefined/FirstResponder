@@ -21,6 +21,9 @@ import java.util.List;
 import gr.auth.csd.firstresponder.callbacks.MainActivityCallback;
 import gr.auth.csd.firstresponder.R;
 
+/**
+ * Creates the sign-in/register screen.
+ */
 public class LogInFragment extends Fragment {
 
     private MainActivityCallback mainActivityCallback;

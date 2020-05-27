@@ -28,6 +28,9 @@ import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.data.Responder;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
+/**
+ * Creates the settings screen.
+ */
 public class BasicSettingsFragment extends Fragment {
 
     private Responder user;

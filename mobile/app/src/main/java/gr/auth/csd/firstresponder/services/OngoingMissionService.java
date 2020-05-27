@@ -29,6 +29,11 @@ import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
 
 import static gr.auth.csd.firstresponder.AlertActivity.DISPLAY_ALERT;
 
+/**
+ * This foreground service will be launched after user accepts the mission. The service gets
+ * the current location every 5sec and checks if the user is in a range of 50m of the alert. Then
+ * the service alerts the activity in order to show the complete mission button.
+ */
 public class OngoingMissionService extends Service {
     private OngoingMissionService.Callback activity;
     private LocationCallback callback;

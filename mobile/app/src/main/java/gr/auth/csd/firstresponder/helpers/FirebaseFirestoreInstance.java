@@ -3,6 +3,9 @@ package gr.auth.csd.firstresponder.helpers;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+/**
+ * Gets the firestore instance.
+ */
 public class FirebaseFirestoreInstance {
 
     public static FirebaseFirestore Create() {

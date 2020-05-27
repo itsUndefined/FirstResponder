@@ -1,14 +1,9 @@
 package gr.auth.csd.firstresponder;
 
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,15 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-
 import gr.auth.csd.firstresponder.callbacks.DashboardFragmentCallback;
 import gr.auth.csd.firstresponder.fragments.DashboardFragment;
 import gr.auth.csd.firstresponder.helpers.PermissionRequest;
-import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
 
+/**
+ * This activity has the main menu of the app and the button to accept the permissions and to enable
+ * the GPS service of the device.
+ */
 public class DashboardActivity extends AppCompatActivity {
 
     @Override

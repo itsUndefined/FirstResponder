@@ -1,4 +1,4 @@
-package gr.auth.csd.firstresponder;
+package gr.auth.csd.firstresponder.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,6 +22,9 @@ import java.util.Map;
 
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 
+/**
+ * Sets the current location of user to the database.
+ */
 public class LocationReceiver extends BroadcastReceiver {
 
     @Override

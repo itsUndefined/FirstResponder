@@ -39,7 +39,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import java.util.Objects;
 
 import gr.auth.csd.firstresponder.DashboardActivity;
-import gr.auth.csd.firstresponder.LocationReceiver;
+import gr.auth.csd.firstresponder.services.LocationReceiver;
 import gr.auth.csd.firstresponder.MainActivity;
 import gr.auth.csd.firstresponder.R;
 import gr.auth.csd.firstresponder.SettingsActivity;
@@ -48,6 +48,9 @@ import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
 import gr.auth.csd.firstresponder.helpers.PermissionsHandler;
 import gr.auth.csd.firstresponder.helpers.UserHelpers;
 
+/**
+ * Creates the dashboard screen.
+ */
 public class DashboardFragment extends Fragment implements DashboardFragmentCallback {
 
     private View view;
@@ -171,6 +174,9 @@ public class DashboardFragment extends Fragment implements DashboardFragmentCall
         return view;
     }
 
+    /**
+     * If permissions are granted the request location updates.
+     */
     private void onStartLocationTracking() {
         if (PermissionsHandler.checkLocationPermissions(activity) == PackageManager.PERMISSION_DENIED) {
             PermissionsHandler.requestLocationPermissions(activity);
@@ -178,8 +184,8 @@ public class DashboardFragment extends Fragment implements DashboardFragmentCall
             FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
 
             LocationRequest locationRequest = new LocationRequest();
-            locationRequest.setInterval(60000);
-            locationRequest.setFastestInterval(5000);
+            locationRequest.setInterval(600000);
+            locationRequest.setFastestInterval(60000);
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
             Intent locationIntent = new Intent(getContext(), LocationReceiver.class);
@@ -196,6 +202,9 @@ public class DashboardFragment extends Fragment implements DashboardFragmentCall
         outState.putString("name", helloMessage.getText().toString());
     }
 
+    /**
+     * Gets the name of the user.
+     */
     private void getUserName() {
         db.collection("users").document(currentUser.getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -217,6 +226,9 @@ public class DashboardFragment extends Fragment implements DashboardFragmentCall
                 });
     }
 
+    /**
+     * Updates the current users token.
+     */
     private void firebaseInstanceId() {
         FirebaseInstanceId.getInstance().getInstanceId()
             .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {

@@ -34,14 +34,14 @@
             android:value="AIzaSyCYc_c8wpIOoMaHG3HfUaBPtSEaQtNtMZ0" />
 
         <receiver
-            android:name=".BootCompleteReceiver"
+            android:name=".services.BootCompleteReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".LocationReceiver" />
+        <receiver android:name=".services.LocationReceiver" />
 
         <activity android:name=".SettingsActivity" />
         <activity android:name=".DashboardActivity" />

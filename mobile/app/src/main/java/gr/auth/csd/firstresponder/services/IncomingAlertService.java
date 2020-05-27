@@ -22,6 +22,10 @@ import gr.auth.csd.firstresponder.R;
 
 import static gr.auth.csd.firstresponder.AlertActivity.DISPLAY_ALERT;
 
+/**
+ * This is a foreground service that creates the incoming alert notification. This service will be
+ * active for 60 sec or until the user accepts the mission. It is responsible for creating the Alert Activity.
+ */
 public class IncomingAlertService extends Service {
 
     private Callback activity;

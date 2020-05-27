@@ -13,6 +13,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import gr.auth.csd.firstresponder.helpers.UserHelpers;
 
 
+/**
+ * Receives the message and starts the AlertWorker.
+ */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {

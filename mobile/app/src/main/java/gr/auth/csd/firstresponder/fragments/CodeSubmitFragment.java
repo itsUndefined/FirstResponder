@@ -15,6 +15,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import gr.auth.csd.firstresponder.callbacks.MainActivityCallback;
 import gr.auth.csd.firstresponder.R;
 
+/**
+ * Creates the submit code screen.
+ */
 public class CodeSubmitFragment extends Fragment {
 
     private MainActivityCallback mainActivityCallback;

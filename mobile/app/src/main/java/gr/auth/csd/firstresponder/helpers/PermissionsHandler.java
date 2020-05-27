@@ -11,6 +11,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+/**
+ * This class is used after API level 24 and handles the runtime location permissions.
+ */
 public final class PermissionsHandler {
     public static int checkLocationPermissions(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

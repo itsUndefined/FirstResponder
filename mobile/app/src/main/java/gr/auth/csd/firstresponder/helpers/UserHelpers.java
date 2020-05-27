@@ -4,6 +4,9 @@ package gr.auth.csd.firstresponder.helpers;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * Updates the current user token to the database.
+ */
 public class UserHelpers {
     public static void UpdateFirebaseInstanceId(String token) {
         String uid = FirebaseAuth.getInstance().getUid();

@@ -55,11 +55,11 @@
     <string name="alert2">Σοκ</string>
     <string name="alert3">Κυκλική αναπνοή - CPR</string>
     <string name="alert4">Απινιδωτής</string>
-    <string name="alert_more">Λεπτομέρειες</string>
-    <string name="alert_maps">Προβολή διαδρομής</string>
-    <string name="alert_accept">Αποδοχή</string>
-    <string name="alert_reject">Απόρριψη</string>
-    <string name="alert_complete_mission">Ολοκλήρωση αποστολής</string>
+    <string name="alert_more">Λεπτομερειες</string>
+    <string name="alert_maps">Προβολη διαδρομης</string>
+    <string name="alert_accept">Αποδοχη</string>
+    <string name="alert_reject">Απορριψη</string>
+    <string name="alert_complete_mission">Ολοκληρωση αποστολης</string>
     <string name="alert_yes">ΝΑΙ</string>
     <string name="alert_no">ΟΧΙ</string>
 
