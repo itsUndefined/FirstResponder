@@ -237,12 +237,12 @@ public class AlertWorker extends ListenableWorker {
         } else {
             channelId = "";
         }
-        String title = "Κάποιοες χρειάζεται τη βοήθειά σου τώρα!"; //R.string.incomingAlertServiceSomeoneNeedsHelp
+        String title = context.getString(R.string.incomingAlertServiceSomeoneNeedsHelp);
 
         Notification notification = new NotificationCompat.Builder(context, channelId)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setContentTitle(title)
-            .setContentText("Επιβεβαιώνουμε τη θέση σας") // .setContextTitle("R.strings.alertWorkerConfirmingLocation)
+            .setContentText(context.getString(R.string.alertWorkerConfirmingLocation))
             .setTicker(title)
             .setSmallIcon(R.drawable.icon)
             .setOngoing(true)

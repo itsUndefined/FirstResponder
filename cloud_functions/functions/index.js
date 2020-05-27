@@ -45,7 +45,7 @@ async function unbusyUserAfter(userId, seconds) {
     const project = 'firstresponder-1f0df';
     const queue = 'alert';
     const location = 'europe-west1';
-    const url = 'https://europe-west3-firstresponder-1f0df.cloudfunctions.net/alertCallback';
+    const url = 'https://europe-west3-firstresponder-1f0df.cloudfunctions.net/unbusyCallback';
     const payload = {
         userId,
         secret
@@ -70,7 +70,7 @@ async function unbusyUserAfter(userId, seconds) {
     await client.createTask({ parent: parent, task });
 }
 
-exports.alertCallback = functions.region('europe-west3').https.onRequest(async (req, res) => {
+exports.unbusyCallback = functions.region('europe-west3').https.onRequest(async (req, res) => {
     if (req.body.secret === secret) {
         await db.collection('users').doc(req.body.userId).update("busy", false);
     }
@@ -83,8 +83,6 @@ exports.checkUnanswered = functions.region('europe-west3').https.onRequest(async
         const updates = [];
         const responders = (await alertRespondersDoc.get()).data().respondersStatus;
         Object.keys(responders).forEach((responder) => {
-            console.log('displaying responder');
-            console.log(responder);
             if (responders[responder].status === 'awaiting' || responders[responder].status === 'pending_location') {
                 updates.push(alertRespondersDoc.update(`respondersStatus.${responder}`, {
                     status: 'ignored'
