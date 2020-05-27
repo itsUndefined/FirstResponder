@@ -18,6 +18,8 @@ export class AuthComponent implements OnInit {
     password: new FormControl(null)
   });
 
+  serverMessage: string;
+
   rememberme = false;
 
   constructor(private afa: AngularFireAuth, private router: Router) { }
@@ -42,7 +44,7 @@ export class AuthComponent implements OnInit {
       .then(response => {
         this.router.navigateByUrl('/dashboard');
       }).catch(err => {
-        console.error(err);
+        this.serverMessage = err.message;
       });
   }
 

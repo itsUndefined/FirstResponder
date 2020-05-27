@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioAttributes;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Binder;
@@ -37,7 +38,7 @@ public class IncomingAlertService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        if (!Objects.equals(intent.getAction(), START_INCOMING_ALERT)) {
+        if (intent == null || !Objects.equals(intent.getAction(), START_INCOMING_ALERT)) {
             return START_STICKY;
         }
 
@@ -53,16 +54,18 @@ public class IncomingAlertService extends Service {
             .setSmallIcon(R.drawable.icon)
             .setPriority(Notification.PRIORITY_MAX)
             .setCategory(Notification.CATEGORY_CALL)
-            .setOngoing(true)
             .setContentIntent(pendingAlertIntent)
+            .setVisibility(Notification.VISIBILITY_PUBLIC)
             .setFullScreenIntent(pendingAlertIntent, true);
+
+
+        Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
+        AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("alert_channel", "Incoming Alert", NotificationManager.IMPORTANCE_HIGH);
-
-            Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
-            AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
             channel.setSound(defaultRingtoneUri, audioAttributes);
+            channel.setVibrationPattern(new long[]{1000, 1000});
 
             NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
             assert manager != null;
@@ -72,12 +75,15 @@ public class IncomingAlertService extends Service {
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            Uri defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(getApplicationContext(), RingtoneManager.TYPE_RINGTONE);
-            AudioAttributes audioAttributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
             notification.setSound(defaultRingtoneUri, audioAttributes);
+            notification.setVibrate(new long[]{1000, 1000});
         }
 
-        startForeground(1, notification.build());
+        Notification builtNotification = notification.build();
+        builtNotification.flags |= Notification.FLAG_ONGOING_EVENT;
+        builtNotification.flags |= Notification.FLAG_INSISTENT;
+
+        startForeground(1, builtNotification);
 
         startTimeoutTimer(60000);
 

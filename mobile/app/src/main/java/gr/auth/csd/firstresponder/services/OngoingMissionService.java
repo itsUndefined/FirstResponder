@@ -46,7 +46,7 @@ public class OngoingMissionService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        if (!Objects.equals(intent.getAction(), START_MISSION)) {
+        if (intent == null || !Objects.equals(intent.getAction(), START_MISSION)) {
             return START_STICKY;
         }
 

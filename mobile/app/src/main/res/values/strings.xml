@@ -63,7 +63,7 @@
     <string name="alert_yes">ΝΑΙ</string>
     <string name="alert_no">ΟΧΙ</string>
 
-    <string name="alertWorkerConfirmingLocation">Κάποιος χρειάζεται την βοήθεια σου. Επιβεβαιώνουμε τη θέση σας.</string>
+    <string name="alertWorkerConfirmingLocation">Επιβεβαιώνουμε τη θέση σας.</string>
     <string name="incomingAlertServiceSomeoneNeedsHelp">Κάποιος χρειάζεται την βοήθεια σου τώρα!</string>
     <string name="ongoingMission">Αποστολή σε εξέλιξη</string>
 

@@ -94,7 +94,7 @@ public class DashboardFragment extends Fragment implements DashboardFragmentCall
                     Intent intent = new Intent(context, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
-                    getActivity().finish();
+                    activity.finishAffinity();
                 }
                 return false;
             }
@@ -113,6 +113,8 @@ public class DashboardFragment extends Fragment implements DashboardFragmentCall
         if (PermissionsHandler.checkLocationPermissions(context) == PackageManager.PERMISSION_DENIED) {
             pressForPerms.setVisibility(View.VISIBLE);
             permsText.setVisibility(View.VISIBLE);
+        } else {
+            onStartLocationTracking();
         }
 
         pressForPerms.setOnClickListener(new View.OnClickListener() {
