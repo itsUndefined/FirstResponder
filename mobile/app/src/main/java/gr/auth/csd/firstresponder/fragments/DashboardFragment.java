@@ -120,15 +120,14 @@ public class DashboardFragment extends Fragment implements DashboardFragmentCall
         pressForPerms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (permsText.getVisibility() == View.VISIBLE) {
-                    onStartLocationTracking();
-                }
                 if (noGpsText.getVisibility() == View.VISIBLE) {
                     try {
                         resolvable.startResolutionForResult(activity, DashboardActivity.REQUEST_CHECK_SETTINGS);
                     } catch (IntentSender.SendIntentException e) {
                         // Ignore the error.
                     }
+                } else if (permsText.getVisibility() == View.VISIBLE) {
+                    onStartLocationTracking();
                 }
             }
         });
@@ -246,6 +245,7 @@ public class DashboardFragment extends Fragment implements DashboardFragmentCall
     public void onLocationEnabled() {
         pressForPerms.setVisibility(permsText.getVisibility());
         noGpsText.setVisibility(View.GONE);
+        onStartLocationTracking();
     }
 
     public void onLocationRequestIgnored() {

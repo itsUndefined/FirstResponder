@@ -177,6 +177,10 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
             @Override
             public void onClick(View v) {
 
+                incomingAlertService.terminateIncomingCall(false);
+                unbindService(connection1);
+                connection1 = null;
+
                 FirebaseFunctions functions = FirebaseFunctionsInstance.Create();
 
                 Map<String, Object> data = new HashMap<>();
@@ -188,20 +192,16 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
                 functionsInstance.getHttpsCallable("updateUserStatus").call(data).addOnCompleteListener(new OnCompleteListener<HttpsCallableResult>() {
                     @Override
                     public void onComplete(@NonNull Task<HttpsCallableResult> task) {
-                        if(!task.isSuccessful()) {
+                        if (!task.isSuccessful()) {
                             return;
                         }
-                        if(task.getResult().getData().equals(Boolean.FALSE)) {
+                        if (task.getResult().getData().equals(Boolean.FALSE)) {
                             Toast.makeText(getApplicationContext(), "Η αποστολή δεν υπάρχει πλέον", Toast.LENGTH_SHORT).show();
                             NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                             Objects.requireNonNull(manager).cancelAll();
                             finishAffinity();
                             return;
                         }
-
-                        incomingAlertService.terminateIncomingCall(false);
-                        unbindService(connection1);
-                        connection1 = null;
 
                         Intent ongoingIntent = new Intent(getApplicationContext(), OngoingMissionService.class);
                         ongoingIntent.setAction(START_MISSION);
@@ -222,6 +222,9 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(getApplicationContext(), "Η αποστολή απορρίφθηκε.", Toast.LENGTH_SHORT).show();
+                incomingAlertService.terminateIncomingCall(true);
+
                 FirebaseFunctions functions = FirebaseFunctionsInstance.Create();
 
                 Map<String, Object> data = new HashMap<>();
@@ -230,13 +233,7 @@ public class AlertActivity extends AppCompatActivity implements IncomingAlertSer
 
                 FirebaseFunctions functionsInstance = FirebaseFunctionsInstance.Create();
 
-                functionsInstance.getHttpsCallable("updateUserStatus").call(data).addOnCompleteListener(new OnCompleteListener<HttpsCallableResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<HttpsCallableResult> task) {
-                        Toast.makeText(getApplicationContext(), "Η αποστολή απορρίφθηκε.", Toast.LENGTH_SHORT).show();
-                        incomingAlertService.terminateIncomingCall(true);
-                    }
-                });
+                functionsInstance.getHttpsCallable("updateUserStatus").call(data);
             }
         });
 

@@ -55,7 +55,7 @@ public final class PermissionsHandler {
                 " Σε περίπτωση που αρνηθείτε τότε η εφαρμογή θα κλείσει.");
         fineLocationAlertBuilder.setCancelable(false);
         fineLocationAlertBuilder.setPositiveButton(
-            "Αποδοχή",
+            "ΑΠΟΔΟΧΗ",
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

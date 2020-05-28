@@ -1,6 +1,6 @@
 <div class="container">
   <div class="input-group mt-3 mb-2">
-    <input  type="text" class="form-control" placeholder="Διεύθυνση συμβάντος" [(ngModel)]="address">
+    <input  type="text" class="form-control" placeholder="Διεύθυνση συμβάντος" [(ngModel)]="address" (keydown.enter)="onFindAddress()">
     <div class="input-group-append">
       <button class="btn btn-primary" type="button" (click)="onFindAddress()">Αναζήτηση</button>
     </div>
