@@ -43,7 +43,7 @@ public class CodeSubmitFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivityCallback.reSendCode();
+                mainActivityCallback.verificationAborted();
                 FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
                 fragmentTransaction.commit();
@@ -53,16 +53,6 @@ public class CodeSubmitFragment extends Fragment {
         if (savedInstanceState != null) {
             code.getEditText().setText(savedInstanceState.getString("code"));
         }
-
-        /*OnBackPressedCallback returnToPreviousFragment = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
-                fragmentTransaction.commit();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), returnToPreviousFragment);*/
 
         return view;
     }

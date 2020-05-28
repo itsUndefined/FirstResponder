@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 import gr.auth.csd.firstresponder.callbacks.MainActivityCallback;
 import gr.auth.csd.firstresponder.fragments.CodeSubmitFragment;
+import gr.auth.csd.firstresponder.fragments.LogInFragment;
 import gr.auth.csd.firstresponder.fragments.RegisterFragment;
 import gr.auth.csd.firstresponder.fragments.StartFragment;
 import gr.auth.csd.firstresponder.helpers.FirebaseFirestoreInstance;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private boolean mVerificationInProgress = false;
-    private boolean codeTimeOut = false;
+    private String mCurrentlyVerifyingPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         db = FirebaseFirestoreInstance.Create();
-
-        if (savedInstanceState != null) {
-            onRestoreInstanceState(savedInstanceState);
-        }
 
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
@@ -96,25 +93,34 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
                 // by combining the code with a verification ID.
                 mVerificationId = verificationId;
                 mResendToken = token;
-                codeTimeOut = false;
                 Log.d(TAG, "onCodeSent:" + verificationId);
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_fragment_container, new CodeSubmitFragment());
-                fragmentTransaction.commit();
+                if(!mVerificationInProgress) {
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_activity_fragment_container, new CodeSubmitFragment());
+                    fragmentTransaction.commit();
+                }
+                mVerificationInProgress = true;
             }
 
             @Override
             public void onCodeAutoRetrievalTimeOut(@NonNull String verificationId) {
                 super.onCodeAutoRetrievalTimeOut(verificationId);
                 Log.d(TAG, "onCodeAutoRetrievalTimeOut:" + verificationId);
-                codeTimeOut = true;
-                /*FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
-                fragmentTransaction.commit();*/
-                Toast.makeText(MainActivity.this, "Code time out", Toast.LENGTH_SHORT).show();
+                mResendToken = null;
+                if (mVerificationInProgress) {
+                    mVerificationInProgress = false;
+                    mCurrentlyVerifyingPhone = null;
+                    Toast.makeText(MainActivity.this, "Verification timed out", Toast.LENGTH_SHORT).show();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_activity_fragment_container, new LogInFragment());
+                    fragmentTransaction.commit();
+                }
             }
         };
-        if (savedInstanceState == null) {
+
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+        } else {
             updateUI(currentUser);
         }
     }
@@ -122,13 +128,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putParcelable("key_resend_token", mResendToken);
         outState.putBoolean("key_verify_in_progress", mVerificationInProgress);
+        outState.putString("key_currently_verifying_phone", mCurrentlyVerifyingPhone);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        mResendToken = savedInstanceState.getParcelable("key_resend_token");
         mVerificationInProgress = savedInstanceState.getBoolean("key_verify_in_progress");
+        mCurrentlyVerifyingPhone = savedInstanceState.getString("key_currently_verifying_phone");
+        if (mVerificationInProgress) {
+           startPhoneNumberVerification(mCurrentlyVerifyingPhone);
+        }
     }
 
     public void verifyPhoneNumberWithCode(String code) {
@@ -139,13 +152,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     }
 
     private void logIn(String phoneNumber){
-        if (!codeTimeOut) {
-            if (!mVerificationInProgress) {
-                startPhoneNumberVerification(phoneNumber);
-            }
+        if (mResendToken == null) {
+            startPhoneNumberVerification(phoneNumber);
         } else {
-            codeTimeOut = false;
-            resendVerificationCode(phoneNumber, mResendToken);
+            forceStartPhoneNumberVerification(phoneNumber, mResendToken);
         }
     }
 
@@ -157,10 +167,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
                 this,
                 mCallbacks
         );
-        mVerificationInProgress = true;
+        mCurrentlyVerifyingPhone = phoneNumber;
     }
 
-    private void resendVerificationCode(String phoneNumber, PhoneAuthProvider.ForceResendingToken token) {
+    private void forceStartPhoneNumberVerification(String phoneNumber, PhoneAuthProvider.ForceResendingToken token) {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,
                 60,
@@ -169,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
                 mCallbacks,
                 token
         );
+        mCurrentlyVerifyingPhone = phoneNumber;
     }
 
     /**
@@ -178,11 +189,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
      * dashboard activity.
      */
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "signInWithCredential:success");
+                    mVerificationInProgress = false;
+                    mCurrentlyVerifyingPhone = null;
                     currentUser = mAuth.getCurrentUser();
 
                     db.collection("users").document(currentUser.getUid()).get()
@@ -271,7 +285,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityCallb
     }
 
     @Override
-    public void reSendCode() {
-        codeTimeOut = true;
+    public void verificationAborted() {
+        mVerificationInProgress = false;
+        mCurrentlyVerifyingPhone = null;
     }
 }
